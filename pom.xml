@@ -902,6 +902,7 @@
         <module>modules/activiti-ldap</module>
         <module>modules/activiti-crystalball</module>
         <module>modules/activiti-jmx</module>
+        <module>modules/activiti5-compatibility</module>
       </modules>
     </profile>
     <profile>
