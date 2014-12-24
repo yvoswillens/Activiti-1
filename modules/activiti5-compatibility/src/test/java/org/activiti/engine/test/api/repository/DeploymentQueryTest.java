@@ -13,12 +13,12 @@
 
 package org.activiti.engine.test.api.repository;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.impl.persistence.entity.DeploymentEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.DeploymentQuery;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.impl.persistence.entity.DeploymentEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.Deployment;
+import org.activiti5.engine.repository.DeploymentQuery;
 
 import java.util.List;
 

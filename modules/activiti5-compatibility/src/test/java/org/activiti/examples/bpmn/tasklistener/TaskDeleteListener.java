@@ -3,8 +3,8 @@ package org.activiti.examples.bpmn.tasklistener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
+import org.activiti5.engine.delegate.DelegateTask;
+import org.activiti5.engine.delegate.TaskListener;
 
 
 /**

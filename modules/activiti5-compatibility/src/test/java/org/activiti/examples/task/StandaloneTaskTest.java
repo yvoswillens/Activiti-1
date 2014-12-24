@@ -14,10 +14,10 @@ package org.activiti.examples.task;
 
 import java.util.List;
 
-import org.activiti.engine.ActivitiOptimisticLockingException;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.task.Task;
+import org.activiti5.engine.ActivitiOptimisticLockingException;
+import org.activiti5.engine.impl.persistence.entity.TaskEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.task.Task;
 
 /**
  * @author Joram Barrez

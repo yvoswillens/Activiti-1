@@ -13,12 +13,12 @@
 
 package org.activiti.engine.test.api.identity;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.identity.UserQuery;
-import org.activiti.engine.impl.persistence.entity.UserEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.identity.User;
+import org.activiti5.engine.identity.UserQuery;
+import org.activiti5.engine.impl.persistence.entity.UserEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
 
 import java.util.List;
 

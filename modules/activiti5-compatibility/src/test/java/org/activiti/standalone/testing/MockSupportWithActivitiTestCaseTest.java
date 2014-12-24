@@ -12,12 +12,12 @@
  */
 package org.activiti.standalone.testing;
 
-import org.activiti.engine.test.ActivitiTestCase;
-import org.activiti.engine.test.Deployment;
-import org.activiti.engine.test.mock.MockServiceTask;
-import org.activiti.engine.test.mock.MockServiceTasks;
-import org.activiti.engine.test.mock.NoOpServiceTasks;
 import org.activiti.standalone.testing.helpers.ServiceTaskTestMock;
+import org.activiti5.engine.test.ActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
+import org.activiti5.engine.test.mock.MockServiceTask;
+import org.activiti5.engine.test.mock.MockServiceTasks;
+import org.activiti5.engine.test.mock.NoOpServiceTasks;
 
 /**
  * @author Joram Barrez

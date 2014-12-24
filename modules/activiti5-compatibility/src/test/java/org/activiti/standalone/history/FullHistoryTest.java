@@ -24,26 +24,26 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.history.HistoricActivityInstance;
-import org.activiti.engine.history.HistoricDetail;
-import org.activiti.engine.history.HistoricFormProperty;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricVariableInstance;
-import org.activiti.engine.history.HistoricVariableInstanceQuery;
-import org.activiti.engine.history.HistoricVariableUpdate;
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.impl.variable.EntityManagerSession;
-import org.activiti.engine.impl.variable.EntityManagerSessionFactory;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
 import org.activiti.engine.test.api.runtime.DummySerializable;
 import org.activiti.engine.test.history.SerializableVariable;
 import org.activiti.standalone.jpa.FieldAccessJPAEntity;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.history.HistoricActivityInstance;
+import org.activiti5.engine.history.HistoricDetail;
+import org.activiti5.engine.history.HistoricFormProperty;
+import org.activiti5.engine.history.HistoricProcessInstance;
+import org.activiti5.engine.history.HistoricTaskInstance;
+import org.activiti5.engine.history.HistoricVariableInstance;
+import org.activiti5.engine.history.HistoricVariableInstanceQuery;
+import org.activiti5.engine.history.HistoricVariableUpdate;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.impl.variable.EntityManagerSession;
+import org.activiti5.engine.impl.variable.EntityManagerSessionFactory;
+import org.activiti5.engine.repository.ProcessDefinition;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

@@ -12,8 +12,8 @@
  */
 package org.activiti.standalone.parsing;
 
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

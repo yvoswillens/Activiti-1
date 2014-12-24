@@ -12,19 +12,19 @@
  */
 package org.activiti.engine.test.api.event;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.delegate.event.ActivitiEventDispatcher;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.delegate.event.BaseEntityEventListener;
-import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
-import org.activiti.engine.delegate.event.impl.ActivitiEventDispatcherImpl;
-import org.activiti.engine.delegate.event.impl.ActivitiEventImpl;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.task.Task;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.delegate.event.ActivitiEventDispatcher;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.delegate.event.BaseEntityEventListener;
+import org.activiti5.engine.delegate.event.impl.ActivitiEntityEventImpl;
+import org.activiti5.engine.delegate.event.impl.ActivitiEventDispatcherImpl;
+import org.activiti5.engine.delegate.event.impl.ActivitiEventImpl;
+import org.activiti5.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti5.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti5.engine.impl.persistence.entity.TaskEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.task.Task;
 
 /**
  * 

@@ -14,10 +14,10 @@ package org.activiti.examples.pvm;
 
 import junit.framework.TestCase;
 
-import org.activiti.engine.impl.pvm.ProcessDefinitionBuilder;
-import org.activiti.engine.impl.pvm.PvmExecution;
-import org.activiti.engine.impl.pvm.PvmProcessDefinition;
-import org.activiti.engine.impl.pvm.PvmProcessInstance;
+import org.activiti5.engine.impl.pvm.ProcessDefinitionBuilder;
+import org.activiti5.engine.impl.pvm.PvmExecution;
+import org.activiti5.engine.impl.pvm.PvmProcessDefinition;
+import org.activiti5.engine.impl.pvm.PvmProcessInstance;
 
 /**
  * @author Tom Baeyens

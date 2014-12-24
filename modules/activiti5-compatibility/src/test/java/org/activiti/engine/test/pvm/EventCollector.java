@@ -16,9 +16,9 @@ package org.activiti.engine.test.pvm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.ExecutionListener;
-import org.activiti.engine.impl.pvm.delegate.ExecutionListenerExecution;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.ExecutionListener;
+import org.activiti5.engine.impl.pvm.delegate.ExecutionListenerExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

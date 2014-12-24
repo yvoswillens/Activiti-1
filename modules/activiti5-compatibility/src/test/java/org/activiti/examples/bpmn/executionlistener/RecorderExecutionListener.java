@@ -16,10 +16,10 @@ package org.activiti.examples.bpmn.executionlistener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.ExecutionListener;
-import org.activiti.engine.impl.el.FixedValue;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.ExecutionListener;
+import org.activiti5.engine.impl.el.FixedValue;
+import org.activiti5.engine.impl.persistence.entity.ExecutionEntity;
 
 /**
  * @author Bernd Ruecker

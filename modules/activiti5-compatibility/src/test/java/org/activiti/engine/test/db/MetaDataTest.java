@@ -16,11 +16,11 @@ package org.activiti.engine.test.db;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
-import org.activiti.engine.impl.ProcessEngineImpl;
-import org.activiti.engine.impl.db.DbSqlSession;
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.ProcessEngineImpl;
+import org.activiti5.engine.impl.db.DbSqlSession;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

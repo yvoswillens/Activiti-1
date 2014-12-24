@@ -16,8 +16,8 @@ package org.activiti.examples.bpmn.executionlistener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.ExecutionListener;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.ExecutionListener;
 
 /**
  * Simple {@link ExecutionListener} that sets the current activity id and name attributes on the execution.

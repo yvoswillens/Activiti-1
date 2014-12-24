@@ -14,11 +14,11 @@ package org.activiti.engine.test.api.event;
 
 import java.util.Map;
 
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.ProcessDefinition;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * Test for event-listeners that are registered on a process-definition scope,

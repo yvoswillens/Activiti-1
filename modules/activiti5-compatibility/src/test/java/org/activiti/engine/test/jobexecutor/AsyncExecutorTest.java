@@ -16,14 +16,14 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.impl.asyncexecutor.AsyncExecutor;
-import org.activiti.engine.impl.asyncexecutor.DefaultAsyncJobExecutor;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
-import org.activiti.engine.impl.persistence.entity.JobEntity;
-import org.activiti.engine.impl.test.JobTestHelper;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ProcessEngine;
+import org.activiti5.engine.impl.asyncexecutor.AsyncExecutor;
+import org.activiti5.engine.impl.asyncexecutor.DefaultAsyncJobExecutor;
+import org.activiti5.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti5.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
+import org.activiti5.engine.impl.persistence.entity.JobEntity;
+import org.activiti5.engine.impl.test.JobTestHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -299,7 +299,7 @@ public class AsyncExecutorTest {
 	}
 	
 	private void cleanup(ProcessEngine processEngine) {
-		for (org.activiti.engine.repository.Deployment deployment : processEngine.getRepositoryService().createDeploymentQuery().list()) {
+		for (org.activiti5.engine.repository.Deployment deployment : processEngine.getRepositoryService().createDeploymentQuery().list()) {
 			processEngine.getRepositoryService().deleteDeployment(deployment.getId(), true);
 		}
 		processEngine.close();

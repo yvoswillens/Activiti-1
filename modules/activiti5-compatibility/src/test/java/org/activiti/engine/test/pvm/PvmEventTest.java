@@ -16,16 +16,16 @@ package org.activiti.engine.test.pvm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.impl.pvm.ProcessDefinitionBuilder;
-import org.activiti.engine.impl.pvm.PvmExecution;
-import org.activiti.engine.impl.pvm.PvmProcessDefinition;
-import org.activiti.engine.impl.pvm.PvmProcessInstance;
-import org.activiti.engine.impl.test.PvmTestCase;
 import org.activiti.engine.test.pvm.activities.Automatic;
 import org.activiti.engine.test.pvm.activities.EmbeddedSubProcess;
 import org.activiti.engine.test.pvm.activities.End;
 import org.activiti.engine.test.pvm.activities.ParallelGateway;
 import org.activiti.engine.test.pvm.activities.WaitState;
+import org.activiti5.engine.impl.pvm.ProcessDefinitionBuilder;
+import org.activiti5.engine.impl.pvm.PvmExecution;
+import org.activiti5.engine.impl.pvm.PvmProcessDefinition;
+import org.activiti5.engine.impl.pvm.PvmProcessInstance;
+import org.activiti5.engine.impl.test.PvmTestCase;
 
 
 /**
@@ -42,21 +42,21 @@ public class PvmEventTest extends PvmTestCase {
     EventCollector eventCollector = new EventCollector();
     
     PvmProcessDefinition processDefinition = new ProcessDefinitionBuilder("events")
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .createActivity("start")
         .initial()
         .behavior(new Automatic())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .startTransition("end")
           .executionListener(eventCollector)
         .endTransition()
       .endActivity()
       .createActivity("end")
         .behavior(new End())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .endActivity()
     .buildProcessDefinition();
     
@@ -90,28 +90,28 @@ public class PvmEventTest extends PvmTestCase {
     EventCollector eventCollector = new EventCollector();
     
     PvmProcessDefinition processDefinition = new ProcessDefinitionBuilder("events")
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .createActivity("start")
         .initial()
         .behavior(new Automatic())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .startTransition("wait")
           .executionListener(eventCollector)
         .endTransition()
       .endActivity()
       .createActivity("outerscope")
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .createActivity("innerscope")
           .scope()
-          .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-          .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+          .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+          .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
           .createActivity("wait")
             .behavior(new WaitState())
-            .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-            .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+            .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+            .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
             .transition("end")
           .endActivity()
         .endActivity()
@@ -156,37 +156,37 @@ public class PvmEventTest extends PvmTestCase {
     EventCollector eventCollector = new EventCollector();
     
     PvmProcessDefinition processDefinition = new ProcessDefinitionBuilder("events")
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .createActivity("start")
         .initial()
         .behavior(new Automatic())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .transition("embeddedsubprocess")
       .endActivity()
       .createActivity("embeddedsubprocess")
         .scope()
         .behavior(new EmbeddedSubProcess())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .createActivity("startInside")
           .behavior(new Automatic())
-          .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-          .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+          .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+          .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
           .transition("endInside")
         .endActivity()
         .createActivity("endInside")
           .behavior(new End())
-          .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-          .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+          .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+          .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .endActivity()
         .transition("end")
       .endActivity()
       .createActivity("end")
         .behavior(new End())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .endActivity()
     .buildProcessDefinition();
     
@@ -227,44 +227,44 @@ public class PvmEventTest extends PvmTestCase {
     EventCollector eventCollector = new EventCollector();
     
     PvmProcessDefinition processDefinition = new ProcessDefinitionBuilder("events")
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-      .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+      .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .createActivity("start")
         .initial()
         .behavior(new Automatic())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .transition("fork")
       .endActivity()
       .createActivity("fork")
         .behavior(new ParallelGateway())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .transition("c1")
         .transition("c2")
       .endActivity()
       .createActivity("c1")
         .behavior(new Automatic())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .transition("join")
       .endActivity()
       .createActivity("c2")
         .behavior(new Automatic())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .transition("join")
       .endActivity()
       .createActivity("join")
         .behavior(new ParallelGateway())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
         .transition("end")
       .endActivity()
       .createActivity("end")
         .behavior(new End())
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
-        .executionListener(org.activiti.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_START, eventCollector)
+        .executionListener(org.activiti5.engine.impl.pvm.PvmEvent.EVENTNAME_END, eventCollector)
       .endActivity()
     .buildProcessDefinition();
     

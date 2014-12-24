@@ -15,9 +15,9 @@ package org.activiti.engine.test.bpmn.async;
 import java.util.Arrays;
 import java.util.List;
 
-import org.activiti.engine.test.Deployment;
 import org.activiti.engine.test.bpmn.mail.EmailServiceTaskTest;
 import org.activiti.engine.test.bpmn.mail.EmailTestCase;
+import org.activiti5.engine.test.Deployment;
 import org.subethamail.wiser.WiserMessage;
 
 /**

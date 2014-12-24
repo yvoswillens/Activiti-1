@@ -12,11 +12,10 @@
  */
 package org.activiti.engine.test.api.event;
 
-import org.activiti.engine.delegate.BpmnError;
-
-import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.delegate.BpmnError;
+import org.activiti5.engine.delegate.event.ActivitiEvent;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * Test case for {@link ActivitiEvent} thrown when a BPMNError is not caught

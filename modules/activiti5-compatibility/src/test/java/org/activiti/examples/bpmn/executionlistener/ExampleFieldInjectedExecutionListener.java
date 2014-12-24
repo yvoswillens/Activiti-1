@@ -13,9 +13,9 @@
 
 package org.activiti.examples.bpmn.executionlistener;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.ExecutionListener;
-import org.activiti.engine.delegate.Expression;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.ExecutionListener;
+import org.activiti5.engine.delegate.Expression;
 
 /**
  * Example {@link ExecutionListener} which gets 2 fields injected.

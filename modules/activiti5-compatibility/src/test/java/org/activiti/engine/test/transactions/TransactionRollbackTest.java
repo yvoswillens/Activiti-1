@@ -13,11 +13,11 @@
 
 package org.activiti.engine.test.transactions;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
-import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.pvm.delegate.ActivityBehavior;
+import org.activiti5.engine.impl.pvm.delegate.ActivityExecution;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

@@ -1,8 +1,8 @@
 
 package org.activiti.engine.test.api.task;
 
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
+import org.activiti5.engine.delegate.DelegateTask;
+import org.activiti5.engine.delegate.TaskListener;
 
 public class DeleteCandidateTaskListener implements TaskListener {
   public void notify(DelegateTask delegateTask) {

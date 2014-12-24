@@ -26,10 +26,10 @@ import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.util.CollectionUtil;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.util.CollectionUtil;
+import org.activiti5.engine.test.Deployment;
 import org.subethamail.wiser.WiserMessage;
 
 
@@ -55,7 +55,7 @@ public class EmailServiceTaskTest extends EmailTestCase {
   public void testSimpleTextMailWhenMultiTenant() throws Exception {
     String tenantId = "myEmailTenant";
 
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeployment()
+    org.activiti5.engine.repository.Deployment deployment = repositoryService.createDeployment()
     		.addClasspathResource("org/activiti/engine/test/bpmn/mail/EmailSendTaskTest.testSimpleTextMail.bpmn20.xml").tenantId(tenantId).deploy();
     String procId = runtimeService.startProcessInstanceByKeyAndTenantId("simpleTextOnly", tenantId).getId();
 
@@ -73,7 +73,7 @@ public class EmailServiceTaskTest extends EmailTestCase {
   public void testSimpleTextMailForNonExistentTenant() throws Exception {
     String tenantId = "nonExistentTenant";
 
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeployment().addClasspathResource("org/activiti/engine/test/bpmn/mail/EmailSendTaskTest.testSimpleTextMail.bpmn20.xml").tenantId(tenantId).deploy();
+    org.activiti5.engine.repository.Deployment deployment = repositoryService.createDeployment().addClasspathResource("org/activiti/engine/test/bpmn/mail/EmailSendTaskTest.testSimpleTextMail.bpmn20.xml").tenantId(tenantId).deploy();
     String procId = runtimeService.startProcessInstanceByKeyAndTenantId("simpleTextOnly", tenantId).getId();
     
     List<WiserMessage> messages = wiser.getMessages();

@@ -13,9 +13,9 @@
 
 package org.activiti.standalone.scripting;
 
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

@@ -18,14 +18,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.activiti.engine.impl.cmd.CancelJobsCmd;
-import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.impl.util.IoUtil;
-import org.activiti.engine.runtime.JobQuery;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.cmd.CancelJobsCmd;
+import org.activiti5.engine.impl.interceptor.CommandExecutor;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.util.IoUtil;
+import org.activiti5.engine.runtime.JobQuery;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.runtime.ProcessInstanceQuery;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * @author Joram Barrez

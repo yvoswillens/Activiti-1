@@ -14,9 +14,9 @@ package org.activiti.engine.test.jobexecutor;
 
 import java.util.Date;
 
-import org.activiti.engine.impl.persistence.entity.MessageEntity;
-import org.activiti.engine.impl.persistence.entity.TimerEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.persistence.entity.MessageEntity;
+import org.activiti5.engine.impl.persistence.entity.TimerEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
 
 /**
  * @author Tom Baeyens

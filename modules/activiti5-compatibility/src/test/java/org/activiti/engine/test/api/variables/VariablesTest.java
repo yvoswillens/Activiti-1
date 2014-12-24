@@ -6,11 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.JavaDelegate;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.task.Task;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.JavaDelegate;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.Deployment;
+import org.activiti5.engine.task.Task;
 
 
 /**
@@ -298,7 +298,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
 		
 	}
 	
-	@org.activiti.engine.test.Deployment
+	@org.activiti5.engine.test.Deployment
 	public void testGetVariableAllVariableFetchingDefault() {
 		
 		// Testing it the default way, all using getVariable("someVar");
@@ -317,7 +317,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
 		assertEquals("HELLO world", varValue);
 	}
 	
-	@org.activiti.engine.test.Deployment
+	@org.activiti5.engine.test.Deployment
 	public void testGetVariableAllVariableFetchingDisabled() {
 		
 	  Map<String, Object> vars = generateVariables();
@@ -331,7 +331,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
 		assertEquals("HELLO world!", varValue);
 	}
 	
-	@org.activiti.engine.test.Deployment
+	@org.activiti5.engine.test.Deployment
 	public void testGetVariableInDelegateMixed() {
 		
 	  Map<String, Object> vars = generateVariables();
@@ -344,7 +344,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
 		assertEquals("Hiya", (String) runtimeService.getVariable(processInstanceId, "testVar2"));
 	}
 	
-	@org.activiti.engine.test.Deployment
+	@org.activiti5.engine.test.Deployment
 	public void testGetVariableInDelegateMixed2() {
 		
 	  Map<String, Object> vars = generateVariables();
@@ -357,7 +357,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
 		assertEquals("1234", (String) runtimeService.getVariable(processInstanceId, "testVar"));
 	}
 	
-	@org.activiti.engine.test.Deployment
+	@org.activiti5.engine.test.Deployment
 	public void testGetVariableInDelegateMixed3() {
 		
 	  Map<String, Object> vars = generateVariables();

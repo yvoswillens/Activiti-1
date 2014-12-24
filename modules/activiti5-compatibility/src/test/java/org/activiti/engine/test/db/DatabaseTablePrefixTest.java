@@ -17,9 +17,9 @@ import java.sql.Connection;
 
 import junit.framework.TestCase;
 
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.util.ReflectUtil;
+import org.activiti5.engine.ProcessEngine;
+import org.activiti5.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti5.engine.impl.util.ReflectUtil;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 
 /**

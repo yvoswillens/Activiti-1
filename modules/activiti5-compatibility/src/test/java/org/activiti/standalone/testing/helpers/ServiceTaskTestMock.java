@@ -14,8 +14,8 @@ package org.activiti.standalone.testing.helpers;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.JavaDelegate;
 
 /**
  * @author Joram Barrez

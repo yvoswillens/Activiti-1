@@ -27,16 +27,16 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.test.AbstractActivitiTestCase;
-import org.activiti.engine.impl.variable.EntityManagerSession;
-import org.activiti.engine.impl.variable.EntityManagerSessionFactory;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.ProcessEngine;
+import org.activiti5.engine.ProcessEngineConfiguration;
+import org.activiti5.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti5.engine.impl.test.AbstractActivitiTestCase;
+import org.activiti5.engine.impl.variable.EntityManagerSession;
+import org.activiti5.engine.impl.variable.EntityManagerSessionFactory;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

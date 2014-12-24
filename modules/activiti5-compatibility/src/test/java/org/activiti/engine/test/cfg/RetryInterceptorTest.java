@@ -12,13 +12,13 @@
  */
 package org.activiti.engine.test.cfg;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiOptimisticLockingException;
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandConfig;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.interceptor.CommandInvoker;
-import org.activiti.engine.impl.interceptor.RetryInterceptor;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiOptimisticLockingException;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandConfig;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.interceptor.CommandInvoker;
+import org.activiti5.engine.impl.interceptor.RetryInterceptor;
 
 import junit.framework.TestCase;
 

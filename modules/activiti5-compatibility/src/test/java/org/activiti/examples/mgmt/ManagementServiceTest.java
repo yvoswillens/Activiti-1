@@ -15,9 +15,9 @@ package org.activiti.examples.mgmt;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.activiti.engine.ManagementService;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.management.TableMetaData;
+import org.activiti5.engine.ManagementService;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.management.TableMetaData;
 
 /**
  * Test case for the various operations of the {@link ManagementService}

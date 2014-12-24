@@ -13,8 +13,8 @@
 
 package org.activiti.engine.test.concurrency;
 
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandContext;
 
 /**
  * @author Tom Baeyens

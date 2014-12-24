@@ -13,12 +13,12 @@
 package org.activiti.standalone.validation;
 
 import org.activiti.bpmn.exceptions.XMLException;
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
-import org.activiti.engine.repository.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ProcessEngine;
+import org.activiti5.engine.ProcessEngines;
+import org.activiti5.engine.RepositoryService;
+import org.activiti5.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
+import org.activiti5.engine.repository.Deployment;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

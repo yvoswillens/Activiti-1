@@ -13,7 +13,7 @@
 
 package org.activiti.engine.test.bpmn.mail;
 
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
 import org.subethamail.wiser.Wiser;
 
 

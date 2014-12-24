@@ -13,9 +13,9 @@
 package org.activiti.standalone.parsing;
 
 import org.activiti.bpmn.model.ActivitiListener;
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.impl.bpmn.parser.factory.DefaultListenerFactory;
+import org.activiti5.engine.delegate.DelegateTask;
+import org.activiti5.engine.delegate.TaskListener;
+import org.activiti5.engine.impl.bpmn.parser.factory.DefaultListenerFactory;
 
 /**
  * @author Joram Barrez

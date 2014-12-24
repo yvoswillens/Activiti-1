@@ -18,16 +18,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.ActivitiObjectNotFoundException;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.Execution;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

@@ -15,15 +15,15 @@ package org.activiti.engine.test.history;
 
 import java.util.List;
 
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.history.HistoricActivityInstance;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.history.HistoricActivityInstance;
+import org.activiti5.engine.history.HistoricProcessInstance;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.Execution;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

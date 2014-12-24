@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.activiti.engine.impl.bpmn.deployer.BpmnDeployer;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti5.engine.impl.bpmn.deployer.BpmnDeployer;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.ProcessDefinition;
 
 /**
  * @author Tom Baeyens

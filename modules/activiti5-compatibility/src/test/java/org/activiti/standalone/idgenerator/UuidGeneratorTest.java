@@ -17,9 +17,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * @author Joram Barrez

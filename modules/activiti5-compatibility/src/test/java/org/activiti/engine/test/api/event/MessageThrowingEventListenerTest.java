@@ -12,14 +12,14 @@
  */
 package org.activiti.engine.test.api.event;
 
-import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.delegate.event.ActivitiEventListener;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.impl.bpmn.helper.MessageThrowingEventListener;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.delegate.event.ActivitiEvent;
+import org.activiti5.engine.delegate.event.ActivitiEventListener;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.impl.bpmn.helper.MessageThrowingEventListener;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * Test case for all {@link ActivitiEventListener}s that throw a message BPMN event when an {@link ActivitiEvent}

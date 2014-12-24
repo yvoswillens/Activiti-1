@@ -2,12 +2,12 @@ package org.activiti.standalone.cfg;
 
 import java.util.List;
 
-import org.activiti.engine.impl.ManagementServiceImpl;
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.task.Task;
+import org.activiti5.engine.impl.ManagementServiceImpl;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.interceptor.CommandExecutor;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.task.Task;
 
 /**
  * @author Bassam Al-Sarori

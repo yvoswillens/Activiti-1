@@ -13,11 +13,11 @@
 
 package org.activiti.standalone.el;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.javax.el.PropertyNotFoundException;
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.javax.el.PropertyNotFoundException;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

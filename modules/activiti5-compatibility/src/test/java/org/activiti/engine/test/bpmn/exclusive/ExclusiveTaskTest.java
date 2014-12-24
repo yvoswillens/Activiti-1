@@ -12,10 +12,10 @@
  */
 package org.activiti.engine.test.bpmn.exclusive;
 
-import org.activiti.engine.impl.persistence.entity.JobEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.Job;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.persistence.entity.JobEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.Job;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * 

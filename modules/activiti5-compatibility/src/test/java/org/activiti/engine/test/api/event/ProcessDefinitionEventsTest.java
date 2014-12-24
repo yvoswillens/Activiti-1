@@ -12,15 +12,15 @@
  */
 package org.activiti.engine.test.api.event;
 
-import org.activiti.engine.delegate.event.ActivitiEntityEvent;
-import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.persistence.entity.TimerEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.delegate.event.ActivitiEntityEvent;
+import org.activiti5.engine.delegate.event.ActivitiEvent;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.delegate.event.impl.ActivitiEventBuilder;
+import org.activiti5.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti5.engine.impl.persistence.entity.TimerEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.ProcessDefinition;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * Test case for all {@link ActivitiEvent}s related to process definitions.

@@ -17,9 +17,9 @@ import java.util.Map;
 
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.SequenceFlow;
-import org.activiti.engine.impl.bpmn.parser.BpmnParse;
-import org.activiti.engine.impl.bpmn.parser.handler.SequenceFlowParseHandler;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti5.engine.impl.bpmn.parser.BpmnParse;
+import org.activiti5.engine.impl.bpmn.parser.handler.SequenceFlowParseHandler;
+import org.activiti5.engine.impl.pvm.process.ActivityImpl;
 
 
 /**

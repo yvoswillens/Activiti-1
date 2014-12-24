@@ -12,9 +12,9 @@
  */
 package org.activiti.engine.test.api.repository;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * @author jbarrez

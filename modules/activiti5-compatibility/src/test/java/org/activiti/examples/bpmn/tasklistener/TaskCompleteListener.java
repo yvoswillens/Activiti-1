@@ -12,9 +12,9 @@
  */
 package org.activiti.examples.bpmn.tasklistener;
 
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.Expression;
-import org.activiti.engine.delegate.TaskListener;
+import org.activiti5.engine.delegate.DelegateTask;
+import org.activiti5.engine.delegate.Expression;
+import org.activiti5.engine.delegate.TaskListener;
 
 
 /**

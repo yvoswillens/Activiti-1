@@ -3,16 +3,16 @@ package org.activiti.engine.test.api.tenant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.history.HistoricActivityInstance;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.impl.util.CollectionUtil;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.Model;
-import org.activiti.engine.runtime.Job;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.history.HistoricActivityInstance;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.util.CollectionUtil;
+import org.activiti5.engine.repository.Deployment;
+import org.activiti5.engine.repository.Model;
+import org.activiti5.engine.runtime.Job;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
 import org.junit.Assert;
 
 /**

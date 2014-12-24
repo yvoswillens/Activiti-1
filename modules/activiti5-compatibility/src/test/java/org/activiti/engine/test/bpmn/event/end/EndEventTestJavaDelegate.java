@@ -12,8 +12,8 @@
  */
 package org.activiti.engine.test.bpmn.event.end;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.JavaDelegate;
 
 /**
  * @author Joram Barrez

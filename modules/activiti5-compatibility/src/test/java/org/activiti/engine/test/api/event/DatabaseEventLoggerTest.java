@@ -6,16 +6,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.event.EventLogEntry;
-import org.activiti.engine.impl.event.logger.EventLogger;
-import org.activiti.engine.impl.event.logger.handler.Fields;
-import org.activiti.engine.impl.identity.Authentication;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.impl.util.CollectionUtil;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.event.EventLogEntry;
+import org.activiti5.engine.impl.event.logger.EventLogger;
+import org.activiti5.engine.impl.event.logger.handler.Fields;
+import org.activiti5.engine.impl.identity.Authentication;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.util.CollectionUtil;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;

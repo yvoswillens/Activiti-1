@@ -12,8 +12,8 @@
  */
 package org.activiti.standalone.deploy;
 
-import org.activiti.engine.impl.persistence.deploy.DeploymentCache;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti5.engine.impl.persistence.deploy.DeploymentCache;
+import org.activiti5.engine.impl.persistence.entity.ProcessDefinitionEntity;
 
 /**
  * Very simplistic cache implementation that only caches one process definition.

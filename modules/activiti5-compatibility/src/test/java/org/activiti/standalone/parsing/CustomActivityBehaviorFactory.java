@@ -13,9 +13,9 @@
 package org.activiti.standalone.parsing;
 
 import org.activiti.bpmn.model.StartEvent;
-import org.activiti.engine.impl.bpmn.behavior.NoneStartEventActivityBehavior;
-import org.activiti.engine.impl.bpmn.parser.factory.DefaultActivityBehaviorFactory;
-import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
+import org.activiti5.engine.impl.bpmn.behavior.NoneStartEventActivityBehavior;
+import org.activiti5.engine.impl.bpmn.parser.factory.DefaultActivityBehaviorFactory;
+import org.activiti5.engine.impl.pvm.delegate.ActivityExecution;
 
 /**
  * @author Joram Barrez

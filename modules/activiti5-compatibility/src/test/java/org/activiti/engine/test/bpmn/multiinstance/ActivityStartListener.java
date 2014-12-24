@@ -13,8 +13,8 @@
 
 package org.activiti.engine.test.bpmn.multiinstance;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.ExecutionListener;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.ExecutionListener;
 
 
 /**

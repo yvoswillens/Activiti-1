@@ -12,11 +12,11 @@
  */
 package org.activiti.engine.test.api.event;
 
-import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.delegate.event.ActivitiEntityEvent;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.Model;
+import org.activiti5.engine.delegate.event.ActivitiEntityEvent;
+import org.activiti5.engine.delegate.event.ActivitiEvent;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.Model;
 
 /**
  * Test case for all {@link ActivitiEvent}s related to models.

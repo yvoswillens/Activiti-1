@@ -13,9 +13,9 @@
 
 package org.activiti.standalone.testing;
 
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.ActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.ActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 
 
 /**

@@ -17,19 +17,19 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import org.activiti.engine.delegate.event.*;
-import org.activiti.engine.delegate.event.impl.ActivitiActivityEventImpl;
-import org.activiti.engine.event.EventLogEntry;
-import org.activiti.engine.impl.event.logger.EventLogger;
-import org.activiti.engine.impl.persistence.entity.MessageEventSubscriptionEntity;
-import org.activiti.engine.impl.persistence.entity.SignalEventSubscriptionEntity;
-import org.activiti.engine.impl.persistence.entity.TimerEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.Job;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.delegate.event.*;
+import org.activiti5.engine.delegate.event.impl.ActivitiActivityEventImpl;
+import org.activiti5.engine.event.EventLogEntry;
+import org.activiti5.engine.impl.event.logger.EventLogger;
+import org.activiti5.engine.impl.persistence.entity.MessageEventSubscriptionEntity;
+import org.activiti5.engine.impl.persistence.entity.SignalEventSubscriptionEntity;
+import org.activiti5.engine.impl.persistence.entity.TimerEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.Execution;
+import org.activiti5.engine.runtime.Job;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * Test case for all {@link ActivitiEvent}s related to activities.

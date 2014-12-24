@@ -12,13 +12,13 @@
  */
 package org.activiti.engine.test.api.event;
 
-import org.activiti.engine.delegate.event.ActivitiEntityEvent;
-import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.delegate.event.ActivitiMembershipEvent;
-import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.delegate.event.ActivitiEntityEvent;
+import org.activiti5.engine.delegate.event.ActivitiEvent;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.delegate.event.ActivitiMembershipEvent;
+import org.activiti5.engine.identity.Group;
+import org.activiti5.engine.identity.User;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
 
 /**
  * Test case for all {@link ActivitiEvent}s related to groups.

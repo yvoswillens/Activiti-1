@@ -13,8 +13,8 @@
 
 package org.activiti.standalone.jta;
 
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngineLifecycleListener;
+import org.activiti5.engine.ProcessEngine;
+import org.activiti5.engine.ProcessEngineLifecycleListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

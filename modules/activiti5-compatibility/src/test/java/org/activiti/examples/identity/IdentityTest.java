@@ -17,9 +17,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.identity.Group;
+import org.activiti5.engine.identity.User;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
 
 /**
  * @author Tom Baeyens

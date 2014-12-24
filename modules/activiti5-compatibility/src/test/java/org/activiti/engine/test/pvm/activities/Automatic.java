@@ -15,9 +15,9 @@ package org.activiti.engine.test.pvm.activities;
 
 import java.util.List;
 
-import org.activiti.engine.impl.pvm.PvmTransition;
-import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
-import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
+import org.activiti5.engine.impl.pvm.PvmTransition;
+import org.activiti5.engine.impl.pvm.delegate.ActivityBehavior;
+import org.activiti5.engine.impl.pvm.delegate.ActivityExecution;
 
 
 /**

@@ -19,10 +19,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.impl.persistence.entity.JobEntityManager;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.interceptor.CommandExecutor;
+import org.activiti5.engine.impl.persistence.entity.JobEntityManager;
 
 /**
  * @author Tom Baeyens

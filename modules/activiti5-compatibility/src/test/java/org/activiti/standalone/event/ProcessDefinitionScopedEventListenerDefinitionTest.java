@@ -14,19 +14,19 @@ package org.activiti.standalone.event;
 
 import java.util.List;
 
-import org.activiti.engine.ActivitiClassLoadingException;
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.delegate.event.ActivitiEntityEvent;
-import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.delegate.event.ActivitiEventType;
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
 import org.activiti.engine.test.api.event.StaticTestActivitiEventListener;
 import org.activiti.engine.test.api.event.TestActivitiEventListener;
+import org.activiti5.engine.ActivitiClassLoadingException;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.delegate.event.ActivitiEntityEvent;
+import org.activiti5.engine.delegate.event.ActivitiEvent;
+import org.activiti5.engine.delegate.event.ActivitiEventType;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.repository.ProcessDefinition;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * Test for event-listeners that are registered on a process-definition scope,
@@ -129,7 +129,7 @@ public class ProcessDefinitionScopedEventListenerDefinitionTest extends Resource
 	public void testProcessDefinitionListenerDefinitionIllegalType() throws Exception {
 		// In case deployment doesn't fail, we delete the deployment in the finally block to
 		// ensure clean DB for subsequent tests
-		org.activiti.engine.repository.Deployment deployment = null;
+		org.activiti5.engine.repository.Deployment deployment = null;
 		try {
 			
 			deployment = repositoryService.createDeployment()

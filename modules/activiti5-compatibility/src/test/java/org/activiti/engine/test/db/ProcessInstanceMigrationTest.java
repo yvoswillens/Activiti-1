@@ -15,20 +15,20 @@ package org.activiti.engine.test.db;
 
 import java.util.List;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.impl.cmd.SetProcessDefinitionVersionCmd;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.ActivitiObjectNotFoundException;
+import org.activiti5.engine.history.HistoricProcessInstance;
+import org.activiti5.engine.impl.cmd.SetProcessDefinitionVersionCmd;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.interceptor.CommandExecutor;
+import org.activiti5.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.ProcessDefinition;
+import org.activiti5.engine.runtime.Execution;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.test.Deployment;
 
 
 /**
@@ -131,7 +131,7 @@ public class ProcessInstanceMigrationTest extends PluggableActivitiTestCase {
     assertNotNull(execution);
     
     // deploy new version of the process definition
-    org.activiti.engine.repository.Deployment deployment = repositoryService
+    org.activiti5.engine.repository.Deployment deployment = repositoryService
       .createDeployment()
       .addClasspathResource(TEST_PROCESS_ACTIVITY_MISSING)
       .deploy();
@@ -164,7 +164,7 @@ public class ProcessInstanceMigrationTest extends PluggableActivitiTestCase {
     assertNotNull(execution);
     
     // deploy new version of the process definition
-    org.activiti.engine.repository.Deployment deployment = repositoryService
+    org.activiti5.engine.repository.Deployment deployment = repositoryService
       .createDeployment()
       .addClasspathResource(TEST_PROCESS)
       .deploy();
@@ -210,7 +210,7 @@ public class ProcessInstanceMigrationTest extends PluggableActivitiTestCase {
     assertEquals(2, taskService.createTaskQuery().count());
     
     // deploy new version of the process definition
-    org.activiti.engine.repository.Deployment deployment = repositoryService
+    org.activiti5.engine.repository.Deployment deployment = repositoryService
       .createDeployment()
       .addClasspathResource(TEST_PROCESS_WITH_PARALLEL_GATEWAY)
       .deploy();
@@ -250,7 +250,7 @@ public class ProcessInstanceMigrationTest extends PluggableActivitiTestCase {
     assertNotNull(execution);
     
     // deploy new version of the process definition
-    org.activiti.engine.repository.Deployment deployment = repositoryService
+    org.activiti5.engine.repository.Deployment deployment = repositoryService
       .createDeployment()
       .addClasspathResource(TEST_PROCESS_CALL_ACTIVITY)
       .deploy();
@@ -280,7 +280,7 @@ public class ProcessInstanceMigrationTest extends PluggableActivitiTestCase {
     assertEquals(1, taskService.createTaskQuery().processInstanceId(pi.getId()).count());
     
     // deploy new version of the process definition
-    org.activiti.engine.repository.Deployment deployment = repositoryService
+    org.activiti5.engine.repository.Deployment deployment = repositoryService
       .createDeployment()
       .addClasspathResource(TEST_PROCESS_USER_TASK_V2)
       .deploy();
@@ -318,7 +318,7 @@ public class ProcessInstanceMigrationTest extends PluggableActivitiTestCase {
     assertEquals(2, taskService.createTaskQuery().count());
 
     // deploy new version of the process definition
-    org.activiti.engine.repository.Deployment deployment = repositoryService
+    org.activiti5.engine.repository.Deployment deployment = repositoryService
             .createDeployment()
             .addClasspathResource(TEST_PROCESS_NESTED_SUB_EXECUTIONS)
             .deploy();

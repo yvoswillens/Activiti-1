@@ -16,16 +16,16 @@ package org.activiti.engine.test.pvm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.activiti.engine.impl.pvm.ProcessDefinitionBuilder;
-import org.activiti.engine.impl.pvm.PvmExecution;
-import org.activiti.engine.impl.pvm.PvmProcessDefinition;
-import org.activiti.engine.impl.pvm.PvmProcessInstance;
-import org.activiti.engine.impl.pvm.runtime.ExecutionImpl;
-import org.activiti.engine.impl.test.PvmTestCase;
 import org.activiti.engine.test.pvm.activities.Automatic;
 import org.activiti.engine.test.pvm.activities.EmbeddedSubProcess;
 import org.activiti.engine.test.pvm.activities.EventScopeCreatingSubprocess;
 import org.activiti.engine.test.pvm.activities.WaitState;
+import org.activiti5.engine.impl.pvm.ProcessDefinitionBuilder;
+import org.activiti5.engine.impl.pvm.PvmExecution;
+import org.activiti5.engine.impl.pvm.PvmProcessDefinition;
+import org.activiti5.engine.impl.pvm.PvmProcessInstance;
+import org.activiti5.engine.impl.pvm.runtime.ExecutionImpl;
+import org.activiti5.engine.impl.test.PvmTestCase;
 
 
 /**

@@ -12,11 +12,11 @@
  */
 package org.activiti.engine.test.bpmn.servicetask;
 
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.JavaDelegate;
-import org.activiti.engine.identity.Group;
-import org.activiti.engine.identity.User;
+import org.activiti5.engine.IdentityService;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.JavaDelegate;
+import org.activiti5.engine.identity.Group;
+import org.activiti5.engine.identity.User;
 
 /**
  * @author Joram Barrez

@@ -1,7 +1,7 @@
 package org.activiti.engine.test.db;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.JavaDelegate;
 
 public class SetLocalVariableTask implements JavaDelegate {
 

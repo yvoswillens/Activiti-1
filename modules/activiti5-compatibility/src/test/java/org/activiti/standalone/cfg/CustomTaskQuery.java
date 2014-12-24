@@ -5,11 +5,11 @@ package org.activiti.standalone.cfg;
 
 import java.util.List;
 
-import org.activiti.engine.impl.Page;
-import org.activiti.engine.impl.TaskQueryImpl;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.task.Task;
+import org.activiti5.engine.impl.Page;
+import org.activiti5.engine.impl.TaskQueryImpl;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.interceptor.CommandExecutor;
+import org.activiti5.engine.task.Task;
 
 /**
  * @author Bassam Al-Sarori

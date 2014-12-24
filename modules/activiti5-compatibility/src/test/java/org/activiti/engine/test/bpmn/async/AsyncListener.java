@@ -12,8 +12,8 @@
  */
 package org.activiti.engine.test.bpmn.async;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.ExecutionListener;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.ExecutionListener;
 
 
 public class AsyncListener implements ExecutionListener {

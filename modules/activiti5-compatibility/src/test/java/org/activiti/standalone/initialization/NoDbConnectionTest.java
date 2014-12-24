@@ -14,8 +14,8 @@ package org.activiti.standalone.initialization;
 
 import java.sql.SQLException;
 
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.impl.test.PvmTestCase;
+import org.activiti5.engine.ProcessEngineConfiguration;
+import org.activiti5.engine.impl.test.PvmTestCase;
 
 /**
  * @author Tom Baeyens

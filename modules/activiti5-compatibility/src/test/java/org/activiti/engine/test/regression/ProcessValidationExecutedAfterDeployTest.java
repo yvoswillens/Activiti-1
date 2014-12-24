@@ -1,10 +1,10 @@
 package org.activiti.engine.test.regression;
 import java.util.List;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.validation.ProcessValidator;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.repository.ProcessDefinition;
  
 /**
  * From http://forums.activiti.org/content/skip-parse-validation-while-fetching-startformdata
@@ -71,7 +71,7 @@ public class ProcessValidationExecutedAfterDeployTest extends PluggableActivitiT
       fail("Error occurred in fetching process model.");
     }
     
-    for (org.activiti.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
+    for (org.activiti5.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
     	repositoryService.deleteDeployment(deployment.getId());
     }
   }
@@ -96,7 +96,7 @@ public class ProcessValidationExecutedAfterDeployTest extends PluggableActivitiT
       fail("Error occurred in fetching start form data:");
     }
     
-    for (org.activiti.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
+    for (org.activiti5.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
     	repositoryService.deleteDeployment(deployment.getId());
     }
   }

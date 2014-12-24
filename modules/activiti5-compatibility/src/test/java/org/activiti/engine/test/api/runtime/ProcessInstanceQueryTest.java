@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.Execution;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.runtime.ProcessInstanceQuery;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * @author Joram Barrez
@@ -46,7 +46,7 @@ public class ProcessInstanceQueryTest extends PluggableActivitiTestCase {
   private static String PROCESS_DEFINITION_NAME = "oneTaskProcessName";
   private static String PROCESS_DEFINITION_NAME_2 = "oneTaskProcess2Name";
   
-  private org.activiti.engine.repository.Deployment deployment;
+  private org.activiti5.engine.repository.Deployment deployment;
   private List<String> processInstanceIds;
 
   /**
@@ -68,7 +68,7 @@ public class ProcessInstanceQueryTest extends PluggableActivitiTestCase {
   }
 
   protected void tearDown() throws Exception {
-    for (org.activiti.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
+    for (org.activiti5.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
       repositoryService.deleteDeployment(deployment.getId(), true);
     }
     super.tearDown();

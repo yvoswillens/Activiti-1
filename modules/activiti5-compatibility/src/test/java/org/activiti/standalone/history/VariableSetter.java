@@ -16,10 +16,10 @@ package org.activiti.standalone.history;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.JavaDelegate;
-import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.test.history.SerializableVariable;
+import org.activiti5.engine.delegate.DelegateExecution;
+import org.activiti5.engine.delegate.JavaDelegate;
+import org.activiti5.engine.impl.context.Context;
 
 
 /**

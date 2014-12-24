@@ -13,10 +13,10 @@
 
 package org.activiti.engine.test.concurrency;
 
-import org.activiti.engine.ActivitiOptimisticLockingException;
-import org.activiti.engine.impl.cmd.AcquireTimerJobsCmd;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiOptimisticLockingException;
+import org.activiti5.engine.impl.cmd.AcquireTimerJobsCmd;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

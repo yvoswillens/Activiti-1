@@ -14,12 +14,12 @@ package org.activiti.engine.test.bpmn.async;
 
 import java.util.Date;
 
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.impl.persistence.entity.MessageEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.Job;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.context.Context;
+import org.activiti5.engine.impl.persistence.entity.MessageEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.Execution;
+import org.activiti5.engine.runtime.Job;
+import org.activiti5.engine.test.Deployment;
 import org.junit.Assert;
 
 /**

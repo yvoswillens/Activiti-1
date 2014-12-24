@@ -19,8 +19,8 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ExtensionElement;
 import org.activiti.bpmn.model.Message;
 import org.activiti.bpmn.model.MessageEventDefinition;
-import org.activiti.engine.impl.bpmn.parser.BpmnParse;
-import org.activiti.engine.impl.bpmn.parser.handler.MessageEventDefinitionParseHandler;
+import org.activiti5.engine.impl.bpmn.parser.BpmnParse;
+import org.activiti5.engine.impl.bpmn.parser.handler.MessageEventDefinitionParseHandler;
 import org.junit.Test;
 import org.mockito.Mockito;
 

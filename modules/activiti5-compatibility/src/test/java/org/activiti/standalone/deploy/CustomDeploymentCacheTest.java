@@ -14,8 +14,8 @@ package org.activiti.standalone.deploy;
 
 import java.text.MessageFormat;
 
-import org.activiti.engine.impl.test.ResourceActivitiTestCase;
-import org.activiti.engine.repository.Deployment;
+import org.activiti5.engine.impl.test.ResourceActivitiTestCase;
+import org.activiti5.engine.repository.Deployment;
 
 /**
  * @author Joram Barrez

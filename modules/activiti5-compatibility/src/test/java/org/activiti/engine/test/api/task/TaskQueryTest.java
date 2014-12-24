@@ -22,17 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.DelegationState;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.ActivitiIllegalArgumentException;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.persistence.entity.TaskEntity;
+import org.activiti5.engine.impl.persistence.entity.VariableInstanceEntity;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.runtime.ProcessInstance;
+import org.activiti5.engine.task.DelegationState;
+import org.activiti5.engine.task.Task;
+import org.activiti5.engine.task.TaskQuery;
+import org.activiti5.engine.test.Deployment;
 
 /**
  * @author Joram Barrez
@@ -2416,7 +2416,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
   public void testQueryByDeploymentId() throws Exception {
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
+    org.activiti5.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     assertNotNull(taskService.createTaskQuery().deploymentId(deployment.getId()).singleResult());
     assertEquals(1, taskService.createTaskQuery().deploymentId(deployment.getId()).count());
@@ -2426,7 +2426,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
   public void testQueryByDeploymentIdOr() throws Exception {
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
+    org.activiti5.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     assertNotNull(taskService.createTaskQuery()
         .or()
@@ -2445,7 +2445,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
   public void testQueryByDeploymentIdIn() throws Exception {
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
+    org.activiti5.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     List<String> deploymentIds = new ArrayList<String>();
     deploymentIds.add(deployment.getId());
@@ -2464,7 +2464,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
   public void testQueryByDeploymentIdInOr() throws Exception {
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
+    org.activiti5.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     List<String> deploymentIds = new ArrayList<String>();
     deploymentIds.add(deployment.getId());

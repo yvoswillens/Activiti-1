@@ -26,10 +26,10 @@ import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.history.HistoryLevel;
-import org.activiti.engine.impl.util.CollectionUtil;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.history.HistoryLevel;
+import org.activiti5.engine.impl.util.CollectionUtil;
+import org.activiti5.engine.test.Deployment;
 import org.subethamail.wiser.WiserMessage;
 
 

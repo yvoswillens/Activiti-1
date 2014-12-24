@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.test.Deployment;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;

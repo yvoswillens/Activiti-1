@@ -16,19 +16,19 @@ package org.activiti.engine.test.bpmn.deployment;
 import java.io.InputStream;
 import java.util.List;
 
-import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.RepositoryServiceImpl;
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
-import org.activiti.engine.impl.interceptor.CommandExecutor;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.ReadOnlyProcessDefinition;
-import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.activiti.engine.impl.util.IoUtil;
-import org.activiti.engine.impl.util.ReflectUtil;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.test.Deployment;
+import org.activiti5.engine.ActivitiException;
+import org.activiti5.engine.impl.RepositoryServiceImpl;
+import org.activiti5.engine.impl.context.Context;
+import org.activiti5.engine.impl.interceptor.Command;
+import org.activiti5.engine.impl.interceptor.CommandContext;
+import org.activiti5.engine.impl.interceptor.CommandExecutor;
+import org.activiti5.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti5.engine.impl.pvm.ReadOnlyProcessDefinition;
+import org.activiti5.engine.impl.test.PluggableActivitiTestCase;
+import org.activiti5.engine.impl.util.IoUtil;
+import org.activiti5.engine.impl.util.ReflectUtil;
+import org.activiti5.engine.repository.ProcessDefinition;
+import org.activiti5.engine.test.Deployment;
 
 
 /**
@@ -96,7 +96,7 @@ public class BpmnDeploymentTest extends PluggableActivitiTestCase {
     assertEquals(bpmnResourceName, deploymentResources.get(0));
     
     repositoryService.createDeployment().enableDuplicateFiltering().addClasspathResource(bpmnResourceName).name("twice").deploy();
-    List<org.activiti.engine.repository.Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
+    List<org.activiti5.engine.repository.Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
     assertEquals(1, deploymentList.size());
     
     repositoryService.deleteDeployment(deploymentId);
@@ -130,10 +130,10 @@ public class BpmnDeploymentTest extends PluggableActivitiTestCase {
     
     bpmnResourceName = "org/activiti/engine/test/bpmn/deployment/BpmnDeploymentTest.testProcessDiagramResource.bpmn20.xml";
     repositoryService.createDeployment().enableDuplicateFiltering().addClasspathResource(bpmnResourceName).name("twice").deploy();
-    List<org.activiti.engine.repository.Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
+    List<org.activiti5.engine.repository.Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
     assertEquals(2, deploymentList.size());
     
-    for (org.activiti.engine.repository.Deployment deployment : deploymentList) {
+    for (org.activiti5.engine.repository.Deployment deployment : deploymentList) {
       repositoryService.deleteDeployment(deployment.getId());
     }
   }
@@ -238,11 +238,11 @@ public class BpmnDeploymentTest extends PluggableActivitiTestCase {
     assertEquals(bpmnResourceName, deploymentResources.get(0));
     
     repositoryService.createDeployment().enableDuplicateFiltering().addClasspathResource(bpmnResourceName).name("twice").tenantId("Tenant_B").deploy();
-    List<org.activiti.engine.repository.Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
+    List<org.activiti5.engine.repository.Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
     //Now, we should have two deployment for same process file, one for each tenant
     assertEquals(2, deploymentList.size());
     
-    for(org.activiti.engine.repository.Deployment deployment: deploymentList) {
+    for(org.activiti5.engine.repository.Deployment deployment: deploymentList) {
     	repositoryService.deleteDeployment(deployment.getId());
     }
   }
