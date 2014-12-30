@@ -48,7 +48,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     this.taskDefinition = taskDefinition;
   }
 
-  public void execute(ActivityExecution execution) throws Exception {
+  public void execute(ActivityExecution execution) {
     TaskEntity task = TaskEntity.createAndInsert(execution);
     task.setExecution(execution);
     task.setTaskDefinition(taskDefinition);
@@ -141,7 +141,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     }
   }
 
-  public void signal(ActivityExecution execution, String signalName, Object signalData) throws Exception {
+  public void trigger(ActivityExecution execution, String signalName, Object signalData) throws Exception {
     if (!((ExecutionEntity) execution).getTasks().isEmpty())
       throw new ActivitiException("UserTask should not be signalled before complete");
     leave(execution);

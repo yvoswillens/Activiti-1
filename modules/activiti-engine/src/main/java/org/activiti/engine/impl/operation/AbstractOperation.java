@@ -10,14 +10,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.activiti.engine.impl.pvm.delegate;
-
+package org.activiti.engine.impl.operation;
 
 /**
- * @author Tom Baeyens
+ * @author Joram Barrez
  */
-public interface SignallableActivityBehavior extends ActivityBehavior {
+public abstract class AbstractOperation implements Runnable {
+	
+	protected Agenda agenda;
+	
+	public AbstractOperation() {
+		
+	}
+	
+	public AbstractOperation(Agenda agenda) {
+		this.agenda = agenda;
+	}
 
-  void signal(ActivityExecution execution, String signalEvent, Object signalData) throws Exception;
-  
+	public Agenda getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(Agenda agenda) {
+		this.agenda = agenda;
+	}
+
 }

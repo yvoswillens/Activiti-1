@@ -101,7 +101,7 @@ public abstract class CamelBehavior extends AbstractBpmnActivityBehavior impleme
     }
   }
   
-  public void execute(ActivityExecution execution) throws Exception {
+  public void execute(ActivityExecution execution) {
     setAppropriateCamelContext(execution);
     
     final ActivitiEndpoint endpoint = createEndpoint(execution);
@@ -136,13 +136,12 @@ public abstract class CamelBehavior extends AbstractBpmnActivityBehavior impleme
     return ex;
   }
   
-  protected boolean handleCamelException(Exchange exchange, ActivityExecution execution) throws Exception {
+  protected boolean handleCamelException(Exchange exchange, ActivityExecution execution) {
     Exception camelException = exchange.getException();
     boolean notHandledByCamel = exchange.isFailed() && camelException != null;
     if (notHandledByCamel) {
       if (camelException instanceof BpmnError) {
-        ErrorPropagation.propagateError((BpmnError) camelException,
-            execution);
+        ErrorPropagation.propagateError((BpmnError) camelException, execution);
         return true;
       } else {
         throw new ActivitiException("Unhandled exception on camel route", camelException);

@@ -30,7 +30,7 @@ public class TerminateEndEventTest extends PluggableActivitiTestCase {
 
   public static class CountDelegate implements JavaDelegate {
     
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution) {
       serviceTaskInvokedCount++;
 
       // leave only 3 out of n subprocesses
@@ -42,7 +42,7 @@ public class TerminateEndEventTest extends PluggableActivitiTestCase {
 
   public static class CountDelegate2 implements JavaDelegate {
     
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution) {
       serviceTaskInvokedCount2++;
     }
   }
