@@ -725,7 +725,7 @@ public class DbSqlSession implements Session {
     return updatedObjects;
   }
   
-  protected boolean isPersistentObjectDeleted(PersistentObject persistentObject) {
+  public boolean isPersistentObjectDeleted(PersistentObject persistentObject) {
     for (DeleteOperation deleteOperation : deleteOperations) {
       if (deleteOperation.sameIdentity(persistentObject)) {
         return true;
@@ -747,7 +747,7 @@ public class DbSqlSession implements Session {
     }
     return prunedList;
   }
-
+  
   protected void flushInserts() {
     for (PersistentObject insertedObject: insertedObjects) {
       String insertStatement = dbSqlSessionFactory.getInsertStatement(insertedObject);
