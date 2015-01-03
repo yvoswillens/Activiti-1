@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Tom Baeyens
+ * @author Joram Barrez
  */
 public class TimerEntity extends JobEntity {
 
@@ -46,6 +47,13 @@ public class TimerEntity extends JobEntity {
     repeat = timerDeclaration.getRepeat();
     retries = timerDeclaration.getRetries();
   }
+  
+	public TimerEntity(String jobHandlerType, String jobHandlerConfiguration, boolean isExclusive, int retries) {
+		this.jobHandlerType = jobHandlerType;
+		this.jobHandlerConfiguration = jobHandlerConfiguration;
+		this.isExclusive = isExclusive;
+		this.retries = retries;
+	}
 
   private TimerEntity(TimerEntity te) {
     jobHandlerConfiguration = te.jobHandlerConfiguration;
