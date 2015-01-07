@@ -15,6 +15,8 @@ package org.activiti.engine.impl.cmd;
 
 import java.util.Map;
 
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.Process;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.ActivitiObjectNotFoundException;
@@ -24,66 +26,76 @@ import org.activiti.engine.impl.persistence.deploy.DeploymentManager;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.MessageEventSubscriptionEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.util.cache.ProcessDefinitionCacheUtil;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 
-
 /**
- * @author Daniel Meyer
  * @author Joram Barrez
+ * @author Tijs Rademakers
  */
 public class StartProcessInstanceByMessageCmd implements Command<ProcessInstance> {
 
-  protected final String messageName;
-  protected final String businessKey;
-  protected final Map<String, Object> processVariables;
-  protected final String tenantId;
+    protected final String messageName;
+    protected final String businessKey;
+    protected final Map<String, Object> processVariables;
+    protected final String tenantId;
 
-  public StartProcessInstanceByMessageCmd(String messageName, String businessKey, Map<String, Object> processVariables, String tenantId) {
-    this.messageName = messageName;
-    this.businessKey = businessKey;
-    this.processVariables = processVariables;
-    this.tenantId = tenantId;
-  }
+    public StartProcessInstanceByMessageCmd(String messageName, String businessKey, Map<String, Object> processVariables, String tenantId) {
+        this.messageName = messageName;
+        this.businessKey = businessKey;
+        this.processVariables = processVariables;
+        this.tenantId = tenantId;
+    }
 
-  public ProcessInstance execute(CommandContext commandContext) {
-    
-    if (messageName == null) {
-      throw new ActivitiIllegalArgumentException("Cannot start process instance by message: message name is null");
-    }
-    
-    MessageEventSubscriptionEntity messageEventSubscription = commandContext.getEventSubscriptionEntityManager()
-          .findMessageStartEventSubscriptionByName(messageName, tenantId);
-    
-    if (messageEventSubscription == null) {
-      throw new ActivitiObjectNotFoundException("Cannot start process instance by message: no subscription to message with name '"+messageName+"' found.", MessageEventSubscriptionEntity.class);
-    }
-    
-    String processDefinitionId = messageEventSubscription.getConfiguration();
-    if (processDefinitionId == null) {
-      throw new ActivitiException("Cannot start process instance by message: subscription to message with name '"+messageName+"' is not a message start event.");
-    }
-        
-    DeploymentManager deploymentCache = commandContext
-            .getProcessEngineConfiguration()
-            .getDeploymentManager();
-          
-    ProcessDefinitionEntity processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
-    if (processDefinition == null) {
-      throw new ActivitiObjectNotFoundException("No process definition found for id '" + processDefinitionId + "'", ProcessDefinition.class);
-    }
-  
-    ActivityImpl startActivity = processDefinition.findActivity(messageEventSubscription.getActivityId());
-    ExecutionEntity processInstance = processDefinition.createProcessInstance(businessKey, startActivity);
+    public ProcessInstance execute(CommandContext commandContext) {
 
-    if (processVariables != null) {
-      processInstance.setVariables(processVariables);
+        if (messageName == null) {
+            throw new ActivitiIllegalArgumentException("Cannot start process instance by message: message name is null");
+        }
+
+        MessageEventSubscriptionEntity messageEventSubscription = commandContext.getEventSubscriptionEntityManager().findMessageStartEventSubscriptionByName(
+                messageName, tenantId);
+
+        if (messageEventSubscription == null) {
+            throw new ActivitiObjectNotFoundException("Cannot start process instance by message: no subscription to message with name '" + messageName
+                    + "' found.", MessageEventSubscriptionEntity.class);
+        }
+
+        String processDefinitionId = messageEventSubscription.getConfiguration();
+        if (processDefinitionId == null) {
+            throw new ActivitiException("Cannot start process instance by message: subscription to message with name '" + messageName
+                    + "' is not a message start event.");
+        }
+
+        DeploymentManager deploymentCache = commandContext.getProcessEngineConfiguration().getDeploymentManager();
+
+        ProcessDefinitionEntity processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
+        if (processDefinition == null) {
+            throw new ActivitiObjectNotFoundException("No process definition found for id '" + processDefinitionId + "'", ProcessDefinition.class);
+        }
+
+        Process process = ProcessDefinitionCacheUtil.getCachedProcess(processDefinition.getId());
+        if (process == null) {
+            throw new ActivitiException("Cannot start process instance. Process model " + processDefinition.getName() + " (id = " + processDefinition.getId()
+                    + ") could not be found");
+        }
+
+        FlowElement initialFlowElement = process.getFlowElement(messageEventSubscription.getActivityId());
+        if (initialFlowElement == null) {
+            throw new ActivitiException("No message element found in process definition " + processDefinition.getId() + " for activity id "
+                    + messageEventSubscription.getActivityId());
+        }
+
+        ExecutionEntity processInstance = processDefinition.createProcessInstance(businessKey, initialFlowElement);
+
+        if (processVariables != null) {
+            processInstance.setVariables(processVariables);
+        }
+
+        processInstance.start();
+
+        return processInstance;
     }
-    
-    processInstance.start();
-    
-    return processInstance;
-  }
 
 }
