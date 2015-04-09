@@ -71,8 +71,8 @@ import org.slf4j.LoggerFactory;
  * @author Saeid Mirzaei
  */
 
-public class ExecutionEntity extends VariableScopeImpl implements ActivityExecution, ExecutionListenerExecution, Execution, PvmExecution, ProcessInstance,
-        InterpretableExecution, PersistentObject, HasRevision {
+public class ExecutionEntity extends VariableScopeImpl implements ActivityExecution, ExecutionListenerExecution, Execution, PvmExecution,
+        ProcessInstance, InterpretableExecution, PersistentObject, HasRevision {
 
     private static final long serialVersionUID = 1L;
 
@@ -381,7 +381,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
         // indicating NO entities present
         cachedEntityState = 0;
 
-        List<TimerDeclarationImpl> timerDeclarations = (List<TimerDeclarationImpl>) scope.getProperty(BpmnParse.PROPERTYNAME_TIMER_DECLARATION);
+        List<TimerDeclarationImpl> timerDeclarations = (List<TimerDeclarationImpl>) scope
+                .getProperty(BpmnParse.PROPERTYNAME_TIMER_DECLARATION);
         if (timerDeclarations != null) {
             for (TimerDeclarationImpl timerDeclaration : timerDeclarations) {
                 TimerEntity timer = timerDeclaration.prepareTimerEntity(this);
@@ -448,18 +449,20 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
                     || ((activityBehavior instanceof MultiInstanceActivityBehavior) && ((MultiInstanceActivityBehavior) activityBehavior)
                             .getInnerActivityBehavior() instanceof UserTaskActivityBehavior);
 
-            if (!isUserTask && Context.getProcessEngineConfiguration() != null && Context.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
+            if (!isUserTask && Context.getProcessEngineConfiguration() != null
+                    && Context.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
                 Context.getProcessEngineConfiguration()
                         .getEventDispatcher()
                         .dispatchEvent(
-                                ActivitiEventBuilder.createSignalEvent(ActivitiEventType.ACTIVITY_SIGNALED, signalledActivityId, signalName, signalData,
-                                        this.id, this.processInstanceId, this.processDefinitionId));
+                                ActivitiEventBuilder.createSignalEvent(ActivitiEventType.ACTIVITY_SIGNALED, signalledActivityId,
+                                        signalName, signalData, this.id, this.processInstanceId, this.processDefinitionId));
             }
 
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
-            throw new PvmException("couldn't process signal '" + signalName + "' on activity '" + activity.getId() + "': " + e.getMessage(), e);
+            throw new PvmException(
+                    "couldn't process signal '" + signalName + "' on activity '" + activity.getId() + "': " + e.getMessage(), e);
         }
     }
 
@@ -539,7 +542,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
         fireActivityCompletedEvent();
 
         transitions = new ArrayList<PvmTransition>(transitions);
-        recyclableExecutions = (recyclableExecutions != null ? new ArrayList<ActivityExecution>(recyclableExecutions) : new ArrayList<ActivityExecution>());
+        recyclableExecutions = (recyclableExecutions != null ? new ArrayList<ActivityExecution>(recyclableExecutions)
+                : new ArrayList<ActivityExecution>());
 
         if (recyclableExecutions.size() > 1) {
             for (ActivityExecution recyclableExecution : recyclableExecutions) {
@@ -565,7 +569,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
             log.debug("active concurrent executions: {}", concurrentActiveExecutions);
         }
 
-        if ((transitions.size() == 1) && (concurrentActiveExecutions.isEmpty()) && allExecutionsInSameActivity(concurrentInActiveExecutions)) {
+        if ((transitions.size() == 1) && (concurrentActiveExecutions.isEmpty())
+                && allExecutionsInSameActivity(concurrentInActiveExecutions)) {
 
             List<ExecutionEntity> recyclableExecutionImpls = (List) recyclableExecutions;
             recyclableExecutions.remove(concurrentRoot);
@@ -600,7 +605,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
                 ExecutionEntity outgoingExecution = null;
                 if (recyclableExecutions.isEmpty()) {
                     outgoingExecution = concurrentRoot.createExecution();
-                    log.debug("new {} with parent {} created to take transition {}", outgoingExecution, outgoingExecution.getParent(), outgoingTransition);
+                    log.debug("new {} with parent {} created to take transition {}", outgoingExecution, outgoingExecution.getParent(),
+                            outgoingTransition);
                 } else {
                     outgoingExecution = (ExecutionEntity) recyclableExecutions.remove(0);
                     log.debug("recycled {} to take transition {}", outgoingExecution, outgoingTransition);
@@ -631,11 +637,12 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
             Context.getProcessEngineConfiguration()
                     .getEventDispatcher()
                     .dispatchEvent(
-                            ActivitiEventBuilder.createActivityEvent(ActivitiEventType.ACTIVITY_COMPLETED, getActivity() != null ? getActivity().getId()
-                                    : getActivityId(), getActivity() != null ? (String) getActivity().getProperties().get("name") : null, getId(),
-                                    getProcessInstanceId(), getProcessDefinitionId(), getActivity() != null ? (String) getActivity().getProperties()
-                                            .get("type") : null, getActivity() != null ? getActivity().getActivityBehavior().getClass().getCanonicalName()
-                                            : null));
+                            ActivitiEventBuilder.createActivityEvent(ActivitiEventType.ACTIVITY_COMPLETED,
+                                    getActivity() != null ? getActivity().getId() : getActivityId(),
+                                    getActivity() != null ? (String) getActivity().getProperties().get("name") : null, getId(),
+                                    getProcessInstanceId(), getProcessDefinitionId(), getActivity() != null ? (String) getActivity()
+                                            .getProperties().get("type") : null, getActivity() != null ? getActivity()
+                                            .getActivityBehavior().getClass().getCanonicalName() : null));
         }
     }
 
@@ -1108,7 +1115,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
             task.setExecution(this.replacedBy);
 
             // update the related local task variables
-            List<VariableInstanceEntity> variables = (List) commandContext.getVariableInstanceEntityManager().findVariableInstancesByTaskId(task.getId());
+            List<VariableInstanceEntity> variables = (List) commandContext.getVariableInstanceEntityManager()
+                    .findVariableInstancesByTaskId(task.getId());
 
             for (VariableInstanceEntity variable : variables) {
                 variable.setExecution(this.replacedBy);
@@ -1140,7 +1148,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
         }
 
         // update the related process variables
-        List<VariableInstanceEntity> variables = (List) commandContext.getVariableInstanceEntityManager().findVariableInstancesByExecutionId(id);
+        List<VariableInstanceEntity> variables = (List) commandContext.getVariableInstanceEntityManager()
+                .findVariableInstancesByExecutionId(id);
 
         for (VariableInstanceEntity variable : variables) {
             variable.setExecutionId(replacedBy.getId());
@@ -1200,8 +1209,9 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
             Context.getProcessEngineConfiguration()
                     .getEventDispatcher()
                     .dispatchEvent(
-                            ActivitiEventBuilder.createVariableEvent(ActivitiEventType.VARIABLE_CREATED, variableName, value, result.getType(),
-                                    result.getTaskId(), result.getExecutionId(), getProcessInstanceId(), getProcessDefinitionId()));
+                            ActivitiEventBuilder.createVariableEvent(ActivitiEventType.VARIABLE_CREATED, variableName, value,
+                                    result.getType(), result.getTaskId(), result.getExecutionId(), getProcessInstanceId(),
+                                    getProcessDefinitionId()));
         }
         return result;
     }
@@ -1216,8 +1226,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
                     .getEventDispatcher()
                     .dispatchEvent(
                             ActivitiEventBuilder.createVariableEvent(ActivitiEventType.VARIABLE_UPDATED, variableInstance.getName(), value,
-                                    variableInstance.getType(), variableInstance.getTaskId(), variableInstance.getExecutionId(), getProcessInstanceId(),
-                                    getProcessDefinitionId()));
+                                    variableInstance.getType(), variableInstance.getTaskId(), variableInstance.getExecutionId(),
+                                    getProcessInstanceId(), getProcessDefinitionId()));
         }
     }
 
@@ -1228,7 +1238,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
         if (commandContext == null) {
             throw new ActivitiException("lazy loading outside command context");
         }
-        VariableInstanceEntity variableInstance = commandContext.getVariableInstanceEntityManager().findVariableInstanceByExecutionAndName(id, variableName);
+        VariableInstanceEntity variableInstance = commandContext.getVariableInstanceEntityManager().findVariableInstanceByExecutionAndName(
+                id, variableName);
 
         return variableInstance;
     }
@@ -1476,7 +1487,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
         // null, we can't be sure there are no entries in it since
         // the list hasn't been initialized/queried yet.
         cachedEntityState = BitMaskUtil.setBit(cachedEntityState, TASKS_STATE_BIT, (tasks == null || !tasks.isEmpty()));
-        cachedEntityState = BitMaskUtil.setBit(cachedEntityState, EVENT_SUBSCRIPTIONS_STATE_BIT, (eventSubscriptions == null || !eventSubscriptions.isEmpty()));
+        cachedEntityState = BitMaskUtil.setBit(cachedEntityState, EVENT_SUBSCRIPTIONS_STATE_BIT,
+                (eventSubscriptions == null || !eventSubscriptions.isEmpty()));
         cachedEntityState = BitMaskUtil.setBit(cachedEntityState, JOBS_STATE_BIT, (jobs == null || !jobs.isEmpty()));
 
         return cachedEntityState;

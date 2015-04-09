@@ -39,40 +39,43 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ProcessInstanceDiagramResource extends BaseProcessInstanceResource {
-  
-  @Autowired
-  protected RepositoryService repositoryService;
-  
-  @Autowired
-  protected ProcessEngineConfiguration processEngineConfiguration;
-  
-  @RequestMapping(value="/runtime/process-instances/{processInstanceId}/diagram", method = RequestMethod.GET)
-  public @ResponseBody byte[] getProcessInstanceDiagram(@PathVariable String processInstanceId, HttpServletResponse response) {
-    ProcessInstance processInstance = getProcessInstanceFromRequest(processInstanceId);
-    
-    ProcessDefinitionEntity pde = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
-        .getDeployedProcessDefinition(processInstance.getProcessDefinitionId());
 
-    if (pde != null && pde.isGraphicalNotationDefined()) {
-      BpmnModel bpmnModel = repositoryService.getBpmnModel(pde.getId());
-      ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-      InputStream resource = diagramGenerator.generateDiagram(bpmnModel, "png", runtimeService.getActiveActivityIds(processInstance.getId()),
-          Collections.<String>emptyList(), processEngineConfiguration.getActivityFontName(), processEngineConfiguration.getLabelFontName(),
-          processEngineConfiguration.getClassLoader(), 1.0);
+    @Autowired
+    protected RepositoryService repositoryService;
 
-      try {
-        byte[] responseBytes = IOUtils.toByteArray(resource);
-        response.setContentType("image/png");
-        return responseBytes;
-        
-      } catch(Exception e) {
-        response.setContentType("application/json");
-        throw new ActivitiIllegalArgumentException("Error exporting diagram", e);
-      }
-      
-    } else {
-      response.setContentType("application/json");
-      throw new ActivitiIllegalArgumentException("Process instance with id '" + processInstance.getId() + "' has no graphical notation defined.");
+    @Autowired
+    protected ProcessEngineConfiguration processEngineConfiguration;
+
+    @RequestMapping(value = "/runtime/process-instances/{processInstanceId}/diagram", method = RequestMethod.GET)
+    public @ResponseBody
+    byte[] getProcessInstanceDiagram(@PathVariable String processInstanceId, HttpServletResponse response) {
+        ProcessInstance processInstance = getProcessInstanceFromRequest(processInstanceId);
+
+        ProcessDefinitionEntity pde = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
+                .getDeployedProcessDefinition(processInstance.getProcessDefinitionId());
+
+        if (pde != null && pde.isGraphicalNotationDefined()) {
+            BpmnModel bpmnModel = repositoryService.getBpmnModel(pde.getId());
+            ProcessDiagramGenerator diagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+            InputStream resource = diagramGenerator.generateDiagram(bpmnModel, "png",
+                    runtimeService.getActiveActivityIds(processInstance.getId()), Collections.<String> emptyList(),
+                    processEngineConfiguration.getActivityFontName(), processEngineConfiguration.getLabelFontName(),
+                    processEngineConfiguration.getClassLoader(), 1.0);
+
+            try {
+                byte[] responseBytes = IOUtils.toByteArray(resource);
+                response.setContentType("image/png");
+                return responseBytes;
+
+            } catch (Exception e) {
+                response.setContentType("application/json");
+                throw new ActivitiIllegalArgumentException("Error exporting diagram", e);
+            }
+
+        } else {
+            response.setContentType("application/json");
+            throw new ActivitiIllegalArgumentException("Process instance with id '" + processInstance.getId()
+                    + "' has no graphical notation defined.");
+        }
     }
-  }
 }

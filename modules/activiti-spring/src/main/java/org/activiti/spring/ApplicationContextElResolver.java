@@ -55,8 +55,8 @@ public class ApplicationContextElResolver extends ELResolver {
         if (base == null) {
             String key = (String) property;
             if (applicationContext.containsBean(key)) {
-                throw new ActivitiException("Cannot set value of '" + property +
-                        "', it resolves to a bean defined in the Spring application-context.");
+                throw new ActivitiException("Cannot set value of '" + property
+                        + "', it resolves to a bean defined in the Spring application-context.");
             }
         }
     }

@@ -46,7 +46,7 @@ public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior imp
             for (FlowElement subElement : subProcess.getFlowElements()) {
                 if (subElement instanceof StartEvent) {
                     StartEvent startEvent = (StartEvent) subElement;
-                    
+
                     // start none event
                     if (CollectionUtils.isEmpty(startEvent.getEventDefinitions())) {
                         startElement = startEvent;
@@ -55,11 +55,11 @@ public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior imp
                 }
             }
         }
-        
+
         if (startElement == null) {
             throw new ActivitiException("No initial activity found for subprocess " + subProcess.getId());
         }
-        
+
         ExecutionEntity subProcessExecution = ((ExecutionEntity) execution).createExecution();
 
         // initialize the template-defined data objects as variables
@@ -75,7 +75,7 @@ public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior imp
 
     public void lastExecutionEnded(ActivityExecution execution) {
         SubProcess subProcess = getSubProcessFromExecution(execution);
-        
+
         // remove the template-defined data object variables
         Map<String, Object> dataObjectVars = processDataObjects(subProcess.getDataObjects());
         if (dataObjectVars != null) {
@@ -84,7 +84,7 @@ public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior imp
 
         bpmnActivityBehavior.performDefaultOutgoingBehavior(execution);
     }
-    
+
     protected SubProcess getSubProcessFromExecution(ActivityExecution execution) {
         FlowElement flowElement = execution.getCurrentFlowElement();
         SubProcess subProcess = null;
@@ -96,10 +96,10 @@ public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior imp
         }
         return subProcess;
     }
-    
+
     protected Map<String, Object> processDataObjects(Collection<ValuedDataObject> dataObjects) {
         Map<String, Object> variablesMap = new HashMap<String, Object>();
-        // convert data objects to process variables  
+        // convert data objects to process variables
         if (dataObjects != null) {
             for (ValuedDataObject dataObject : dataObjects) {
                 variablesMap.put(dataObject.getName(), dataObject.getValue());

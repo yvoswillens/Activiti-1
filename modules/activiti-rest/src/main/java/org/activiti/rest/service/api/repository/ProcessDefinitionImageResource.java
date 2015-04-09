@@ -30,15 +30,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProcessDefinitionImageResource extends BaseProcessDefinitionResource {
 
-  @RequestMapping(value="/repository/process-definitions/{processDefinitionId}/image", method = RequestMethod.GET, produces="image/png")
-  public @ResponseBody byte[] getModelResource(@PathVariable String processDefinitionId) {
-    ProcessDefinition processDefinition = getProcessDefinitionFromRequest(processDefinitionId);
-    InputStream imageStream = repositoryService.getProcessDiagram(processDefinition.getId());
-    try {
-      return IOUtils.toByteArray(imageStream);
-    } catch(Exception e) {
-      throw new ActivitiException("Error reading image stream", e);
+    @RequestMapping(value = "/repository/process-definitions/{processDefinitionId}/image", method = RequestMethod.GET, produces = "image/png")
+    public @ResponseBody
+    byte[] getModelResource(@PathVariable String processDefinitionId) {
+        ProcessDefinition processDefinition = getProcessDefinitionFromRequest(processDefinitionId);
+        InputStream imageStream = repositoryService.getProcessDiagram(processDefinition.getId());
+        try {
+            return IOUtils.toByteArray(imageStream);
+        } catch (Exception e) {
+            throw new ActivitiException("Error reading image stream", e);
+        }
     }
-  }
-  
+
 }

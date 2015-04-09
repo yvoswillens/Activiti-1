@@ -24,90 +24,83 @@ import org.activiti5.engine.impl.pvm.process.ActivityImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * @author Tom Baeyens
  * @author Joram Barrez
  */
 public class TimerExecuteNestedActivityJobHandler implements JobHandler {
-  
-  private static Logger log = LoggerFactory.getLogger(TimerExecuteNestedActivityJobHandler.class);
-  
-  public static final String TYPE = "timer-transition";
 
-  public String getType() {
-    return TYPE;
-  }
-  
-  public void execute(JobEntity job, String configuration, ExecutionEntity execution, CommandContext commandContext) {
-    
-    ActivityImpl borderEventActivity = execution.getProcessDefinition().findActivity(configuration);
+    private static Logger log = LoggerFactory.getLogger(TimerExecuteNestedActivityJobHandler.class);
 
-    if (borderEventActivity == null) {
-      throw new ActivitiException("Error while firing timer: border event activity " + configuration + " not found");
+    public static final String TYPE = "timer-transition";
+
+    public String getType() {
+        return TYPE;
     }
 
-    try {
-      if (commandContext.getEventDispatcher().isEnabled()) {
+    public void execute(JobEntity job, String configuration, ExecutionEntity execution, CommandContext commandContext) {
+
+        ActivityImpl borderEventActivity = execution.getProcessDefinition().findActivity(configuration);
+
+        if (borderEventActivity == null) {
+            throw new ActivitiException("Error while firing timer: border event activity " + configuration + " not found");
+        }
+
+        try {
+            if (commandContext.getEventDispatcher().isEnabled()) {
+                commandContext.getEventDispatcher().dispatchEvent(
+                        ActivitiEventBuilder.createEntityEvent(ActivitiEventType.TIMER_FIRED, job));
+                dispatchActivityTimeoutIfNeeded(job, execution, commandContext);
+            }
+
+            borderEventActivity.getActivityBehavior().execute(execution);
+        } catch (RuntimeException e) {
+            log.error("exception during timer execution", e);
+            throw e;
+
+        } catch (Exception e) {
+            log.error("exception during timer execution", e);
+            throw new ActivitiException("exception during timer execution: " + e.getMessage(), e);
+        }
+    }
+
+    protected void dispatchActivityTimeoutIfNeeded(JobEntity timerEntity, ExecutionEntity execution, CommandContext commandContext) {
+        ActivityImpl boundaryEventActivity = execution.getProcessDefinition().findActivity(timerEntity.getJobHandlerConfiguration());
+        ActivityBehavior boundaryActivityBehavior = boundaryEventActivity.getActivityBehavior();
+        if (boundaryActivityBehavior instanceof BoundaryEventActivityBehavior) {
+            BoundaryEventActivityBehavior boundaryEventActivityBehavior = (BoundaryEventActivityBehavior) boundaryActivityBehavior;
+            if (boundaryEventActivityBehavior.isInterrupting()) {
+                dispatchExecutionTimeOut(timerEntity, execution, commandContext);
+            }
+        }
+    }
+
+    protected void dispatchExecutionTimeOut(JobEntity timerEntity, ExecutionEntity execution, CommandContext commandContext) {
+        // subprocesses
+        for (ExecutionEntity subExecution : execution.getExecutions()) {
+            dispatchExecutionTimeOut(timerEntity, subExecution, commandContext);
+        }
+
+        // call activities
+        ExecutionEntity subProcessInstance = commandContext.getExecutionEntityManager().findSubProcessInstanceBySuperExecutionId(
+                execution.getId());
+        if (subProcessInstance != null) {
+            dispatchExecutionTimeOut(timerEntity, subProcessInstance, commandContext);
+        }
+
+        // activity with timer boundary event
+        ActivityImpl activity = execution.getActivity();
+        if (activity != null && activity.getActivityBehavior() != null) {
+            dispatchActivityTimeOut(timerEntity, activity, execution, commandContext);
+        }
+    }
+
+    protected void dispatchActivityTimeOut(JobEntity timerEntity, ActivityImpl activity, ExecutionEntity execution,
+            CommandContext commandContext) {
         commandContext.getEventDispatcher().dispatchEvent(
-          ActivitiEventBuilder.createEntityEvent(ActivitiEventType.TIMER_FIRED, job));
-        dispatchActivityTimeoutIfNeeded(job, execution, commandContext);
-      }
-
-      borderEventActivity
-        .getActivityBehavior()
-        .execute(execution);
-    } catch (RuntimeException e) {
-      log.error("exception during timer execution", e);
-      throw e;
-      
-    } catch (Exception e) {
-      log.error("exception during timer execution", e);
-      throw new ActivitiException("exception during timer execution: "+e.getMessage(), e);
+                ActivitiEventBuilder.createActivityCancelledEvent(activity.getId(), (String) activity.getProperties().get("name"),
+                        execution.getId(), execution.getProcessInstanceId(), execution.getProcessDefinitionId(), (String) activity
+                                .getProperties().get("type"), activity.getActivityBehavior().getClass().getCanonicalName(), timerEntity));
     }
-  }
-
-  protected void dispatchActivityTimeoutIfNeeded(JobEntity timerEntity, ExecutionEntity execution, CommandContext commandContext) {
-    ActivityImpl boundaryEventActivity = execution.getProcessDefinition().findActivity(timerEntity.getJobHandlerConfiguration());
-    ActivityBehavior boundaryActivityBehavior = boundaryEventActivity.getActivityBehavior();
-    if (boundaryActivityBehavior instanceof BoundaryEventActivityBehavior) {
-      BoundaryEventActivityBehavior boundaryEventActivityBehavior = (BoundaryEventActivityBehavior) boundaryActivityBehavior;
-      if (boundaryEventActivityBehavior.isInterrupting()) {
-        dispatchExecutionTimeOut(timerEntity, execution, commandContext);
-      }
-    }
-  }
-
-  protected void dispatchExecutionTimeOut(JobEntity timerEntity, ExecutionEntity execution, CommandContext commandContext) {
-    // subprocesses
-    for (ExecutionEntity subExecution : execution.getExecutions()) {
-      dispatchExecutionTimeOut(timerEntity, subExecution, commandContext);
-    }
-
-    // call activities
-    ExecutionEntity subProcessInstance = commandContext.getExecutionEntityManager().findSubProcessInstanceBySuperExecutionId(execution.getId());
-    if (subProcessInstance != null) {
-      dispatchExecutionTimeOut(timerEntity, subProcessInstance, commandContext);
-    }
-
-    // activity with timer boundary event
-    ActivityImpl activity = execution.getActivity();
-    if (activity != null && activity.getActivityBehavior() != null) {
-      dispatchActivityTimeOut(timerEntity, activity, execution, commandContext);
-    }
-  }
-
-  protected void dispatchActivityTimeOut(JobEntity timerEntity, ActivityImpl activity, ExecutionEntity execution, CommandContext commandContext) {
-    commandContext.getEventDispatcher().dispatchEvent(
-      ActivitiEventBuilder.createActivityCancelledEvent(activity.getId(),
-        (String) activity.getProperties().get("name"),
-        execution.getId(),
-        execution.getProcessInstanceId(), execution.getProcessDefinitionId(),
-        (String) activity.getProperties().get("type"),
-        activity.getActivityBehavior().getClass().getCanonicalName(),
-        timerEntity
-        )
-    );
-  }
 
 }

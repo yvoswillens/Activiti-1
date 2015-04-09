@@ -64,17 +64,16 @@ public abstract class BaseBpmnXMLConverter implements BpmnXMLConstants {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BaseBpmnXMLConverter.class);
 
-    protected static final List<ExtensionAttribute> defaultElementAttributes = Arrays.asList(
-            new ExtensionAttribute(ATTRIBUTE_ID), new ExtensionAttribute(ATTRIBUTE_NAME));
+    protected static final List<ExtensionAttribute> defaultElementAttributes = Arrays.asList(new ExtensionAttribute(ATTRIBUTE_ID),
+            new ExtensionAttribute(ATTRIBUTE_NAME));
 
-    protected static final List<ExtensionAttribute> defaultActivityAttributes = Arrays.asList(
-            new ExtensionAttribute(ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_ACTIVITY_ASYNCHRONOUS), 
-            new ExtensionAttribute(ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_ACTIVITY_EXCLUSIVE), 
-            new ExtensionAttribute(ATTRIBUTE_DEFAULT), 
-            new ExtensionAttribute(ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_ACTIVITY_ISFORCOMPENSATION));
+    protected static final List<ExtensionAttribute> defaultActivityAttributes = Arrays.asList(new ExtensionAttribute(
+            ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_ACTIVITY_ASYNCHRONOUS), new ExtensionAttribute(ACTIVITI_EXTENSIONS_NAMESPACE,
+            ATTRIBUTE_ACTIVITY_EXCLUSIVE), new ExtensionAttribute(ATTRIBUTE_DEFAULT), new ExtensionAttribute(ACTIVITI_EXTENSIONS_NAMESPACE,
+            ATTRIBUTE_ACTIVITY_ISFORCOMPENSATION));
 
-    public void convertToBpmnModel(XMLStreamReader xtr, BpmnModel model, Process activeProcess, 
-            List<SubProcess> activeSubProcessList) throws Exception {
+    public void convertToBpmnModel(XMLStreamReader xtr, BpmnModel model, Process activeProcess, List<SubProcess> activeSubProcessList)
+            throws Exception {
 
         String elementId = xtr.getAttributeValue(null, ATTRIBUTE_ID);
         String elementName = xtr.getAttributeValue(null, ATTRIBUTE_NAME);

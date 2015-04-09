@@ -25,7 +25,7 @@ import java.util.zip.ZipInputStream;
  * Default implementation of {@link AutoDeploymentStrategy} that groups all
  * {@link Resource}s into a single deployment. This implementation is equivalent
  * to the previously used implementation.
- *
+ * 
  * @author Tiese Barrell
  */
 public class DefaultAutoDeploymentStrategy extends AbstractAutoDeploymentStrategy {
@@ -43,9 +43,11 @@ public class DefaultAutoDeploymentStrategy extends AbstractAutoDeploymentStrateg
     @Override
     public void deployResources(final String deploymentNameHint, final Resource[] resources, final RepositoryService repositoryService) {
 
-        // Create a single deployment for all resources using the name hint as the
+        // Create a single deployment for all resources using the name hint as
+        // the
         // literal name
-        final DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().enableDuplicateFiltering().name(deploymentNameHint);
+        final DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().enableDuplicateFiltering()
+                .name(deploymentNameHint);
 
         for (final Resource resource : resources) {
             final String resourceName = determineResourceName(resource);

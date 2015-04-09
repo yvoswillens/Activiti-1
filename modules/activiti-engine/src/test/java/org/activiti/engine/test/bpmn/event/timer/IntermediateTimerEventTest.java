@@ -23,84 +23,85 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class IntermediateTimerEventTest extends PluggableActivitiTestCase {
 
-  @Deployment
-  public void testCatchingTimerEvent() throws Exception {
+    @Deployment
+    public void testCatchingTimerEvent() throws Exception {
 
-    // Set the clock fixed
-    Date startTime = new Date();
+        // Set the clock fixed
+        Date startTime = new Date();
 
-    // After process start, there should be timer created
-    ProcessInstance pi = runtimeService.startProcessInstanceByKey("intermediateTimerEventExample");
-    JobQuery jobQuery = managementService.createJobQuery().processInstanceId(pi.getId());
-    assertEquals(1, jobQuery.count());
+        // After process start, there should be timer created
+        ProcessInstance pi = runtimeService.startProcessInstanceByKey("intermediateTimerEventExample");
+        JobQuery jobQuery = managementService.createJobQuery().processInstanceId(pi.getId());
+        assertEquals(1, jobQuery.count());
 
-    // After setting the clock to time '50minutes and 5 seconds', the second timer should fire
-    processEngineConfiguration.getClock().setCurrentTime(new Date(startTime.getTime() + ((50 * 60 * 1000) + 5000)));
-    waitForJobExecutorToProcessAllJobs(5000L, 25L);
+        // After setting the clock to time '50minutes and 5 seconds', the second
+        // timer should fire
+        processEngineConfiguration.getClock().setCurrentTime(new Date(startTime.getTime() + ((50 * 60 * 1000) + 5000)));
+        waitForJobExecutorToProcessAllJobs(5000L, 25L);
 
-    assertEquals(0, jobQuery.count());
-    assertProcessEnded(pi.getProcessInstanceId());
+        assertEquals(0, jobQuery.count());
+        assertProcessEnded(pi.getProcessInstanceId());
 
-
-  }
-
-  @Deployment 
-  public void testExpression() {
-    // Set the clock fixed
-    HashMap<String, Object> variables1 = new HashMap<String, Object>();
-    variables1.put("dueDate", new Date());
-    
-    HashMap<String, Object> variables2 = new HashMap<String, Object>();
-    variables2.put("dueDate", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()));
-    
-    // After process start, there should be timer created    
-    ProcessInstance pi1 = runtimeService.startProcessInstanceByKey("intermediateTimerEventExample", variables1);
-    ProcessInstance pi2 = runtimeService.startProcessInstanceByKey("intermediateTimerEventExample", variables2);
-    
-    assertEquals(1, managementService.createJobQuery().processInstanceId(pi1.getId()).count());
-    assertEquals(1, managementService.createJobQuery().processInstanceId(pi2.getId()).count());
-
-    // After setting the clock to one second in the future the timers should fire
-    List<Job> jobs = managementService.createJobQuery().executable().list();
-    assertEquals(2, jobs.size());
-    for (Job job : jobs) {
-      managementService.executeJob(job.getId());
     }
-    
-    assertEquals(0, managementService.createJobQuery().processInstanceId(pi1.getId()).count());
-    assertEquals(0, managementService.createJobQuery().processInstanceId(pi2.getId()).count());
 
-    assertProcessEnded(pi1.getProcessInstanceId());
-    assertProcessEnded(pi2.getProcessInstanceId());    
-  }
-  
-  @Deployment
-  public void testLoop() {
-  	ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testLoop");
-  	
-  	// After looping 3 times, the process should end
-  	for (int i=0; i<3; i++) {
-  		Job timer = managementService.createJobQuery().singleResult();
-  		managementService.executeJob(timer.getId());
-  	}
-  	
-  	assertProcessEnded(processInstance.getId());
-  }
-  
-  @Deployment
-  public void testLoopWithCycle() {
-  	ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testLoop");
-  	
-  	// After looping 3 times, the process should end. Cycle should NOT repeat itself
-  	for (int i=0; i<3; i++) {
-  		Job timer = managementService.createJobQuery().singleResult();
-  		managementService.executeJob(timer.getId());
-  	}
-  	
-  	assertProcessEnded(processInstance.getId());
-  }
+    @Deployment
+    public void testExpression() {
+        // Set the clock fixed
+        HashMap<String, Object> variables1 = new HashMap<String, Object>();
+        variables1.put("dueDate", new Date());
+
+        HashMap<String, Object> variables2 = new HashMap<String, Object>();
+        variables2.put("dueDate", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()));
+
+        // After process start, there should be timer created
+        ProcessInstance pi1 = runtimeService.startProcessInstanceByKey("intermediateTimerEventExample", variables1);
+        ProcessInstance pi2 = runtimeService.startProcessInstanceByKey("intermediateTimerEventExample", variables2);
+
+        assertEquals(1, managementService.createJobQuery().processInstanceId(pi1.getId()).count());
+        assertEquals(1, managementService.createJobQuery().processInstanceId(pi2.getId()).count());
+
+        // After setting the clock to one second in the future the timers should
+        // fire
+        List<Job> jobs = managementService.createJobQuery().executable().list();
+        assertEquals(2, jobs.size());
+        for (Job job : jobs) {
+            managementService.executeJob(job.getId());
+        }
+
+        assertEquals(0, managementService.createJobQuery().processInstanceId(pi1.getId()).count());
+        assertEquals(0, managementService.createJobQuery().processInstanceId(pi2.getId()).count());
+
+        assertProcessEnded(pi1.getProcessInstanceId());
+        assertProcessEnded(pi2.getProcessInstanceId());
+    }
+
+    @Deployment
+    public void testLoop() {
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testLoop");
+
+        // After looping 3 times, the process should end
+        for (int i = 0; i < 3; i++) {
+            Job timer = managementService.createJobQuery().singleResult();
+            managementService.executeJob(timer.getId());
+        }
+
+        assertProcessEnded(processInstance.getId());
+    }
+
+    @Deployment
+    public void testLoopWithCycle() {
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testLoop");
+
+        // After looping 3 times, the process should end. Cycle should NOT
+        // repeat itself
+        for (int i = 0; i < 3; i++) {
+            Job timer = managementService.createJobQuery().singleResult();
+            managementService.executeJob(timer.getId());
+        }
+
+        assertProcessEnded(processInstance.getId());
+    }
 
 }

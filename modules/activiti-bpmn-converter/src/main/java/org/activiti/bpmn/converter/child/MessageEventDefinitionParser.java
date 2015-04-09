@@ -26,32 +26,33 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class MessageEventDefinitionParser extends BaseChildElementParser {
 
-  public String getElementName() {
-    return ELEMENT_EVENT_MESSAGEDEFINITION;
-  }
-  
-  public void parseChildElement(XMLStreamReader xtr, BaseElement parentElement, BpmnModel model) throws Exception {
-    if (parentElement instanceof Event == false) return;
-    
-    MessageEventDefinition eventDefinition = new MessageEventDefinition();
-    BpmnXMLUtil.addXMLLocation(eventDefinition, xtr);
-    eventDefinition.setMessageRef(xtr.getAttributeValue(null, ATTRIBUTE_MESSAGE_REF));
-    
-    if(!StringUtils.isEmpty(eventDefinition.getMessageRef())) {
-      
-      int indexOfP = eventDefinition.getMessageRef().indexOf(':');
-      if (indexOfP != -1) {
-        String prefix = eventDefinition.getMessageRef().substring(0, indexOfP);
-        String resolvedNamespace = model.getNamespace(prefix);
-        eventDefinition.setMessageRef(resolvedNamespace + ":" + eventDefinition.getMessageRef().substring(indexOfP + 1));
-      } else {
-        eventDefinition.setMessageRef(model.getTargetNamespace() + ":" + eventDefinition.getMessageRef());
-      }
-     
+    public String getElementName() {
+        return ELEMENT_EVENT_MESSAGEDEFINITION;
     }
-    
-    BpmnXMLUtil.parseChildElements(ELEMENT_EVENT_MESSAGEDEFINITION, eventDefinition, xtr, model);
-    
-    ((Event) parentElement).getEventDefinitions().add(eventDefinition);
-  }
+
+    public void parseChildElement(XMLStreamReader xtr, BaseElement parentElement, BpmnModel model) throws Exception {
+        if (parentElement instanceof Event == false)
+            return;
+
+        MessageEventDefinition eventDefinition = new MessageEventDefinition();
+        BpmnXMLUtil.addXMLLocation(eventDefinition, xtr);
+        eventDefinition.setMessageRef(xtr.getAttributeValue(null, ATTRIBUTE_MESSAGE_REF));
+
+        if (!StringUtils.isEmpty(eventDefinition.getMessageRef())) {
+
+            int indexOfP = eventDefinition.getMessageRef().indexOf(':');
+            if (indexOfP != -1) {
+                String prefix = eventDefinition.getMessageRef().substring(0, indexOfP);
+                String resolvedNamespace = model.getNamespace(prefix);
+                eventDefinition.setMessageRef(resolvedNamespace + ":" + eventDefinition.getMessageRef().substring(indexOfP + 1));
+            } else {
+                eventDefinition.setMessageRef(model.getTargetNamespace() + ":" + eventDefinition.getMessageRef());
+            }
+
+        }
+
+        BpmnXMLUtil.parseChildElements(ELEMENT_EVENT_MESSAGEDEFINITION, eventDefinition, xtr, model);
+
+        ((Event) parentElement).getEventDefinitions().add(eventDefinition);
+    }
 }

@@ -39,60 +39,61 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @RestController
 public class UserPictureResource extends BaseUserResource {
 
-  @RequestMapping(value="/identity/users/{userId}/picture", method = RequestMethod.GET, produces = "application/json")
-  public @ResponseBody byte[] getUserPicture(@PathVariable String userId, HttpServletRequest request, HttpServletResponse response) {
-    User user = getUserFromRequest(userId);
-    Picture userPicture = identityService.getUserPicture(user.getId());
-    
-    if (userPicture == null) {
-      throw new ActivitiObjectNotFoundException("The user with id '" + user.getId() + "' does not have a picture.", Picture.class);
+    @RequestMapping(value = "/identity/users/{userId}/picture", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    byte[] getUserPicture(@PathVariable String userId, HttpServletRequest request, HttpServletResponse response) {
+        User user = getUserFromRequest(userId);
+        Picture userPicture = identityService.getUserPicture(user.getId());
+
+        if (userPicture == null) {
+            throw new ActivitiObjectNotFoundException("The user with id '" + user.getId() + "' does not have a picture.", Picture.class);
+        }
+
+        String mediaType = "image/jpeg";
+        if (userPicture.getMimeType() != null) {
+            mediaType = userPicture.getMimeType();
+        }
+
+        response.setContentType(mediaType);
+
+        try {
+            return IOUtils.toByteArray(userPicture.getInputStream());
+        } catch (Exception e) {
+            throw new ActivitiException("Error exporting picture: " + e.getMessage(), e);
+        }
     }
-    
-    String mediaType = "image/jpeg";
-    if (userPicture.getMimeType() != null) {
-      mediaType = userPicture.getMimeType();
+
+    @RequestMapping(value = "/identity/users/{userId}/picture", method = RequestMethod.PUT)
+    public void updateUserPicture(@PathVariable String userId, HttpServletRequest request, HttpServletResponse response) {
+        User user = getUserFromRequest(userId);
+
+        if (request instanceof MultipartHttpServletRequest == false) {
+            throw new ActivitiIllegalArgumentException("Multipart request is required");
+        }
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+
+        if (multipartRequest.getFileMap().size() == 0) {
+            throw new ActivitiIllegalArgumentException("Multipart request with file content is required");
+        }
+
+        MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
+
+        try {
+            String mimeType = file.getContentType();
+            int size = ((Long) file.getSize()).intValue();
+
+            // Copy file-body in a bytearray as the engine requires this
+            ByteArrayOutputStream bytesOutput = new ByteArrayOutputStream(size);
+            IOUtils.copy(file.getInputStream(), bytesOutput);
+
+            Picture newPicture = new Picture(bytesOutput.toByteArray(), mimeType);
+            identityService.setUserPicture(user.getId(), newPicture);
+
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+
+        } catch (Exception e) {
+            throw new ActivitiException("Error while reading uploaded file: " + e.getMessage(), e);
+        }
     }
-    
-    response.setContentType(mediaType);
-    
-    try {
-      return IOUtils.toByteArray(userPicture.getInputStream());
-    } catch (Exception e) {
-      throw new ActivitiException("Error exporting picture: " + e.getMessage(), e);
-    }
-  }
-  
-  @RequestMapping(value="/identity/users/{userId}/picture", method = RequestMethod.PUT)
-  public void updateUserPicture(@PathVariable String userId, HttpServletRequest request, HttpServletResponse response) {
-    User user = getUserFromRequest(userId);
-    
-    if (request instanceof MultipartHttpServletRequest == false) {
-      throw new ActivitiIllegalArgumentException("Multipart request is required");
-    }
-    
-    MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-    
-    if (multipartRequest.getFileMap().size() == 0) {
-      throw new ActivitiIllegalArgumentException("Multipart request with file content is required");
-    }
-    
-    MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
-    
-    try {
-      String mimeType = file.getContentType();
-      int size = ((Long) file.getSize()).intValue();
-      
-      // Copy file-body in a bytearray as the engine requires this
-      ByteArrayOutputStream bytesOutput = new ByteArrayOutputStream(size);
-      IOUtils.copy(file.getInputStream(), bytesOutput);
-      
-      Picture newPicture = new Picture(bytesOutput.toByteArray(), mimeType);
-      identityService.setUserPicture(user.getId(), newPicture);
-      
-      response.setStatus(HttpStatus.NO_CONTENT.value());
-      
-    } catch (Exception e) {
-      throw new ActivitiException("Error while reading uploaded file: " + e.getMessage(), e);
-    }
-  }
 }

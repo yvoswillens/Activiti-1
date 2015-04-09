@@ -9,12 +9,12 @@ import java.util.Date;
  */
 public abstract class BusinessCalendarImpl implements BusinessCalendar {
 
-  protected ClockReader clockReader;
+    protected ClockReader clockReader;
 
-  public BusinessCalendarImpl(ClockReader clockReader) {
-    this.clockReader = clockReader;
-  }
+    public BusinessCalendarImpl(ClockReader clockReader) {
+        this.clockReader = clockReader;
+    }
 
-  @Override
-  public abstract Date resolveDuedate(String duedateDescription);
+    @Override
+    public abstract Date resolveDuedate(String duedateDescription);
 }

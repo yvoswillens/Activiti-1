@@ -54,12 +54,12 @@ public class StartProcessInstanceByMessageCmd implements Command<ProcessInstance
             throw new ActivitiIllegalArgumentException("Cannot start process instance by message: message name is null");
         }
 
-        MessageEventSubscriptionEntity messageEventSubscription = commandContext.getEventSubscriptionEntityManager().findMessageStartEventSubscriptionByName(
-                messageName, tenantId);
+        MessageEventSubscriptionEntity messageEventSubscription = commandContext.getEventSubscriptionEntityManager()
+                .findMessageStartEventSubscriptionByName(messageName, tenantId);
 
         if (messageEventSubscription == null) {
-            throw new ActivitiObjectNotFoundException("Cannot start process instance by message: no subscription to message with name '" + messageName
-                    + "' found.", MessageEventSubscriptionEntity.class);
+            throw new ActivitiObjectNotFoundException("Cannot start process instance by message: no subscription to message with name '"
+                    + messageName + "' found.", MessageEventSubscriptionEntity.class);
         }
 
         String processDefinitionId = messageEventSubscription.getConfiguration();
@@ -72,13 +72,14 @@ public class StartProcessInstanceByMessageCmd implements Command<ProcessInstance
 
         ProcessDefinitionEntity processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
         if (processDefinition == null) {
-            throw new ActivitiObjectNotFoundException("No process definition found for id '" + processDefinitionId + "'", ProcessDefinition.class);
+            throw new ActivitiObjectNotFoundException("No process definition found for id '" + processDefinitionId + "'",
+                    ProcessDefinition.class);
         }
 
         Process process = ProcessDefinitionCacheUtil.getCachedProcess(processDefinition.getId());
         if (process == null) {
-            throw new ActivitiException("Cannot start process instance. Process model " + processDefinition.getName() + " (id = " + processDefinition.getId()
-                    + ") could not be found");
+            throw new ActivitiException("Cannot start process instance. Process model " + processDefinition.getName() + " (id = "
+                    + processDefinition.getId() + ") could not be found");
         }
 
         FlowElement initialFlowElement = process.getFlowElement(messageEventSubscription.getActivityId());

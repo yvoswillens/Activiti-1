@@ -31,19 +31,16 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, DisposableBean, ApplicationContextAware {
 
-
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
     protected ApplicationContext applicationContext;
     protected ProcessEngine processEngine;
-
 
     public void destroy() throws Exception {
         if (processEngine != null) {
             processEngine.close();
         }
     }
-
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -63,8 +60,8 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, Dis
 
     protected void configureExpressionManager() {
         if (processEngineConfiguration.getExpressionManager() == null && applicationContext != null) {
-            processEngineConfiguration.setExpressionManager(
-                    new SpringExpressionManager(applicationContext, processEngineConfiguration.getBeans()));
+            processEngineConfiguration.setExpressionManager(new SpringExpressionManager(applicationContext, processEngineConfiguration
+                    .getBeans()));
         }
     }
 

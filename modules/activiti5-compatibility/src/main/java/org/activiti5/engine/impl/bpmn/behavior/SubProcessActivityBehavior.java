@@ -24,43 +24,41 @@ import org.activiti5.engine.impl.pvm.delegate.ActivityExecution;
 import org.activiti5.engine.impl.pvm.delegate.CompositeActivityBehavior;
 import org.activiti5.engine.impl.pvm.process.ActivityImpl;
 
-
 /**
- * Implementation of the BPMN 2.0 subprocess (formally known as 'embedded' subprocess):
- * a subprocess defined within another process definition.
+ * Implementation of the BPMN 2.0 subprocess (formally known as 'embedded'
+ * subprocess): a subprocess defined within another process definition.
  * 
  * @author Joram Barrez
  */
 public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior implements CompositeActivityBehavior {
-  
-  public void execute(ActivityExecution execution) throws Exception {
-    PvmActivity activity = execution.getActivity();
-    ActivityImpl initialActivity = (ActivityImpl) activity.getProperty(BpmnParse.PROPERTYNAME_INITIAL);
-    
-    if (initialActivity == null) {
-      throw new ActivitiException("No initial activity found for subprocess " 
-              + execution.getActivity().getId());
+
+    public void execute(ActivityExecution execution) throws Exception {
+        PvmActivity activity = execution.getActivity();
+        ActivityImpl initialActivity = (ActivityImpl) activity.getProperty(BpmnParse.PROPERTYNAME_INITIAL);
+
+        if (initialActivity == null) {
+            throw new ActivitiException("No initial activity found for subprocess " + execution.getActivity().getId());
+        }
+
+        // initialize the template-defined data objects as variables
+        Map<String, Object> dataObjectVars = ((ActivityImpl) activity).getVariables();
+        if (dataObjectVars != null) {
+            execution.setVariablesLocal(dataObjectVars);
+        }
+
+        execution.executeActivity(initialActivity);
     }
 
-    // initialize the template-defined data objects as variables
-    Map<String, Object> dataObjectVars = ((ActivityImpl) activity).getVariables();
-    if (dataObjectVars != null) {
-      execution.setVariablesLocal(dataObjectVars);
-    }
+    public void lastExecutionEnded(ActivityExecution execution) {
+        ScopeUtil.createEventScopeExecution((ExecutionEntity) execution);
 
-    execution.executeActivity(initialActivity);
-  }
-  
-  public void lastExecutionEnded(ActivityExecution execution) {
-    ScopeUtil.createEventScopeExecution((ExecutionEntity) execution);
-    
-    // remove the template-defined data object variables
-    Map<String, Object> dataObjectVars = ((ActivityImpl) execution.getActivity()).getVariables();
-    if (dataObjectVars != null) {
-      execution.removeVariablesLocal(dataObjectVars.keySet());
-    }
+        // remove the template-defined data object variables
+        Map<String, Object> dataObjectVars = ((ActivityImpl) execution.getActivity()).getVariables();
+        if (dataObjectVars != null) {
+            execution.removeVariablesLocal(dataObjectVars.keySet());
+        }
 
-    bpmnActivityBehavior.performDefaultOutgoingBehavior(execution);
-  }
+        bpmnActivityBehavior.performDefaultOutgoingBehavior(execution);
+    }
 
 }

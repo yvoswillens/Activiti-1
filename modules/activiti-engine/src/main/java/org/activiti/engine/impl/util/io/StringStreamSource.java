@@ -15,23 +15,22 @@ package org.activiti.engine.impl.util.io;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-
 /**
  * @author Tom Baeyens
  */
 public class StringStreamSource implements StreamSource {
-  
-  String string;
-  
-  public StringStreamSource(String string) {
-    this.string = string;
-  }
 
-  public InputStream getInputStream() {
-    return new ByteArrayInputStream(string.getBytes());
-  }
+    String string;
 
-  public String toString() {
-    return "String";
-  }
+    public StringStreamSource(String string) {
+        this.string = string;
+    }
+
+    public InputStream getInputStream() {
+        return new ByteArrayInputStream(string.getBytes());
+    }
+
+    public String toString() {
+        return "String";
+    }
 }

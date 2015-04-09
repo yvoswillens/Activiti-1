@@ -67,7 +67,7 @@ public class ProcessDefinitionEntity extends ProcessDefinitionImpl implements Pr
     protected Set<Expression> candidateStarterUserIdExpressions = new HashSet<Expression>();
     protected Set<Expression> candidateStarterGroupIdExpressions = new HashSet<Expression>();
     protected transient ActivitiEventSupport eventSupport;
-    
+
     // Backwards compatibility
     protected String engineVersion;
 
@@ -171,7 +171,8 @@ public class ProcessDefinitionEntity extends ProcessDefinitionImpl implements Pr
 
     public List<IdentityLinkEntity> getIdentityLinks() {
         if (!isIdentityLinksInitialized) {
-            definitionIdentityLinkEntities = Context.getCommandContext().getIdentityLinkEntityManager().findIdentityLinksByProcessDefinitionId(id);
+            definitionIdentityLinkEntities = Context.getCommandContext().getIdentityLinkEntityManager()
+                    .findIdentityLinksByProcessDefinitionId(id);
             isIdentityLinksInitialized = true;
         }
 
@@ -364,12 +365,12 @@ public class ProcessDefinitionEntity extends ProcessDefinitionImpl implements Pr
         return eventSupport;
     }
 
-	public String getEngineVersion() {
-		return engineVersion;
-	}
+    public String getEngineVersion() {
+        return engineVersion;
+    }
 
-	public void setEngineVersion(String engineVersion) {
-		this.engineVersion = engineVersion;
-	}
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
 
 }

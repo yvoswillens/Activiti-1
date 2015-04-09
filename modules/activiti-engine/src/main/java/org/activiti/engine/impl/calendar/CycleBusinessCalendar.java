@@ -19,25 +19,25 @@ import java.util.Date;
 
 public class CycleBusinessCalendar extends BusinessCalendarImpl {
 
-  public static String NAME = "cycle";
+    public static String NAME = "cycle";
 
-  public CycleBusinessCalendar(ClockReader clockReader) {
-    super(clockReader);
-  }
-
-  public Date resolveDuedate(String duedateDescription) {
-    try {
-      if (duedateDescription.startsWith("R")) {
-        return new DurationHelper(duedateDescription, clockReader).getDateAfter();
-      } else {
-        CronExpression ce = new CronExpression(duedateDescription, clockReader);
-        return ce.getTimeAfter(clockReader.getCurrentTime());
-      }
-
-    } catch (Exception e) {
-      throw new ActivitiException("Failed to parse cron expression: " + duedateDescription, e);
+    public CycleBusinessCalendar(ClockReader clockReader) {
+        super(clockReader);
     }
 
-  }
+    public Date resolveDuedate(String duedateDescription) {
+        try {
+            if (duedateDescription.startsWith("R")) {
+                return new DurationHelper(duedateDescription, clockReader).getDateAfter();
+            } else {
+                CronExpression ce = new CronExpression(duedateDescription, clockReader);
+                return ce.getTimeAfter(clockReader.getCurrentTime());
+            }
+
+        } catch (Exception e) {
+            throw new ActivitiException("Failed to parse cron expression: " + duedateDescription, e);
+        }
+
+    }
 
 }

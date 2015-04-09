@@ -23,14 +23,15 @@ import org.activiti.bpmn.model.TimerEventDefinition;
  */
 public class TimeCycleParser extends BaseChildElementParser {
 
-  public String getElementName() {
-    return ATTRIBUTE_TIMER_CYCLE;
-  }
-  
-  public void parseChildElement(XMLStreamReader xtr, BaseElement parentElement, BpmnModel model) throws Exception {
-    if (parentElement instanceof TimerEventDefinition == false) return;
-    
-    TimerEventDefinition eventDefinition = (TimerEventDefinition) parentElement;
-    eventDefinition.setTimeCycle(xtr.getElementText());
-  }
+    public String getElementName() {
+        return ATTRIBUTE_TIMER_CYCLE;
+    }
+
+    public void parseChildElement(XMLStreamReader xtr, BaseElement parentElement, BpmnModel model) throws Exception {
+        if (parentElement instanceof TimerEventDefinition == false)
+            return;
+
+        TimerEventDefinition eventDefinition = (TimerEventDefinition) parentElement;
+        eventDefinition.setTimeCycle(xtr.getElementText());
+    }
 }

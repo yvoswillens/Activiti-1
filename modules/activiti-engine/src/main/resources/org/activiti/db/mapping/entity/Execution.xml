@@ -337,7 +337,7 @@
     from ${prefix}ACT_RU_EXECUTION RES
     inner join ${prefix}ACT_RE_PROCDEF P on RES.PROC_DEF_ID_ = P.ID_
     <if test="includeProcessVariables">
-      left outer join ${prefix}ACT_RU_VARIABLE VAR ON RES.PROC_INST_ID_ = VAR.EXECUTION_ID_ and VAR.TASK_ID_ is null
+      left outer join ${prefix}ACT_RU_VARIABLE VAR ON RES.ID_ = VAR.EXECUTION_ID_ and VAR.TASK_ID_ is null
     </if>
     <include refid="commonSelectExecutionsByQueryCriteriaSql"/>
   </sql>
@@ -349,13 +349,13 @@
           inner join ${prefix}ACT_RU_VARIABLE A${index} on RES.ID_ = A${index}.EXECUTION_ID_
         </when>
         <otherwise>
-          inner join ${prefix}ACT_RU_VARIABLE A${index} on RES.PROC_INST_ID_ = A${index}.PROC_INST_ID_
+          inner join ${prefix}ACT_RU_VARIABLE A${index} on RES.ID_ = A${index}.PROC_INST_ID_
         </otherwise>
       </choose> 
     </foreach>
     <if test="orQueryObject != null">
       <foreach collection="orQueryObject.queryVariableValues" index="index" item="queryVariableValue">
-        left outer join ${prefix}ACT_RU_VARIABLE A_OR${index} on RES.PROC_INST_ID_ = A_OR${index}.PROC_INST_ID_
+        left outer join ${prefix}ACT_RU_VARIABLE A_OR${index} on RES.ID_ = A_OR${index}.PROC_INST_ID_
       </foreach>
     </if>
     <if test="eventSubscriptions != null">
@@ -386,10 +386,10 @@
         and RES.ID_ = #{executionId}
       </if>
       <if test="processInstanceId != null">
-        and RES.PROC_INST_ID_ = #{processInstanceId}
+        and RES.ID_ = #{processInstanceId}
       </if>
       <if test="processInstanceIds != null and !processInstanceIds.isEmpty()">
-        and RES.PROC_INST_ID_ in
+        and RES.ID_ in
         <foreach item="item" index="index" collection="processInstanceIds" open="(" separator="," close=")">
           #{item}
         </foreach>
@@ -419,7 +419,7 @@
       <if test="superProcessInstanceId != null">
         <!-- A sub process instance is stored under a certain *execution*, potentially nested.
              A sub process instance is NOT stored under the process instanc, hence the following: -->
-        and RES.SUPER_EXEC_ IN (select ID_ from ${prefix}ACT_RU_EXECUTION where PROC_INST_ID_ = #{superProcessInstanceId})
+        and RES.SUPER_EXEC_ IN (select ID_ from ${prefix}ACT_RU_EXECUTION where ID_ = #{superProcessInstanceId})
       </if>
       <if test="subProcessInstanceId != null">
         and RES.ID_ = (select PROC_INST_ID_ from ${prefix}ACT_RU_EXECUTION where ID_ = (select SUPER_EXEC_ from ${prefix}ACT_RU_EXECUTION where ID_ = #{subProcessInstanceId}))

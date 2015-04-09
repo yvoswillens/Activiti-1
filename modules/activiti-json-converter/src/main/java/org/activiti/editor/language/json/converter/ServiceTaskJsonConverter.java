@@ -29,7 +29,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public class ServiceTaskJsonConverter extends BaseBpmnJsonConverter {
 
-    public static void fillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap, Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
+    public static void fillTypes(Map<String, Class<? extends BaseBpmnJsonConverter>> convertersToBpmnMap,
+            Map<Class<? extends BaseElement>, Class<? extends BaseBpmnJsonConverter>> convertersToJsonMap) {
 
         fillJsonTypes(convertersToBpmnMap);
         fillBpmnTypes(convertersToJsonMap);
@@ -62,13 +63,13 @@ public class ServiceTaskJsonConverter extends BaseBpmnJsonConverter {
 
         } else if ("camel".equalsIgnoreCase(serviceTask.getType())) {
             setPropertyFieldValue(PROPERTY_CAMELTASK_CAMELCONTEXT, "camelContext", serviceTask, propertiesNode);
-            
+
         } else if ("mule".equalsIgnoreCase(serviceTask.getType())) {
             setPropertyFieldValue(PROPERTY_MULETASK_ENDPOINT_URL, "endpointUrl", serviceTask, propertiesNode);
             setPropertyFieldValue(PROPERTY_MULETASK_LANGUAGE, "language", serviceTask, propertiesNode);
             setPropertyFieldValue(PROPERTY_MULETASK_PAYLOAD_EXPRESSION, "payloadExpression", serviceTask, propertiesNode);
             setPropertyFieldValue(PROPERTY_MULETASK_RESULT_VARIABLE, "resultVariable", serviceTask, propertiesNode);
-            
+
         } else {
 
             if (ImplementationType.IMPLEMENTATION_TYPE_CLASS.equals(serviceTask.getImplementationType())) {
@@ -143,7 +144,7 @@ public class ServiceTaskJsonConverter extends BaseBpmnJsonConverter {
             }
         }
     }
-    
+
     protected void setPropertyFieldValue(String propertyName, String fieldName, ServiceTask task, ObjectNode propertiesNode) {
         for (FieldExtension extension : task.getFieldExtensions()) {
             if (fieldName.equalsIgnoreCase(extension.getFieldName())) {

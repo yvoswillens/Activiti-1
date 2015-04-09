@@ -21,26 +21,26 @@ import org.apache.commons.lang3.StringUtils;
 
 public class LaneExport implements BpmnXMLConstants {
 
-  public static void writeLanes(Process process, XMLStreamWriter xtw) throws Exception {
-    if (!process.getLanes().isEmpty()) {
-      xtw.writeStartElement(ELEMENT_LANESET);
-      xtw.writeAttribute(ATTRIBUTE_ID, "laneSet_" + process.getId());
-      for (Lane lane : process.getLanes()) {
-        xtw.writeStartElement(ELEMENT_LANE);
-        xtw.writeAttribute(ATTRIBUTE_ID, lane.getId());
-        if(StringUtils.isNotEmpty(lane.getName())) {
-          xtw.writeAttribute(ATTRIBUTE_NAME, lane.getName());
+    public static void writeLanes(Process process, XMLStreamWriter xtw) throws Exception {
+        if (!process.getLanes().isEmpty()) {
+            xtw.writeStartElement(ELEMENT_LANESET);
+            xtw.writeAttribute(ATTRIBUTE_ID, "laneSet_" + process.getId());
+            for (Lane lane : process.getLanes()) {
+                xtw.writeStartElement(ELEMENT_LANE);
+                xtw.writeAttribute(ATTRIBUTE_ID, lane.getId());
+                if (StringUtils.isNotEmpty(lane.getName())) {
+                    xtw.writeAttribute(ATTRIBUTE_NAME, lane.getName());
+                }
+
+                for (String flowNodeRef : lane.getFlowReferences()) {
+                    xtw.writeStartElement(ELEMENT_FLOWNODE_REF);
+                    xtw.writeCharacters(flowNodeRef);
+                    xtw.writeEndElement();
+                }
+
+                xtw.writeEndElement();
+            }
+            xtw.writeEndElement();
         }
-        
-        for (String flowNodeRef : lane.getFlowReferences()) {
-          xtw.writeStartElement(ELEMENT_FLOWNODE_REF);
-          xtw.writeCharacters(flowNodeRef);
-          xtw.writeEndElement();
-        }
-        
-        xtw.writeEndElement();
-      }
-      xtw.writeEndElement();
     }
-  }
 }

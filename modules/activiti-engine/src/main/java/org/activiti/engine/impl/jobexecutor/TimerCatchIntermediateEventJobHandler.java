@@ -23,44 +23,43 @@ import org.activiti.engine.logging.LogMDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class TimerCatchIntermediateEventJobHandler implements JobHandler {
 
-  private static Logger log = LoggerFactory.getLogger(TimerCatchIntermediateEventJobHandler.class);
+    private static Logger log = LoggerFactory.getLogger(TimerCatchIntermediateEventJobHandler.class);
 
-  public static final String TYPE = "timer-intermediate-transition";
+    public static final String TYPE = "timer-intermediate-transition";
 
-  public String getType() {
-    return TYPE;
-  }
-
-  public void execute(JobEntity job, String configuration, ExecutionEntity execution, CommandContext commandContext) {
-    ActivityImpl intermediateEventActivity = execution.getProcessDefinition().findActivity(configuration);
-
-    if (intermediateEventActivity == null) {
-      throw new ActivitiException("Error while firing timer: intermediate event activity " + configuration + " not found");
+    public String getType() {
+        return TYPE;
     }
 
-    try {
-      if (commandContext.getEventDispatcher().isEnabled()) {
-        commandContext.getEventDispatcher().dispatchEvent(
-          ActivitiEventBuilder.createEntityEvent(ActivitiEventType.TIMER_FIRED, job));
-      }
+    public void execute(JobEntity job, String configuration, ExecutionEntity execution, CommandContext commandContext) {
+        ActivityImpl intermediateEventActivity = execution.getProcessDefinition().findActivity(configuration);
 
-      if(!execution.getActivity().getId().equals(intermediateEventActivity.getId())) {
-        execution.setActivity(intermediateEventActivity);
-      }
-      execution.signal(null, null);
-    } catch (RuntimeException e) {
-      LogMDC.putMDCExecution(execution);
-      log.error("exception during timer execution", e);
-      LogMDC.clear();
-      throw e;
-    } catch (Exception e) {
-      LogMDC.putMDCExecution(execution);
-      log.error("exception during timer execution", e);
-      LogMDC.clear();
-      throw new ActivitiException("exception during timer execution: " + e.getMessage(), e);
+        if (intermediateEventActivity == null) {
+            throw new ActivitiException("Error while firing timer: intermediate event activity " + configuration + " not found");
+        }
+
+        try {
+            if (commandContext.getEventDispatcher().isEnabled()) {
+                commandContext.getEventDispatcher().dispatchEvent(
+                        ActivitiEventBuilder.createEntityEvent(ActivitiEventType.TIMER_FIRED, job));
+            }
+
+            if (!execution.getActivity().getId().equals(intermediateEventActivity.getId())) {
+                execution.setActivity(intermediateEventActivity);
+            }
+            execution.signal(null, null);
+        } catch (RuntimeException e) {
+            LogMDC.putMDCExecution(execution);
+            log.error("exception during timer execution", e);
+            LogMDC.clear();
+            throw e;
+        } catch (Exception e) {
+            LogMDC.putMDCExecution(execution);
+            log.error("exception during timer execution", e);
+            LogMDC.clear();
+            throw new ActivitiException("exception during timer execution: " + e.getMessage(), e);
+        }
     }
-  }
 }

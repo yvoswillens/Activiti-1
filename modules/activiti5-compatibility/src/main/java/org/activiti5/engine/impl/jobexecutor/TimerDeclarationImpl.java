@@ -31,144 +31,149 @@ import org.activiti5.engine.impl.persistence.entity.TimerEntity;
  */
 public class TimerDeclarationImpl implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  protected Expression description;
-  protected TimerDeclarationType type;
+    protected Expression description;
+    protected TimerDeclarationType type;
 
-  protected String jobHandlerType;
-  protected String jobHandlerConfiguration = null;
-  protected String repeat;
-  protected boolean exclusive = TimerEntity.DEFAULT_EXCLUSIVE;
-  protected int retries = TimerEntity.DEFAULT_RETRIES;
-  protected boolean isInterruptingTimer; // For boundary timers
+    protected String jobHandlerType;
+    protected String jobHandlerConfiguration = null;
+    protected String repeat;
+    protected boolean exclusive = TimerEntity.DEFAULT_EXCLUSIVE;
+    protected int retries = TimerEntity.DEFAULT_RETRIES;
+    protected boolean isInterruptingTimer; // For boundary timers
 
-  public TimerDeclarationImpl(Expression expression, TimerDeclarationType type, String jobHandlerType) {
-    this.jobHandlerType = jobHandlerType;
-    this.description = expression;
-    this.type= type;
-  }
-
-  public String getJobHandlerType() {
-    return jobHandlerType;
-  }
-
-  public String getJobHandlerConfiguration() {
-    return jobHandlerConfiguration;
-  }
-
-  public void setJobHandlerConfiguration(String jobHandlerConfiguration) {
-    this.jobHandlerConfiguration = jobHandlerConfiguration;
-  }
-
-  public String getRepeat() {
-    return repeat;
-  }
-
-  public void setRepeat(String repeat) {
-    this.repeat = repeat;
-  }
-
-  public boolean isExclusive() {
-    return exclusive;
-  }
-
-  public void setExclusive(boolean exclusive) {
-    this.exclusive = exclusive;
-  }
-
-  public int getRetries() {
-    return retries;
-  }
-
-  public void setRetries(int retries) {
-    this.retries = retries;
-  }
-
-  public void setJobHandlerType(String jobHandlerType) {
-    this.jobHandlerType = jobHandlerType;
-  }
-  
-  public boolean isInterruptingTimer() {
-    return isInterruptingTimer;
-  }
-  
-  public void setInterruptingTimer(boolean isInterruptingTimer) {
-    this.isInterruptingTimer = isInterruptingTimer;
-  }
-
-  public TimerEntity prepareTimerEntity(ExecutionEntity executionEntity) {
-    BusinessCalendar businessCalendar = Context
-        .getProcessEngineConfiguration()
-        .getBusinessCalendarManager()
-        .getBusinessCalendar(type.calendarName);
-    
-    if (description==null) {
-      // Prevent NPE from happening in the next line
-      throw new ActivitiIllegalArgumentException("Timer '"+executionEntity.getActivityId()+"' was not configured with a valid duration/time");
-    }
-    
-    String dueDateString = null;
-    Date duedate = null;
-
-    // ACT-1415: timer-declaration on start-event may contain expressions NOT
-    // evaluating variables but other context, evaluating should happen nevertheless
-    VariableScope scopeForExpression = executionEntity;
-    if(scopeForExpression == null) {
-      scopeForExpression = NoExecutionVariableScope.getSharedInstance();
+    public TimerDeclarationImpl(Expression expression, TimerDeclarationType type, String jobHandlerType) {
+        this.jobHandlerType = jobHandlerType;
+        this.description = expression;
+        this.type = type;
     }
 
-    Object dueDateValue = description.getValue(scopeForExpression);
-    if (dueDateValue instanceof String) {
-      dueDateString = (String)dueDateValue;
-    }
-    else if (dueDateValue instanceof Date) {
-      duedate = (Date)dueDateValue;
-    }
-    else {
-      throw new ActivitiException("Timer '"+executionEntity.getActivityId()+"' was not configured with a valid duration/time, either hand in a java.util.Date or a String in format 'yyyy-MM-dd'T'hh:mm:ss'");
-    }
-    
-    if (duedate==null) {      
-      duedate = businessCalendar.resolveDuedate(dueDateString);
+    public String getJobHandlerType() {
+        return jobHandlerType;
     }
 
-    TimerEntity timer = new TimerEntity(this);
-    timer.setDuedate(duedate);
-    if (executionEntity != null) {
-      timer.setExecution(executionEntity);
-      timer.setProcessDefinitionId(executionEntity.getProcessDefinitionId());
-      timer.setProcessInstanceId(executionEntity.getProcessInstanceId());
+    public String getJobHandlerConfiguration() {
+        return jobHandlerConfiguration;
+    }
 
-      // Inherit tenant identifier (if applicable)
-      if (executionEntity != null && executionEntity.getTenantId() != null) {
-      	timer.setTenantId(executionEntity.getTenantId());
-      }
+    public void setJobHandlerConfiguration(String jobHandlerConfiguration) {
+        this.jobHandlerConfiguration = jobHandlerConfiguration;
     }
-    
-    if (type == TimerDeclarationType.CYCLE) {
-      
-    	// See ACT-1427: A boundary timer with a cancelActivity='true', doesn't need to repeat itself
-    	boolean repeat = !isInterruptingTimer;
-    	
-    	// ACT-1951: intermediate catching timer events shouldn't repeat according to spec
-    	if(TimerCatchIntermediateEventJobHandler.TYPE.equals(jobHandlerType)) {
-    		repeat = false;
-    	}
-    	
-      if (repeat) {
-        String prepared = prepareRepeat(dueDateString);
-        timer.setRepeat(prepared);
-      }
+
+    public String getRepeat() {
+        return repeat;
     }
-    
-    return timer;
-  }
-  private String prepareRepeat(String dueDate) {
-    if (dueDate.startsWith("R") && dueDate.split("/").length==2) {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-      return dueDate.replace("/","/"+sdf.format(Context.getProcessEngineConfiguration().getClock().getCurrentTime())+"/");
+
+    public void setRepeat(String repeat) {
+        this.repeat = repeat;
     }
-    return dueDate;
-  }
+
+    public boolean isExclusive() {
+        return exclusive;
+    }
+
+    public void setExclusive(boolean exclusive) {
+        this.exclusive = exclusive;
+    }
+
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    public void setJobHandlerType(String jobHandlerType) {
+        this.jobHandlerType = jobHandlerType;
+    }
+
+    public boolean isInterruptingTimer() {
+        return isInterruptingTimer;
+    }
+
+    public void setInterruptingTimer(boolean isInterruptingTimer) {
+        this.isInterruptingTimer = isInterruptingTimer;
+    }
+
+    public TimerEntity prepareTimerEntity(ExecutionEntity executionEntity) {
+        BusinessCalendar businessCalendar = Context.getProcessEngineConfiguration().getBusinessCalendarManager()
+                .getBusinessCalendar(type.calendarName);
+
+        if (description == null) {
+            // Prevent NPE from happening in the next line
+            throw new ActivitiIllegalArgumentException("Timer '" + executionEntity.getActivityId()
+                    + "' was not configured with a valid duration/time");
+        }
+
+        String dueDateString = null;
+        Date duedate = null;
+
+        // ACT-1415: timer-declaration on start-event may contain expressions
+        // NOT
+        // evaluating variables but other context, evaluating should happen
+        // nevertheless
+        VariableScope scopeForExpression = executionEntity;
+        if (scopeForExpression == null) {
+            scopeForExpression = NoExecutionVariableScope.getSharedInstance();
+        }
+
+        Object dueDateValue = description.getValue(scopeForExpression);
+        if (dueDateValue instanceof String) {
+            dueDateString = (String) dueDateValue;
+        } else if (dueDateValue instanceof Date) {
+            duedate = (Date) dueDateValue;
+        } else {
+            throw new ActivitiException(
+                    "Timer '"
+                            + executionEntity.getActivityId()
+                            + "' was not configured with a valid duration/time, either hand in a java.util.Date or a String in format 'yyyy-MM-dd'T'hh:mm:ss'");
+        }
+
+        if (duedate == null) {
+            duedate = businessCalendar.resolveDuedate(dueDateString);
+        }
+
+        TimerEntity timer = new TimerEntity(this);
+        timer.setDuedate(duedate);
+        if (executionEntity != null) {
+            timer.setExecution(executionEntity);
+            timer.setProcessDefinitionId(executionEntity.getProcessDefinitionId());
+            timer.setProcessInstanceId(executionEntity.getProcessInstanceId());
+
+            // Inherit tenant identifier (if applicable)
+            if (executionEntity != null && executionEntity.getTenantId() != null) {
+                timer.setTenantId(executionEntity.getTenantId());
+            }
+        }
+
+        if (type == TimerDeclarationType.CYCLE) {
+
+            // See ACT-1427: A boundary timer with a cancelActivity='true',
+            // doesn't need to repeat itself
+            boolean repeat = !isInterruptingTimer;
+
+            // ACT-1951: intermediate catching timer events shouldn't repeat
+            // according to spec
+            if (TimerCatchIntermediateEventJobHandler.TYPE.equals(jobHandlerType)) {
+                repeat = false;
+            }
+
+            if (repeat) {
+                String prepared = prepareRepeat(dueDateString);
+                timer.setRepeat(prepared);
+            }
+        }
+
+        return timer;
+    }
+
+    private String prepareRepeat(String dueDate) {
+        if (dueDate.startsWith("R") && dueDate.split("/").length == 2) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            return dueDate.replace("/", "/" + sdf.format(Context.getProcessEngineConfiguration().getClock().getCurrentTime()) + "/");
+        }
+        return dueDate;
+    }
 }

@@ -32,7 +32,7 @@ import java.util.zip.ZipInputStream;
  * folder. The namehint is used to prefix the names of deployments. If the
  * parent folder for a {@link Resource} cannot be determined, the resource's
  * name is used.
- *
+ * 
  * @author Tiese Barrell
  */
 public class ResourceParentFolderAutoDeploymentStrategy extends AbstractAutoDeploymentStrategy {
@@ -52,7 +52,8 @@ public class ResourceParentFolderAutoDeploymentStrategy extends AbstractAutoDepl
     @Override
     public void deployResources(final String deploymentNameHint, final Resource[] resources, final RepositoryService repositoryService) {
 
-        // Create a deployment for each distinct parent folder using the name hint
+        // Create a deployment for each distinct parent folder using the name
+        // hint
         // as a prefix
         final Map<String, Set<Resource>> resourcesMap = createMap(resources);
 
@@ -60,7 +61,8 @@ public class ResourceParentFolderAutoDeploymentStrategy extends AbstractAutoDepl
 
             final String deploymentName = determineDeploymentName(deploymentNameHint, group.getKey());
 
-            final DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().enableDuplicateFiltering().name(deploymentName);
+            final DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().enableDuplicateFiltering()
+                    .name(deploymentName);
 
             for (final Resource resource : group.getValue()) {
                 final String resourceName = determineResourceName(resource);

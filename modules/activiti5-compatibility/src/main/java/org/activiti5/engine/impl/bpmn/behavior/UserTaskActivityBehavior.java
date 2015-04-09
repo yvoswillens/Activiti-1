@@ -42,218 +42,217 @@ import org.activiti5.engine.impl.task.TaskDefinition;
  */
 public class UserTaskActivityBehavior extends TaskActivityBehavior {
 
-  protected TaskDefinition taskDefinition;
+    protected TaskDefinition taskDefinition;
 
-  public UserTaskActivityBehavior(TaskDefinition taskDefinition) {
-    this.taskDefinition = taskDefinition;
-  }
-
-  public void execute(ActivityExecution execution) throws Exception {
-    TaskEntity task = TaskEntity.createAndInsert(execution);
-    task.setExecution(execution);
-    task.setTaskDefinition(taskDefinition);
-
-    if (taskDefinition.getNameExpression() != null) {
-      String name = (String) taskDefinition.getNameExpression().getValue(execution);
-      task.setName(name);
+    public UserTaskActivityBehavior(TaskDefinition taskDefinition) {
+        this.taskDefinition = taskDefinition;
     }
 
-    if (taskDefinition.getDescriptionExpression() != null) {
-      String description = (String) taskDefinition.getDescriptionExpression().getValue(execution);
-      task.setDescription(description);
-    }
-    
-    if(taskDefinition.getDueDateExpression() != null) {
-      Object dueDate = taskDefinition.getDueDateExpression().getValue(execution);
-      if(dueDate != null) {
-        if (dueDate instanceof Date) {
-          task.setDueDate((Date) dueDate);
-        } else if (dueDate instanceof String) {
-          BusinessCalendar businessCalendar = Context
-            .getProcessEngineConfiguration()
-            .getBusinessCalendarManager()
-            .getBusinessCalendar(DueDateBusinessCalendar.NAME);
-          task.setDueDate(businessCalendar.resolveDuedate((String) dueDate));
-        } else {
-          throw new ActivitiIllegalArgumentException("Due date expression does not resolve to a Date or Date string: " + 
-              taskDefinition.getDueDateExpression().getExpressionText());
+    public void execute(ActivityExecution execution) throws Exception {
+        TaskEntity task = TaskEntity.createAndInsert(execution);
+        task.setExecution(execution);
+        task.setTaskDefinition(taskDefinition);
+
+        if (taskDefinition.getNameExpression() != null) {
+            String name = (String) taskDefinition.getNameExpression().getValue(execution);
+            task.setName(name);
         }
-      }
-    }
 
-    if (taskDefinition.getPriorityExpression() != null) {
-      final Object priority = taskDefinition.getPriorityExpression().getValue(execution);
-      if (priority != null) {
-        if (priority instanceof String) {
-          try {
-            task.setPriority(Integer.valueOf((String) priority));
-          } catch (NumberFormatException e) {
-            throw new ActivitiIllegalArgumentException("Priority does not resolve to a number: " + priority, e);
-          }
-        } else if (priority instanceof Number) {
-          task.setPriority(((Number) priority).intValue());
-        } else {
-          throw new ActivitiIllegalArgumentException("Priority expression does not resolve to a number: " + 
-                  taskDefinition.getPriorityExpression().getExpressionText());
+        if (taskDefinition.getDescriptionExpression() != null) {
+            String description = (String) taskDefinition.getDescriptionExpression().getValue(execution);
+            task.setDescription(description);
         }
-      }
-    }
-    
-    if (taskDefinition.getCategoryExpression() != null) {
-    	final Object category = taskDefinition.getCategoryExpression().getValue(execution);
-    	if (category != null) {
-    		if (category instanceof String) {
-    			task.setCategory((String) category);
-    		} else {
-    			 throw new ActivitiIllegalArgumentException("Category expression does not resolve to a string: " + 
-               taskDefinition.getCategoryExpression().getExpressionText());
-    		}
-    	}
-    }
-    
-    if (taskDefinition.getFormKeyExpression() != null) {
-    	final Object formKey = taskDefinition.getFormKeyExpression().getValue(execution);
-    	if (formKey != null) {
-    		if (formKey instanceof String) {
-    			task.setFormKey((String) formKey);
-    		} else {
-    			 throw new ActivitiIllegalArgumentException("FormKey expression does not resolve to a string: " + 
-               taskDefinition.getFormKeyExpression().getExpressionText());
-    		}
-    	}
-    }
-    
-    handleAssignments(task, execution);
-   
-    // All properties set, now firing 'create' events
-    if (Context.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
-      Context.getProcessEngineConfiguration().getEventDispatcher().dispatchEvent(
-        ActivitiEventBuilder.createEntityEvent(ActivitiEventType.TASK_CREATED, task));
-    }
 
-    task.fireEvent(TaskListener.EVENTNAME_CREATE);
-
-    Expression skipExpression = taskDefinition.getSkipExpression();
-    if (SkipExpressionUtil.isSkipExpressionEnabled(execution, skipExpression) &&
-        SkipExpressionUtil.shouldSkipFlowElement(execution, skipExpression)) {
-      
-      leave(execution);
-    }
-  }
-
-  public void signal(ActivityExecution execution, String signalName, Object signalData) throws Exception {
-    if (!((ExecutionEntity) execution).getTasks().isEmpty())
-      throw new ActivitiException("UserTask should not be signalled before complete");
-    leave(execution);
-  }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  protected void handleAssignments(TaskEntity task, ActivityExecution execution) {
-    if (taskDefinition.getAssigneeExpression() != null) {
-      Object assigneeExpressionValue = taskDefinition.getAssigneeExpression().getValue(execution);
-      String assigneeValue = null;
-      if (assigneeExpressionValue != null) {
-        assigneeValue = assigneeExpressionValue.toString();
-      }
-      task.setAssignee(assigneeValue, true, false);
-    }
-    
-    if (taskDefinition.getOwnerExpression() != null) {
-      Object ownerExpressionValue = taskDefinition.getOwnerExpression().getValue(execution);
-      String ownerValue = null;
-      if (ownerExpressionValue != null) {
-        ownerValue = ownerExpressionValue.toString();
-      }
-      task.setOwner(ownerValue);
-    }
-
-    if (!taskDefinition.getCandidateGroupIdExpressions().isEmpty()) {
-      for (Expression groupIdExpr : taskDefinition.getCandidateGroupIdExpressions()) {
-        Object value = groupIdExpr.getValue(execution);
-        if (value instanceof String) {
-          List<String> candidates = extractCandidates((String) value);
-          task.addCandidateGroups(candidates);
-        } else if (value instanceof Collection) {
-          task.addCandidateGroups((Collection) value);
-        } else {
-          throw new ActivitiIllegalArgumentException("Expression did not resolve to a string or collection of strings");
-        }
-      }
-    }
-
-    if (!taskDefinition.getCandidateUserIdExpressions().isEmpty()) {
-      for (Expression userIdExpr : taskDefinition.getCandidateUserIdExpressions()) {
-        Object value = userIdExpr.getValue(execution);
-        if (value instanceof String) {
-          List<String> candiates = extractCandidates((String) value);
-          task.addCandidateUsers(candiates);
-        } else if (value instanceof Collection) {
-          task.addCandidateUsers((Collection) value);
-        } else {
-          throw new ActivitiException("Expression did not resolve to a string or collection of strings");
-        }
-      }
-    }
-
-    if (!taskDefinition.getCustomUserIdentityLinkExpressions().isEmpty()) {
-      Map<String, Set<Expression>> identityLinks = taskDefinition.getCustomUserIdentityLinkExpressions();
-      for (String identityLinkType : identityLinks.keySet()) {
-        for (Expression idExpression : identityLinks.get(identityLinkType) ) {
-          Object value = idExpression.getValue(execution);
-          if (value instanceof String) {
-            List<String> userIds = extractCandidates((String) value);
-            for (String userId : userIds) {
-              task.addUserIdentityLink(userId, identityLinkType);
+        if (taskDefinition.getDueDateExpression() != null) {
+            Object dueDate = taskDefinition.getDueDateExpression().getValue(execution);
+            if (dueDate != null) {
+                if (dueDate instanceof Date) {
+                    task.setDueDate((Date) dueDate);
+                } else if (dueDate instanceof String) {
+                    BusinessCalendar businessCalendar = Context.getProcessEngineConfiguration().getBusinessCalendarManager()
+                            .getBusinessCalendar(DueDateBusinessCalendar.NAME);
+                    task.setDueDate(businessCalendar.resolveDuedate((String) dueDate));
+                } else {
+                    throw new ActivitiIllegalArgumentException("Due date expression does not resolve to a Date or Date string: "
+                            + taskDefinition.getDueDateExpression().getExpressionText());
+                }
             }
-          } else if (value instanceof Collection) {
-            Iterator userIdSet = ((Collection) value).iterator();
-            while (userIdSet.hasNext()) {
-              task.addUserIdentityLink((String)userIdSet.next(), identityLinkType);
-            }
-          } else {
-            throw new ActivitiException("Expression did not resolve to a string or collection of strings");
-          }
         }
-      }
+
+        if (taskDefinition.getPriorityExpression() != null) {
+            final Object priority = taskDefinition.getPriorityExpression().getValue(execution);
+            if (priority != null) {
+                if (priority instanceof String) {
+                    try {
+                        task.setPriority(Integer.valueOf((String) priority));
+                    } catch (NumberFormatException e) {
+                        throw new ActivitiIllegalArgumentException("Priority does not resolve to a number: " + priority, e);
+                    }
+                } else if (priority instanceof Number) {
+                    task.setPriority(((Number) priority).intValue());
+                } else {
+                    throw new ActivitiIllegalArgumentException("Priority expression does not resolve to a number: "
+                            + taskDefinition.getPriorityExpression().getExpressionText());
+                }
+            }
+        }
+
+        if (taskDefinition.getCategoryExpression() != null) {
+            final Object category = taskDefinition.getCategoryExpression().getValue(execution);
+            if (category != null) {
+                if (category instanceof String) {
+                    task.setCategory((String) category);
+                } else {
+                    throw new ActivitiIllegalArgumentException("Category expression does not resolve to a string: "
+                            + taskDefinition.getCategoryExpression().getExpressionText());
+                }
+            }
+        }
+
+        if (taskDefinition.getFormKeyExpression() != null) {
+            final Object formKey = taskDefinition.getFormKeyExpression().getValue(execution);
+            if (formKey != null) {
+                if (formKey instanceof String) {
+                    task.setFormKey((String) formKey);
+                } else {
+                    throw new ActivitiIllegalArgumentException("FormKey expression does not resolve to a string: "
+                            + taskDefinition.getFormKeyExpression().getExpressionText());
+                }
+            }
+        }
+
+        handleAssignments(task, execution);
+
+        // All properties set, now firing 'create' events
+        if (Context.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
+            Context.getProcessEngineConfiguration().getEventDispatcher()
+                    .dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.TASK_CREATED, task));
+        }
+
+        task.fireEvent(TaskListener.EVENTNAME_CREATE);
+
+        Expression skipExpression = taskDefinition.getSkipExpression();
+        if (SkipExpressionUtil.isSkipExpressionEnabled(execution, skipExpression)
+                && SkipExpressionUtil.shouldSkipFlowElement(execution, skipExpression)) {
+
+            leave(execution);
+        }
     }
 
-    if (!taskDefinition.getCustomGroupIdentityLinkExpressions().isEmpty()) {
-      Map<String, Set<Expression>> identityLinks = taskDefinition.getCustomGroupIdentityLinkExpressions();
-      for (String identityLinkType : identityLinks.keySet()) {
-        for (Expression idExpression : identityLinks.get(identityLinkType) ) {
-          Object value = idExpression.getValue(execution);
-          if (value instanceof String) {
-            List<String> groupIds = extractCandidates((String) value);
-            for (String groupId : groupIds) {
-              task.addGroupIdentityLink(groupId, identityLinkType);
-            }
-          } else if (value instanceof Collection) {
-            Iterator groupIdSet = ((Collection) value).iterator();
-            while (groupIdSet.hasNext()) {
-              task.addGroupIdentityLink((String)groupIdSet.next(), identityLinkType);
-            }
-          } else {
-            throw new ActivitiException("Expression did not resolve to a string or collection of strings");
-          }
-        }
-      }
+    public void signal(ActivityExecution execution, String signalName, Object signalData) throws Exception {
+        if (!((ExecutionEntity) execution).getTasks().isEmpty())
+            throw new ActivitiException("UserTask should not be signalled before complete");
+        leave(execution);
     }
-}
 
-  /**
-   * Extract a candidate list from a string. 
-   * 
-   * @param str
-   * @return 
-   */
-  protected List<String> extractCandidates(String str) {
-    return Arrays.asList(str.split("[\\s]*,[\\s]*"));
-  }
-  
-  // getters and setters //////////////////////////////////////////////////////
-  
-  public TaskDefinition getTaskDefinition() {
-    return taskDefinition;
-  }
-  
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    protected void handleAssignments(TaskEntity task, ActivityExecution execution) {
+        if (taskDefinition.getAssigneeExpression() != null) {
+            Object assigneeExpressionValue = taskDefinition.getAssigneeExpression().getValue(execution);
+            String assigneeValue = null;
+            if (assigneeExpressionValue != null) {
+                assigneeValue = assigneeExpressionValue.toString();
+            }
+            task.setAssignee(assigneeValue, true, false);
+        }
+
+        if (taskDefinition.getOwnerExpression() != null) {
+            Object ownerExpressionValue = taskDefinition.getOwnerExpression().getValue(execution);
+            String ownerValue = null;
+            if (ownerExpressionValue != null) {
+                ownerValue = ownerExpressionValue.toString();
+            }
+            task.setOwner(ownerValue);
+        }
+
+        if (!taskDefinition.getCandidateGroupIdExpressions().isEmpty()) {
+            for (Expression groupIdExpr : taskDefinition.getCandidateGroupIdExpressions()) {
+                Object value = groupIdExpr.getValue(execution);
+                if (value instanceof String) {
+                    List<String> candidates = extractCandidates((String) value);
+                    task.addCandidateGroups(candidates);
+                } else if (value instanceof Collection) {
+                    task.addCandidateGroups((Collection) value);
+                } else {
+                    throw new ActivitiIllegalArgumentException("Expression did not resolve to a string or collection of strings");
+                }
+            }
+        }
+
+        if (!taskDefinition.getCandidateUserIdExpressions().isEmpty()) {
+            for (Expression userIdExpr : taskDefinition.getCandidateUserIdExpressions()) {
+                Object value = userIdExpr.getValue(execution);
+                if (value instanceof String) {
+                    List<String> candiates = extractCandidates((String) value);
+                    task.addCandidateUsers(candiates);
+                } else if (value instanceof Collection) {
+                    task.addCandidateUsers((Collection) value);
+                } else {
+                    throw new ActivitiException("Expression did not resolve to a string or collection of strings");
+                }
+            }
+        }
+
+        if (!taskDefinition.getCustomUserIdentityLinkExpressions().isEmpty()) {
+            Map<String, Set<Expression>> identityLinks = taskDefinition.getCustomUserIdentityLinkExpressions();
+            for (String identityLinkType : identityLinks.keySet()) {
+                for (Expression idExpression : identityLinks.get(identityLinkType)) {
+                    Object value = idExpression.getValue(execution);
+                    if (value instanceof String) {
+                        List<String> userIds = extractCandidates((String) value);
+                        for (String userId : userIds) {
+                            task.addUserIdentityLink(userId, identityLinkType);
+                        }
+                    } else if (value instanceof Collection) {
+                        Iterator userIdSet = ((Collection) value).iterator();
+                        while (userIdSet.hasNext()) {
+                            task.addUserIdentityLink((String) userIdSet.next(), identityLinkType);
+                        }
+                    } else {
+                        throw new ActivitiException("Expression did not resolve to a string or collection of strings");
+                    }
+                }
+            }
+        }
+
+        if (!taskDefinition.getCustomGroupIdentityLinkExpressions().isEmpty()) {
+            Map<String, Set<Expression>> identityLinks = taskDefinition.getCustomGroupIdentityLinkExpressions();
+            for (String identityLinkType : identityLinks.keySet()) {
+                for (Expression idExpression : identityLinks.get(identityLinkType)) {
+                    Object value = idExpression.getValue(execution);
+                    if (value instanceof String) {
+                        List<String> groupIds = extractCandidates((String) value);
+                        for (String groupId : groupIds) {
+                            task.addGroupIdentityLink(groupId, identityLinkType);
+                        }
+                    } else if (value instanceof Collection) {
+                        Iterator groupIdSet = ((Collection) value).iterator();
+                        while (groupIdSet.hasNext()) {
+                            task.addGroupIdentityLink((String) groupIdSet.next(), identityLinkType);
+                        }
+                    } else {
+                        throw new ActivitiException("Expression did not resolve to a string or collection of strings");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Extract a candidate list from a string.
+     * 
+     * @param str
+     * @return
+     */
+    protected List<String> extractCandidates(String str) {
+        return Arrays.asList(str.split("[\\s]*,[\\s]*"));
+    }
+
+    // getters and setters
+    // //////////////////////////////////////////////////////
+
+    public TaskDefinition getTaskDefinition() {
+        return taskDefinition;
+    }
+
 }

@@ -23,7 +23,6 @@ import org.activiti.engine.impl.scripting.ScriptingEngines;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * activity implementation of the BPMN 2.0 script task.
  * 
@@ -32,57 +31,55 @@ import org.slf4j.LoggerFactory;
  * @author Falko Menge
  */
 public class ScriptTaskActivityBehavior extends TaskActivityBehavior {
-  
-  private static final long serialVersionUID = 1L;
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTaskActivityBehavior.class);
-  
-  protected String script;
-  protected String language;
-  protected String resultVariable;
-  protected boolean storeScriptVariables = false; // see http://jira.codehaus.org/browse/ACT-1626
 
-  public ScriptTaskActivityBehavior(String script, String language, String resultVariable) {
-    this.script = script;
-    this.language = language;
-    this.resultVariable = resultVariable;
-  }
-  
-  public ScriptTaskActivityBehavior(String script, String language, String resultVariable, boolean storeScriptVariables) {
-    this(script, language, resultVariable);
-    this.storeScriptVariables = storeScriptVariables;
-  }
-  
-  public void execute(ActivityExecution execution) {
-	  
-    ScriptingEngines scriptingEngines = Context
-      .getProcessEngineConfiguration()
-      .getScriptingEngines();
+    private static final long serialVersionUID = 1L;
 
-    boolean noErrors = true;
-    try {
-      Object result = scriptingEngines.evaluate(script, language, execution, storeScriptVariables);
-      
-      if (resultVariable != null) {
-        execution.setVariable(resultVariable, result);
-      }
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTaskActivityBehavior.class);
 
-    } catch (ActivitiException e) {
-      
-      LOGGER.warn("Exception while executing " + execution.getActivity().getId() + " : " + e.getMessage());
-      
-      noErrors = false;
-      if (e.getCause() instanceof ScriptException
-          && e.getCause().getCause() instanceof ScriptException
-          && e.getCause().getCause().getCause() instanceof BpmnError) {
-        ErrorPropagation.propagateError((BpmnError) e.getCause().getCause().getCause(), execution);
-      } else {
-        throw e;
-      }
+    protected String script;
+    protected String language;
+    protected String resultVariable;
+    protected boolean storeScriptVariables = false; // see
+                                                    // http://jira.codehaus.org/browse/ACT-1626
+
+    public ScriptTaskActivityBehavior(String script, String language, String resultVariable) {
+        this.script = script;
+        this.language = language;
+        this.resultVariable = resultVariable;
     }
-     if (noErrors) {
-       leave(execution);
-     }
-  }
-  
+
+    public ScriptTaskActivityBehavior(String script, String language, String resultVariable, boolean storeScriptVariables) {
+        this(script, language, resultVariable);
+        this.storeScriptVariables = storeScriptVariables;
+    }
+
+    public void execute(ActivityExecution execution) {
+
+        ScriptingEngines scriptingEngines = Context.getProcessEngineConfiguration().getScriptingEngines();
+
+        boolean noErrors = true;
+        try {
+            Object result = scriptingEngines.evaluate(script, language, execution, storeScriptVariables);
+
+            if (resultVariable != null) {
+                execution.setVariable(resultVariable, result);
+            }
+
+        } catch (ActivitiException e) {
+
+            LOGGER.warn("Exception while executing " + execution.getActivity().getId() + " : " + e.getMessage());
+
+            noErrors = false;
+            if (e.getCause() instanceof ScriptException && e.getCause().getCause() instanceof ScriptException
+                    && e.getCause().getCause().getCause() instanceof BpmnError) {
+                ErrorPropagation.propagateError((BpmnError) e.getCause().getCause().getCause(), execution);
+            } else {
+                throw e;
+            }
+        }
+        if (noErrors) {
+            leave(execution);
+        }
+    }
+
 }

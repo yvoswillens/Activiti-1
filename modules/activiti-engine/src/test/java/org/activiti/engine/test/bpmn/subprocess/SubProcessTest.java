@@ -358,12 +358,14 @@ public class SubProcessTest extends PluggableActivitiTestCase {
     }
 
     /**
-     * @see <a href="http://jira.codehaus.org/browse/ACT-1847">http://jira.codehaus.org/browse/ACT-1847</a>
+     * @see <a
+     *      href="http://jira.codehaus.org/browse/ACT-1847">http://jira.codehaus.org/browse/ACT-1847</a>
      */
     @Deployment
     public void testDataObjectScope() {
 
-        // After staring the process, the task in the subprocess should be active
+        // After staring the process, the task in the subprocess should be
+        // active
         ProcessInstance pi = runtimeService.startProcessInstanceByKey("dataObjectScope");
 
         // get main process task
@@ -386,7 +388,8 @@ public class SubProcessTest extends PluggableActivitiTestCase {
             }
         }
 
-        // After completing the task in the main process, the subprocess scope initiates
+        // After completing the task in the main process, the subprocess scope
+        // initiates
         taskService.complete(currentTask.getId());
 
         // get subprocess task

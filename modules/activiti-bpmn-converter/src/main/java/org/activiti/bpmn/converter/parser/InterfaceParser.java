@@ -27,69 +27,69 @@ import org.slf4j.LoggerFactory;
  * @author Tijs Rademakers
  */
 public class InterfaceParser implements BpmnXMLConstants {
-  
-  protected static final Logger LOGGER = LoggerFactory.getLogger(InterfaceParser.class.getName());
-  
-  public void parse(XMLStreamReader xtr, BpmnModel model) throws Exception {
-    
-    Interface interfaceObject = new Interface();
-    BpmnXMLUtil.addXMLLocation(interfaceObject, xtr);
-    interfaceObject.setId(model.getTargetNamespace() + ":" + xtr.getAttributeValue(null, ATTRIBUTE_ID));
-    interfaceObject.setName(xtr.getAttributeValue(null, ATTRIBUTE_NAME));
-    interfaceObject.setImplementationRef(parseMessageRef(xtr.getAttributeValue(null, ATTRIBUTE_IMPLEMENTATION_REF), model));
-    
-    boolean readyWithInterface = false;
-    Operation operation = null;
-    try {
-      while (readyWithInterface == false && xtr.hasNext()) {
-        xtr.next();
-        if (xtr.isStartElement() && ELEMENT_OPERATION.equals(xtr.getLocalName())) {
-          operation = new Operation();
-          BpmnXMLUtil.addXMLLocation(operation, xtr);
-          operation.setId(model.getTargetNamespace() + ":" + xtr.getAttributeValue(null, ATTRIBUTE_ID));
-          operation.setName(xtr.getAttributeValue(null, ATTRIBUTE_NAME));
-          operation.setImplementationRef(parseMessageRef(xtr.getAttributeValue(null, ATTRIBUTE_IMPLEMENTATION_REF), model));
 
-        } else if (xtr.isStartElement() && ELEMENT_IN_MESSAGE.equals(xtr.getLocalName())) {
-          String inMessageRef = xtr.getElementText();
-          if (operation != null && StringUtils.isNotEmpty(inMessageRef)) {
-            operation.setInMessageRef(parseMessageRef(inMessageRef.trim(), model));
-          }
-          
-        } else if (xtr.isStartElement() && ELEMENT_OUT_MESSAGE.equals(xtr.getLocalName())) {
-          String outMessageRef = xtr.getElementText();
-          if (operation != null && StringUtils.isNotEmpty(outMessageRef)) {
-            operation.setOutMessageRef(parseMessageRef(outMessageRef.trim(), model));
-          }
-          
-        } else if (xtr.isEndElement() && ELEMENT_OPERATION.equalsIgnoreCase(xtr.getLocalName())) {
-          if (operation != null && StringUtils.isNotEmpty(operation.getImplementationRef())) {
-            interfaceObject.getOperations().add(operation);
-          }
-          
-        } else if (xtr.isEndElement() && ELEMENT_INTERFACE.equals(xtr.getLocalName())) {
-          readyWithInterface = true;
+    protected static final Logger LOGGER = LoggerFactory.getLogger(InterfaceParser.class.getName());
+
+    public void parse(XMLStreamReader xtr, BpmnModel model) throws Exception {
+
+        Interface interfaceObject = new Interface();
+        BpmnXMLUtil.addXMLLocation(interfaceObject, xtr);
+        interfaceObject.setId(model.getTargetNamespace() + ":" + xtr.getAttributeValue(null, ATTRIBUTE_ID));
+        interfaceObject.setName(xtr.getAttributeValue(null, ATTRIBUTE_NAME));
+        interfaceObject.setImplementationRef(parseMessageRef(xtr.getAttributeValue(null, ATTRIBUTE_IMPLEMENTATION_REF), model));
+
+        boolean readyWithInterface = false;
+        Operation operation = null;
+        try {
+            while (readyWithInterface == false && xtr.hasNext()) {
+                xtr.next();
+                if (xtr.isStartElement() && ELEMENT_OPERATION.equals(xtr.getLocalName())) {
+                    operation = new Operation();
+                    BpmnXMLUtil.addXMLLocation(operation, xtr);
+                    operation.setId(model.getTargetNamespace() + ":" + xtr.getAttributeValue(null, ATTRIBUTE_ID));
+                    operation.setName(xtr.getAttributeValue(null, ATTRIBUTE_NAME));
+                    operation.setImplementationRef(parseMessageRef(xtr.getAttributeValue(null, ATTRIBUTE_IMPLEMENTATION_REF), model));
+
+                } else if (xtr.isStartElement() && ELEMENT_IN_MESSAGE.equals(xtr.getLocalName())) {
+                    String inMessageRef = xtr.getElementText();
+                    if (operation != null && StringUtils.isNotEmpty(inMessageRef)) {
+                        operation.setInMessageRef(parseMessageRef(inMessageRef.trim(), model));
+                    }
+
+                } else if (xtr.isStartElement() && ELEMENT_OUT_MESSAGE.equals(xtr.getLocalName())) {
+                    String outMessageRef = xtr.getElementText();
+                    if (operation != null && StringUtils.isNotEmpty(outMessageRef)) {
+                        operation.setOutMessageRef(parseMessageRef(outMessageRef.trim(), model));
+                    }
+
+                } else if (xtr.isEndElement() && ELEMENT_OPERATION.equalsIgnoreCase(xtr.getLocalName())) {
+                    if (operation != null && StringUtils.isNotEmpty(operation.getImplementationRef())) {
+                        interfaceObject.getOperations().add(operation);
+                    }
+
+                } else if (xtr.isEndElement() && ELEMENT_INTERFACE.equals(xtr.getLocalName())) {
+                    readyWithInterface = true;
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Error parsing interface child elements", e);
         }
-      }
-    } catch (Exception e) {
-      LOGGER.warn("Error parsing interface child elements", e);
+
+        model.getInterfaces().add(interfaceObject);
     }
-    
-    model.getInterfaces().add(interfaceObject);
-  }
-  
-  protected String parseMessageRef(String messageRef, BpmnModel model) {
-    String result = null;
-    if (StringUtils.isNotEmpty(messageRef)) {
-      int indexOfP = messageRef.indexOf(':');
-      if (indexOfP != -1) {
-        String prefix = messageRef.substring(0, indexOfP);
-        String resolvedNamespace = model.getNamespace(prefix);
-        result = resolvedNamespace + ":" + messageRef.substring(indexOfP + 1);
-      } else {
-        result = model.getTargetNamespace() + ":" + messageRef;
-      }
+
+    protected String parseMessageRef(String messageRef, BpmnModel model) {
+        String result = null;
+        if (StringUtils.isNotEmpty(messageRef)) {
+            int indexOfP = messageRef.indexOf(':');
+            if (indexOfP != -1) {
+                String prefix = messageRef.substring(0, indexOfP);
+                String resolvedNamespace = model.getNamespace(prefix);
+                result = resolvedNamespace + ":" + messageRef.substring(indexOfP + 1);
+            } else {
+                result = model.getTargetNamespace() + ":" + messageRef;
+            }
+        }
+        return result;
     }
-    return result;
-  }
 }
