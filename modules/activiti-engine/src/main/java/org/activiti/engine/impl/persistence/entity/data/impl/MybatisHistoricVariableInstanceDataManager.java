@@ -19,7 +19,7 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.HistoricVariableInstanceQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.CachedEntityMatcher;
+import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
 import org.activiti.engine.impl.persistence.entity.HistoricVariableInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricVariableInstanceEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
@@ -51,10 +51,9 @@ public class MybatisHistoricVariableInstanceDataManager extends AbstractDataMana
   
   @Override
   public List<HistoricVariableInstanceEntity> findHistoricVariableInstancesByProcessInstanceId(final String processInstanceId) {
-    return getList("selectHistoricVariableInstanceByProcessInstanceId", processInstanceId, new CachedEntityMatcher<HistoricVariableInstanceEntity>() {
-      
+    return getList("selectHistoricVariableInstanceByProcessInstanceId", processInstanceId, new CachedEntityMatcherAdapter<HistoricVariableInstanceEntity>() {
       @Override
-      public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity) {
+      public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity, Object parameter) {
         return historicVariableInstanceEntity.getProcessInstanceId() != null && historicVariableInstanceEntity.getProcessInstanceId().equals(processInstanceId);
       }
       
@@ -63,10 +62,9 @@ public class MybatisHistoricVariableInstanceDataManager extends AbstractDataMana
   
   @Override
   public List<HistoricVariableInstanceEntity> findHistoricVariableInstancesByTaskId(final String taskId) {
-return getList("selectHistoricVariableInstanceByTaskId", taskId, new CachedEntityMatcher<HistoricVariableInstanceEntity>() {
-      
+    return getList("selectHistoricVariableInstanceByTaskId", taskId, new CachedEntityMatcherAdapter<HistoricVariableInstanceEntity>() {
       @Override
-      public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity) {
+      public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity, Object parameter) {
         return historicVariableInstanceEntity.getTaskId() != null && historicVariableInstanceEntity.getTaskId().equals(taskId);
       }
       

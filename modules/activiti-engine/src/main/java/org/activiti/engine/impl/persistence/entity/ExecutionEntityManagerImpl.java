@@ -62,18 +62,24 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
   
   @Override
   public void delete(ExecutionEntity entity) {
-    super.delete(entity);
-    entity.setDeleted(true);
+    delete(entity, true);
   }
   
   @Override
   public void delete(ExecutionEntity entity, boolean fireDeleteEvent) {
     super.delete(entity, fireDeleteEvent);
     entity.setDeleted(true);
+    
+    if (entity.getParentId() != null) {
+      entity.getParent().getExecutions().remove(entity);
+    }
+    if (entity.getSuperExecutionId() != null) {
+      entity.getSuperExecution().setSubProcessInstance(null);
+    }
   }
   
   // FIND METHODS
-
+  
   @Override
   public ExecutionEntity findSubProcessInstanceBySuperExecutionId(String superExecutionId) {
     return executionDataManager.findSubProcessInstanceBySuperExecutionId(superExecutionId);
@@ -116,8 +122,18 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
   
   @Override
   public ExecutionEntity findByRootProcessInstanceId(String rootProcessInstanceId) {
-    ExecutionEntity rootExecution = null;
     List<ExecutionEntity> executions = executionDataManager.findExecutionsByRootProcessInstanceId(rootProcessInstanceId);
+    return processExecutionTree(rootProcessInstanceId, executions);
+  }
+
+  /**
+   * Processes a collection of {@link ExecutionEntity} instances, which form on execution tree.
+   * All the executions share the same rootProcessInstanceId (which is provided).
+   * The return value will be the root {@link ExecutionEntity} instance, with all child {@link ExecutionEntity}
+   * instances populated and set using the {@link ExecutionEntity} instances from the provided collections
+   */
+  protected ExecutionEntity processExecutionTree(String rootProcessInstanceId, List<ExecutionEntity> executions) {
+    ExecutionEntity rootExecution = null;
     
     // Collect executions
     Map<String, ExecutionEntity> executionMap = new HashMap<String, ExecutionEntity>(executions.size());
@@ -130,6 +146,11 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     
     // Set relationships
     for (ExecutionEntity executionEntity : executions) {
+      
+      // Root process instance relationship
+      if (executionEntity.getRootProcessInstanceId() != null) {
+        executionEntity.setRootProcessInstance(executionMap.get(executionEntity.getRootProcessInstanceId()));
+      }
       
       // Process instance relationship
       if (executionEntity.getProcessInstanceId() != null) {
@@ -151,9 +172,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
       }
       
     }
-    
     return rootExecution;
-    
   }
   
   @Override

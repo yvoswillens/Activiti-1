@@ -19,7 +19,7 @@ import java.util.Map;
 
 import org.activiti.engine.impl.TaskQueryImpl;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.CachedEntityMatcher;
+import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
@@ -47,9 +47,9 @@ public class MybatisTaskDataManager extends AbstractDataManager<TaskEntity> impl
   
   @Override
   public List<TaskEntity> findTasksByExecutionId(final String executionId) {
-    return getList("selectTasksByExecutionId", executionId, new CachedEntityMatcher<TaskEntity>() {
+    return getList("selectTasksByExecutionId", executionId, new CachedEntityMatcherAdapter<TaskEntity>() {
       @Override
-      public boolean isRetained(TaskEntity taskEntity) {
+      public boolean isRetained(TaskEntity taskEntity, Object parameter) {
         return taskEntity.getExecutionId() != null && executionId.equals(taskEntity.getExecutionId());
       }
     }, true);

@@ -173,6 +173,7 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   protected String superExecutionId;
   
   protected String rootProcessInstanceId;
+  protected ExecutionEntityImpl rootProcessInstance;
 
   protected boolean forcedUpdate;
 
@@ -236,6 +237,10 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   public List<ExecutionEntityImpl> getExecutions() {
     ensureExecutionsInitialized();
     return executions;
+  }
+  
+  public void setExecutions(List<ExecutionEntityImpl> executions) {
+    this.executions = executions;
   }
   
   @Override
@@ -403,6 +408,21 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   
   public String getRootProcessInstanceId() {
     return rootProcessInstanceId;
+  }
+  
+  public ExecutionEntity getRootProcessInstance() {
+    ensureRootProcessInstanceInitialized();
+    return rootProcessInstance;
+  }
+  
+  protected void ensureRootProcessInstanceInitialized() {
+    if (rootProcessInstanceId == null) {
+      rootProcessInstance = (ExecutionEntityImpl) Context.getCommandContext().getExecutionEntityManager().findById(rootProcessInstanceId);
+    }
+  }
+  
+  public void setRootProcessInstance(ExecutionEntity rootProcessInstance) {
+    this.rootProcessInstance = (ExecutionEntityImpl) rootProcessInstance;
   }
 
   public void setRootProcessInstanceId(String rootProcessInstanceId) {

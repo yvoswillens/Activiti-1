@@ -166,6 +166,8 @@ import org.activiti.engine.impl.jobexecutor.TriggerTimerEventJobHandler;
 import org.activiti.engine.impl.persistence.GenericManagerFactory;
 import org.activiti.engine.impl.persistence.cache.EntityCache;
 import org.activiti.engine.impl.persistence.cache.EntityCacheImpl;
+import org.activiti.engine.impl.persistence.cache.ExecutionTreeCache;
+import org.activiti.engine.impl.persistence.cache.ExecutionTreeCacheImpl;
 import org.activiti.engine.impl.persistence.deploy.DefaultDeploymentCache;
 import org.activiti.engine.impl.persistence.deploy.Deployer;
 import org.activiti.engine.impl.persistence.deploy.DeploymentCache;
@@ -793,6 +795,8 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * The {@link ProcessEngineConfiguration#getDatabaseSchemaUpdate()} value will not be used.
    */
   protected boolean usingRelationalDatabase = true;
+  
+  protected boolean eagerlyFetchExecutionTree;
 
   // Backwards compatibility //////////////////////////////////////////////////////////////
   
@@ -815,8 +819,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected List<Object> activiti5EventListeners;
   protected Map<String, List<Object>> activiti5TypedEventListeners;
 
-  // buildProcessEngine
-  // ///////////////////////////////////////////////////////
+  // buildProcessEngine ///////////////////////////////////////////////////////
 
   @Override
   public ProcessEngine buildProcessEngine() {
@@ -1423,6 +1426,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       }
 
       addSessionFactory(new GenericManagerFactory(EntityCache.class, EntityCacheImpl.class));
+      addSessionFactory(new GenericManagerFactory(ExecutionTreeCache.class, ExecutionTreeCacheImpl.class));
     }
 
     if (customSessionFactories != null) {
@@ -2919,6 +2923,15 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   public ProcessEngineConfigurationImpl setUsingRelationalDatabase(boolean usingRelationalDatabase) {
     this.usingRelationalDatabase = usingRelationalDatabase;
+    return this;
+  }
+  
+  public boolean isEagerlyFetchExecutionTree() {
+    return eagerlyFetchExecutionTree;
+  }
+
+  public ProcessEngineConfigurationImpl setEagerlyFetchExecutionTree(boolean eagerlyFetchExecutionTree) {
+    this.eagerlyFetchExecutionTree = eagerlyFetchExecutionTree;
     return this;
   }
 

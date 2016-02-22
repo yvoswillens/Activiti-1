@@ -59,6 +59,10 @@ public interface ExecutionEntity extends DelegateExecution, Execution, ProcessIn
   ExecutionEntity getSubProcessInstance();
 
   void setSubProcessInstance(ExecutionEntity subProcessInstance);
+  
+  ExecutionEntity getRootProcessInstance();
+  
+  void setRootProcessInstance(ExecutionEntity rootProcessInstance);
 
   void setRootProcessInstanceId(String rootProcessInstanceId);
   
