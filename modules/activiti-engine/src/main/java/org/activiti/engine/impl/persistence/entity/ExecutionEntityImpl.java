@@ -423,6 +423,13 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   
   public void setRootProcessInstance(ExecutionEntity rootProcessInstance) {
     this.rootProcessInstance = (ExecutionEntityImpl) rootProcessInstance;
+    
+
+    if (rootProcessInstance != null) {
+      this.rootProcessInstanceId = rootProcessInstance.getId();
+    } else {
+      this.rootProcessInstanceId = null;
+    }
   }
 
   public void setRootProcessInstanceId(String rootProcessInstanceId) {

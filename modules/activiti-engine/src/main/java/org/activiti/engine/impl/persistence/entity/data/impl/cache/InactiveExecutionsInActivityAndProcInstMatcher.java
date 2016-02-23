@@ -12,18 +12,27 @@
  */
 package org.activiti.engine.impl.persistence.entity.data.impl.cache;
 
-import org.activiti.engine.impl.persistence.SingleCachedEntityMatcher;
+import java.util.Map;
+
+import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 
 /**
  * @author Joram Barrez
  */
-public class SubProcessInstanceExecutionBySuperExecutionIdMatcher implements SingleCachedEntityMatcher<ExecutionEntity> {
+public class InactiveExecutionsInActivityAndProcInstMatcher extends CachedEntityMatcherAdapter<ExecutionEntity> {
   
   @Override
   public boolean isRetained(ExecutionEntity executionEntity, Object parameter) {
-    return executionEntity.getSuperExecutionId() != null 
-        && ((String) parameter).equals(executionEntity.getSuperExecutionId());
+    Map<String, Object> paramMap = (Map<String, Object>) parameter;
+    String activityId = (String) paramMap.get("activityId");
+    String processInstanceId = (String) paramMap.get("processInstanceId");
+    
+    return executionEntity.getProcessInstanceId() != null 
+        && executionEntity.getProcessInstanceId().equals(processInstanceId) 
+        && !executionEntity.isActive() 
+        && executionEntity.getActivityId() != null 
+        && executionEntity.getActivityId().equals(activityId);
   }
 
 }

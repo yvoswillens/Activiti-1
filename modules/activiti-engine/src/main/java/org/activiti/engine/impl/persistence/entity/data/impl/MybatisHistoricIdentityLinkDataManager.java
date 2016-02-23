@@ -15,17 +15,21 @@ package org.activiti.engine.impl.persistence.entity.data.impl;
 import java.util.List;
 
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
+import org.activiti.engine.impl.persistence.CachedEntityMatcher;
 import org.activiti.engine.impl.persistence.entity.HistoricIdentityLinkEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricIdentityLinkEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
 import org.activiti.engine.impl.persistence.entity.data.HistoricIdentityLinkDataManager;
+import org.activiti.engine.impl.persistence.entity.data.impl.cache.HistoricIdentityLinksByProcInstMatcher;
 
 /**
  * @author Joram Barrez
  */
 public class MybatisHistoricIdentityLinkDataManager extends AbstractDataManager<HistoricIdentityLinkEntity> implements HistoricIdentityLinkDataManager {
 
+  protected CachedEntityMatcher<HistoricIdentityLinkEntity> historicIdentityLinksByProcInstMatcher
+      = new HistoricIdentityLinksByProcInstMatcher();
+  
   public MybatisHistoricIdentityLinkDataManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
     super(processEngineConfiguration);
   }
@@ -48,13 +52,7 @@ public class MybatisHistoricIdentityLinkDataManager extends AbstractDataManager<
 
   @Override
   public List<HistoricIdentityLinkEntity> findHistoricIdentityLinksByProcessInstanceId(final String processInstanceId) {
-    return getList("selectHistoricIdentityLinksByProcessInstance", processInstanceId, new CachedEntityMatcherAdapter<HistoricIdentityLinkEntity>() {
-      @Override
-      public boolean isRetained(HistoricIdentityLinkEntity historicIdentityLinkEntity, Object parameter) {
-        return historicIdentityLinkEntity.getProcessInstanceId() != null && historicIdentityLinkEntity.getProcessInstanceId().equals(processInstanceId);
-      }
-      
-    }, true);
+    return getList("selectHistoricIdentityLinksByProcessInstance", processInstanceId, historicIdentityLinksByProcInstMatcher, true);
   }
   
 }

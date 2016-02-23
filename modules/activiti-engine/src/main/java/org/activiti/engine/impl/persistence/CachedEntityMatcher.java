@@ -13,13 +13,13 @@ import org.activiti.engine.impl.persistence.cache.CachedEntity;
 public interface CachedEntityMatcher<EntityImpl extends Entity> {
 
   /**
-   * Allows to 'pre-process' this instance, using the database results and the cached entities.
+   * Returns true if an entity from the cache should be retained (i.e. used as return result).
+   * 
+   * Most implementations of this interface probably don't need this method,
+   * and should extend the {@link CachedEntityMatcherAdapter}, which hides this method.
+   * 
+   * Note that the databaseEntities collection can be null, in case only the cache is checked.
    */
-  void preProcess( Collection<EntityImpl> databaseEntities, Collection<CachedEntity> cachedEntities);
-  
-  /**
-   * Return true in case the cached entity should be used instead of one from the database. 
-   */
-  boolean isRetained(EntityImpl entity, Object param);
+  boolean isRetained(Collection<EntityImpl> databaseEntities, Collection<CachedEntity> cachedEntities, EntityImpl entity, Object param);
 
 }

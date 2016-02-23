@@ -69,13 +69,6 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
   public void delete(ExecutionEntity entity, boolean fireDeleteEvent) {
     super.delete(entity, fireDeleteEvent);
     entity.setDeleted(true);
-    
-    if (entity.getParentId() != null) {
-      entity.getParent().getExecutions().remove(entity);
-    }
-    if (entity.getSuperExecutionId() != null) {
-      entity.getSuperExecution().setSubProcessInstance(null);
-    }
   }
   
   // FIND METHODS

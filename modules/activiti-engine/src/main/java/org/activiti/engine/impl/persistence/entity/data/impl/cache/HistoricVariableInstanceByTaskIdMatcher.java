@@ -12,18 +12,18 @@
  */
 package org.activiti.engine.impl.persistence.entity.data.impl.cache;
 
-import org.activiti.engine.impl.persistence.SingleCachedEntityMatcher;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
+import org.activiti.engine.impl.persistence.entity.HistoricVariableInstanceEntity;
 
 /**
  * @author Joram Barrez
  */
-public class SubProcessInstanceExecutionBySuperExecutionIdMatcher implements SingleCachedEntityMatcher<ExecutionEntity> {
-  
+public class HistoricVariableInstanceByTaskIdMatcher extends CachedEntityMatcherAdapter<HistoricVariableInstanceEntity> {
+ 
   @Override
-  public boolean isRetained(ExecutionEntity executionEntity, Object parameter) {
-    return executionEntity.getSuperExecutionId() != null 
-        && ((String) parameter).equals(executionEntity.getSuperExecutionId());
+  public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity, Object parameter) {
+    return historicVariableInstanceEntity.getTaskId() != null 
+        && historicVariableInstanceEntity.getTaskId().equals((String) parameter);
   }
-
+  
 }

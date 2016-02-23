@@ -19,17 +19,25 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.HistoricVariableInstanceQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
+import org.activiti.engine.impl.persistence.CachedEntityMatcher;
 import org.activiti.engine.impl.persistence.entity.HistoricVariableInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricVariableInstanceEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
 import org.activiti.engine.impl.persistence.entity.data.HistoricVariableInstanceDataManager;
+import org.activiti.engine.impl.persistence.entity.data.impl.cache.HistoricVariableInstanceByProcInstMatcher;
+import org.activiti.engine.impl.persistence.entity.data.impl.cache.HistoricVariableInstanceByTaskIdMatcher;
 
 /**
  * @author Joram Barrez
  */
 public class MybatisHistoricVariableInstanceDataManager extends AbstractDataManager<HistoricVariableInstanceEntity> implements HistoricVariableInstanceDataManager {
 
+  protected CachedEntityMatcher<HistoricVariableInstanceEntity> historicVariableInstanceByTaskIdMatcher
+      = new HistoricVariableInstanceByTaskIdMatcher();
+  
+  protected CachedEntityMatcher<HistoricVariableInstanceEntity> historicVariableInstanceByProcInstMatcher
+      = new HistoricVariableInstanceByProcInstMatcher();
+  
   public MybatisHistoricVariableInstanceDataManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
     super(processEngineConfiguration);
   }
@@ -51,24 +59,12 @@ public class MybatisHistoricVariableInstanceDataManager extends AbstractDataMana
   
   @Override
   public List<HistoricVariableInstanceEntity> findHistoricVariableInstancesByProcessInstanceId(final String processInstanceId) {
-    return getList("selectHistoricVariableInstanceByProcessInstanceId", processInstanceId, new CachedEntityMatcherAdapter<HistoricVariableInstanceEntity>() {
-      @Override
-      public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity, Object parameter) {
-        return historicVariableInstanceEntity.getProcessInstanceId() != null && historicVariableInstanceEntity.getProcessInstanceId().equals(processInstanceId);
-      }
-      
-    }, true);
+    return getList("selectHistoricVariableInstanceByProcessInstanceId", processInstanceId, historicVariableInstanceByProcInstMatcher, true);
   }
   
   @Override
   public List<HistoricVariableInstanceEntity> findHistoricVariableInstancesByTaskId(final String taskId) {
-    return getList("selectHistoricVariableInstanceByTaskId", taskId, new CachedEntityMatcherAdapter<HistoricVariableInstanceEntity>() {
-      @Override
-      public boolean isRetained(HistoricVariableInstanceEntity historicVariableInstanceEntity, Object parameter) {
-        return historicVariableInstanceEntity.getTaskId() != null && historicVariableInstanceEntity.getTaskId().equals(taskId);
-      }
-      
-    }, true);
+    return getList("selectHistoricVariableInstanceByTaskId", taskId, historicVariableInstanceByTaskIdMatcher, true);
   }
   
   @Override

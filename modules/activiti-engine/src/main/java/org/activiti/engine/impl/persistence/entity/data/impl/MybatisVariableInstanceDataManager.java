@@ -18,17 +18,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
+import org.activiti.engine.impl.persistence.CachedEntityMatcher;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
 import org.activiti.engine.impl.persistence.entity.data.VariableInstanceDataManager;
+import org.activiti.engine.impl.persistence.entity.data.impl.cache.VariableByExecutionIdMatcher;
 
 /**
  * @author Joram Barrez
  */
 public class MybatisVariableInstanceDataManager extends AbstractDataManager<VariableInstanceEntity> implements VariableInstanceDataManager {
 
+  protected CachedEntityMatcher<VariableInstanceEntity> variableInstanceEntity = new VariableByExecutionIdMatcher();
+  
   public MybatisVariableInstanceDataManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
     super(processEngineConfiguration);
   }
@@ -51,12 +54,7 @@ public class MybatisVariableInstanceDataManager extends AbstractDataManager<Vari
   
   @Override
   public Collection<VariableInstanceEntity> findVariableInstancesByExecutionId(final String executionId) {
-    return getList("selectVariablesByExecutionId", executionId, new CachedEntityMatcherAdapter<VariableInstanceEntity>() {
-      @Override
-      public boolean isRetained(VariableInstanceEntity variableInstanceEntity, Object parameter) {
-        return variableInstanceEntity.getExecutionId() != null && variableInstanceEntity.getExecutionId().equals(executionId);
-      }
-    }, true);
+    return getList("selectVariablesByExecutionId", executionId, variableInstanceEntity, true);
   }
 
   @Override

@@ -23,6 +23,7 @@ import org.activiti.engine.impl.db.DbSqlSession;
 import org.activiti.engine.impl.db.Entity;
 import org.activiti.engine.impl.persistence.AbstractManager;
 import org.activiti.engine.impl.persistence.CachedEntityMatcher;
+import org.activiti.engine.impl.persistence.SingleCachedEntityMatcher;
 import org.activiti.engine.impl.persistence.cache.CachedEntity;
 import org.activiti.engine.impl.persistence.cache.EntityCache;
 
@@ -87,7 +88,7 @@ public abstract class AbstractDataManager<EntityImpl extends Entity> extends Abs
   }
   
   @SuppressWarnings("unchecked")
-  protected EntityImpl getEntity(String selectQuery, Object parameter, CachedEntityMatcher<EntityImpl> cachedEntityMatcher, boolean checkDatabase) {
+  protected EntityImpl getEntity(String selectQuery, Object parameter, SingleCachedEntityMatcher<EntityImpl> cachedEntityMatcher, boolean checkDatabase) {
     // Cache
     for (EntityImpl cachedEntity : getEntityCache().findInCache(getManagedEntityClass())) {
       if (cachedEntityMatcher.isRetained(cachedEntity, parameter)) {
@@ -124,10 +125,6 @@ public abstract class AbstractDataManager<EntityImpl extends Entity> extends Abs
       
       Collection<CachedEntity> cachedObjects = getEntityCache().findInCacheAsCachedObjects(getManagedEntityClass());
       
-      if (cachedEntityMatcher != null) {
-        cachedEntityMatcher.preProcess(result, cachedObjects);
-      }
-      
       if ( (cachedObjects != null && cachedObjects.size() > 0) || getManagedEntitySubClasses() != null) {
         
         HashMap<String, EntityImpl> entityMap = new HashMap<String, EntityImpl>(result.size());
@@ -141,7 +138,7 @@ public abstract class AbstractDataManager<EntityImpl extends Entity> extends Abs
         if (cachedObjects != null && cachedEntityMatcher != null) {
           for (CachedEntity cachedObject : cachedObjects) {
             EntityImpl cachedEntity = (EntityImpl) cachedObject.getEntity();
-            if (cachedEntityMatcher.isRetained(cachedEntity, parameter)) {
+            if (cachedEntityMatcher.isRetained(result, cachedObjects, cachedEntity, parameter)) {
               entityMap.put(cachedEntity.getId(), cachedEntity); // will overwite db version with newer version
             }
           }
@@ -153,7 +150,7 @@ public abstract class AbstractDataManager<EntityImpl extends Entity> extends Abs
             if (subclassCachedObjects != null) {
               for (CachedEntity subclassCachedObject : subclassCachedObjects) {
                 EntityImpl cachedSubclassEntity = (EntityImpl) subclassCachedObject.getEntity();
-                if (cachedEntityMatcher.isRetained(cachedSubclassEntity, parameter)) {
+                if (cachedEntityMatcher.isRetained(result, cachedObjects, cachedSubclassEntity, parameter)) {
                   entityMap.put(cachedSubclassEntity.getId(), cachedSubclassEntity); // will overwite db version with newer version
                 }
               }
@@ -190,7 +187,7 @@ public abstract class AbstractDataManager<EntityImpl extends Entity> extends Abs
     if (cachedObjects != null && entityMatcher != null) {
       for (CachedEntity cachedObject : cachedObjects) {
         EntityImpl cachedEntity = (EntityImpl) cachedObject.getEntity();
-        if (entityMatcher.isRetained(cachedEntity, parameter) && !dbSqlSession.isEntityToBeDeleted(cachedEntity)) {
+        if (entityMatcher.isRetained(null, cachedObjects, cachedEntity, parameter) && !dbSqlSession.isEntityToBeDeleted(cachedEntity)) {
           result.add(cachedEntity);
         }
       }
@@ -202,7 +199,7 @@ public abstract class AbstractDataManager<EntityImpl extends Entity> extends Abs
         if (subclassCachedObjects != null) {
           for (CachedEntity subclassCachedObject : subclassCachedObjects) {
             EntityImpl cachedSubclassEntity = (EntityImpl) subclassCachedObject.getEntity();
-            if (entityMatcher.isRetained(cachedSubclassEntity, parameter) && !dbSqlSession.isEntityToBeDeleted(cachedSubclassEntity)) {
+            if (entityMatcher.isRetained(null, cachedObjects, cachedSubclassEntity, parameter) && !dbSqlSession.isEntityToBeDeleted(cachedSubclassEntity)) {
               result.add(cachedSubclassEntity);
             }
           }

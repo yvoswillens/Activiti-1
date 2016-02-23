@@ -11,14 +11,11 @@ import org.activiti.engine.impl.persistence.cache.CachedEntity;
 public abstract class CachedEntityMatcherAdapter<EntityImpl extends Entity> implements CachedEntityMatcher<EntityImpl> {
   
   @Override
-  public void preProcess(Collection<EntityImpl> databaseEntities, Collection<CachedEntity> cachedEntities) {
-    
+  public boolean isRetained(Collection<EntityImpl> databaseEntities, Collection<CachedEntity> cachedEntities, EntityImpl entity, Object param) {
+    return isRetained(entity, param);
   }
   
-  @Override
-  public boolean isRetained(EntityImpl entity, Object param) {
-    return false;
-  }
+  public abstract boolean isRetained(EntityImpl entity, Object param);
   
 }
  

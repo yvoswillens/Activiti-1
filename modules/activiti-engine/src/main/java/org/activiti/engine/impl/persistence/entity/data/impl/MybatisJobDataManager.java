@@ -21,7 +21,7 @@ import java.util.Map;
 import org.activiti.engine.impl.JobQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.CachedEntityMatcherAdapter;
+import org.activiti.engine.impl.persistence.CachedEntityMatcher;
 import org.activiti.engine.impl.persistence.entity.JobEntity;
 import org.activiti.engine.impl.persistence.entity.JobEntityImpl;
 import org.activiti.engine.impl.persistence.entity.MessageEntity;
@@ -30,12 +30,15 @@ import org.activiti.engine.impl.persistence.entity.TimerEntity;
 import org.activiti.engine.impl.persistence.entity.TimerEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
 import org.activiti.engine.impl.persistence.entity.data.JobDataManager;
+import org.activiti.engine.impl.persistence.entity.data.impl.cache.JobsByExecutionIdMatcher;
 import org.activiti.engine.runtime.Job;
 
 /**
  * @author Joram Barrez
  */
 public class MybatisJobDataManager extends AbstractDataManager<JobEntity> implements JobDataManager {
+  
+  protected CachedEntityMatcher<JobEntity> jobsByExecutionIdMatcher = new JobsByExecutionIdMatcher();
   
   public MybatisJobDataManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
     super(processEngineConfiguration);
@@ -103,12 +106,7 @@ public class MybatisJobDataManager extends AbstractDataManager<JobEntity> implem
 
   @Override
   public List<JobEntity> findJobsByExecutionId(final String executionId) {
-    return getList("selectJobsByExecutionId", executionId, new CachedEntityMatcherAdapter<JobEntity>() {
-      @Override
-      public boolean isRetained(JobEntity jobEntity, Object parameter) {
-        return jobEntity.getExecutionId() != null && jobEntity.getExecutionId().equals(executionId);
-      }
-    }, true);
+    return getList("selectJobsByExecutionId", executionId, jobsByExecutionIdMatcher, true);
   }
 
   @Override
