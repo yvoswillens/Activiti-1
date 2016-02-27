@@ -20,6 +20,7 @@ import java.util.Map;
 import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.persistence.CountingExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.data.DataManager;
 import org.activiti.engine.impl.persistence.entity.data.VariableInstanceDataManager;
 import org.activiti.engine.impl.variable.VariableType;
@@ -33,9 +34,12 @@ public class VariableInstanceEntityManagerImpl extends AbstractEntityManager<Var
 
   protected VariableInstanceDataManager variableInstanceDataManager;
   
+  protected boolean enableExecutionRelationshipCounts;
+  
   public VariableInstanceEntityManagerImpl(ProcessEngineConfigurationImpl processEngineConfiguration, VariableInstanceDataManager variableInstanceDataManager) {
     super(processEngineConfiguration);
     this.variableInstanceDataManager = variableInstanceDataManager;
+    this.enableExecutionRelationshipCounts = processEngineConfiguration.isEnableExecutionRelationshipCounts();
   }
 
   @Override
@@ -52,6 +56,17 @@ public class VariableInstanceEntityManagerImpl extends AbstractEntityManager<Var
     variableInstance.setValue(value);
     return variableInstance;
   }
+  
+  @Override
+  public void insert(VariableInstanceEntity entity, boolean fireCreateEvent) {
+    super.insert(entity, fireCreateEvent);
+    
+    if (enableExecutionRelationshipCounts && entity.getExecutionId() != null) {
+      CountingExecutionEntity executionEntity = (CountingExecutionEntity) getExecutionEntityManager().findById(entity.getExecutionId());
+      executionEntity.setVariableCount(executionEntity.getVariableCount() + 1);
+    }
+  }
+  
   
   @Override
   public List<VariableInstanceEntity> findVariableInstancesByTaskId(String taskId) {
@@ -91,6 +106,11 @@ public class VariableInstanceEntityManagerImpl extends AbstractEntityManager<Var
       byteArrayRef.delete();
     }
     entity.setDeleted(true);
+    
+    if (enableExecutionRelationshipCounts && entity.getExecutionId() != null) {
+      CountingExecutionEntity executionEntity = (CountingExecutionEntity) getExecutionEntityManager().findById(entity.getExecutionId());
+      executionEntity.setVariableCount(executionEntity.getVariableCount() - 1);
+    }
 
     if (fireDeleteEvent && getEventDispatcher().isEnabled()) {
       getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.ENTITY_DELETED, entity));

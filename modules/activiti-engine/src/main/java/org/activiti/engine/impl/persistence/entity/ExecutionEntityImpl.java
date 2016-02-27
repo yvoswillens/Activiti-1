@@ -26,6 +26,7 @@ import org.activiti.engine.delegate.event.ActivitiEventType;
 import org.activiti.engine.delegate.event.impl.ActivitiEventBuilder;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.interceptor.CommandContext;
+import org.activiti.engine.impl.persistence.CountingExecutionEntity;
 import org.activiti.engine.impl.util.ProcessDefinitionUtil;
 
 /**
@@ -36,7 +37,7 @@ import org.activiti.engine.impl.util.ProcessDefinitionUtil;
  * @author Joram Barrez
  */
 
-public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionEntity {
+public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionEntity, CountingExecutionEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -100,6 +101,13 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   
   protected int revision = 1;
   protected int suspensionState = SuspensionState.ACTIVE.getStateCode();
+  
+  // CountingExecutionEntity 
+  protected int eventSubscriptionCount;
+  protected int taskCount;
+  protected int jobCount;
+  protected int variableCount;
+  protected int identityLinkCount;
 
   /**
    * persisted reference to the processDefinition.
@@ -467,7 +475,7 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
     }
     variableInstance.setExecutionId(id);
   }
-
+  
   @Override
   protected Collection<VariableInstanceEntity> loadVariableInstances() {
     return Context.getCommandContext().getVariableInstanceEntityManager().findVariableInstancesByExecutionId(id);
@@ -796,12 +804,56 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   public int getCachedEntityState() {
     return cachedEntityState;
   }
+  
+  public void setCachedEntityState(int cachedEntityState) {
+    this.cachedEntityState = cachedEntityState;
+  }
 
   public String getActivityName() {
     return activityName;
   }
   
-//toString /////////////////////////////////////////////////////////////////
+  public int getEventSubscriptionCount() {
+    return eventSubscriptionCount;
+  }
+
+  public void setEventSubscriptionCount(int eventSubscriptionCount) {
+    this.eventSubscriptionCount = eventSubscriptionCount;
+  }
+
+  public int getTaskCount() {
+    return taskCount;
+  }
+
+  public void setTaskCount(int taskCount) {
+    this.taskCount = taskCount;
+  }
+
+  public int getJobCount() {
+    return jobCount;
+  }
+
+  public void setJobCount(int jobCount) {
+    this.jobCount = jobCount;
+  }
+
+  public int getVariableCount() {
+    return variableCount;
+  }
+
+  public void setVariableCount(int variableCount) {
+    this.variableCount = variableCount;
+  }
+  
+  public int getIdentityLinkCount() {
+    return identityLinkCount;
+  }
+  
+  public void setIdentityLinkCount(int identityLinkCount) {
+    this.identityLinkCount = identityLinkCount;
+  }  
+  
+  //toString /////////////////////////////////////////////////////////////////
 
   public String toString() {
     if (isProcessInstanceType()) {

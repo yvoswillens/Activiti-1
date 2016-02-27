@@ -28,6 +28,7 @@ import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.event.EventHandler;
 import org.activiti.engine.impl.jobexecutor.ProcessEventJobHandler;
+import org.activiti.engine.impl.persistence.CountingExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.data.DataManager;
 import org.activiti.engine.impl.persistence.entity.data.EventSubscriptionDataManager;
 
@@ -39,9 +40,12 @@ public class EventSubscriptionEntityManagerImpl extends AbstractEntityManager<Ev
   
   protected EventSubscriptionDataManager eventSubscriptionDataManager;
   
+  protected boolean enableExecutionRelationshipCounts;
+  
   public EventSubscriptionEntityManagerImpl(ProcessEngineConfigurationImpl processEngineConfiguration, EventSubscriptionDataManager eventSubscriptionDataManager) {
     super(processEngineConfiguration);
     this.eventSubscriptionDataManager = eventSubscriptionDataManager;
+    this.enableExecutionRelationshipCounts = processEngineConfiguration.isEnableExecutionRelationshipCounts();
   }
   
   @Override
@@ -113,6 +117,25 @@ public class EventSubscriptionEntityManagerImpl extends AbstractEntityManager<Ev
     }
     insert(eventSubscription);
     return eventSubscription;
+  }
+  
+  @Override
+  public void insert(EventSubscriptionEntity entity, boolean fireCreateEvent) {
+    super.insert(entity, fireCreateEvent);
+    
+    if (entity.getExecutionId() != null && enableExecutionRelationshipCounts) {
+      CountingExecutionEntity executionEntity = (CountingExecutionEntity) entity.getExecution();
+      executionEntity.setEventSubscriptionCount(executionEntity.getEventSubscriptionCount() + 1);
+    }
+  }
+  
+  @Override
+  public void delete(EventSubscriptionEntity entity, boolean fireDeleteEvent) {
+    if (entity.getExecutionId() != null && enableExecutionRelationshipCounts) {
+      CountingExecutionEntity executionEntity = (CountingExecutionEntity) entity.getExecution();
+      executionEntity.setEventSubscriptionCount(executionEntity.getEventSubscriptionCount() - 1);
+    }
+    super.delete(entity, fireDeleteEvent);
   }
   
   @Override

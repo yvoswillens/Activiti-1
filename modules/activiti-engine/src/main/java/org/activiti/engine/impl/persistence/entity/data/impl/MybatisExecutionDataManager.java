@@ -84,7 +84,7 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   
   public MybatisExecutionDataManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
     super(processEngineConfiguration);
-    this.eagerlyFetchExecutionTree = processEngineConfiguration.isEagerlyFetchExecutionTree();
+    this.eagerlyFetchExecutionTree = processEngineConfiguration.isEnableEagerExecutionTreeFetch();
   }
 
   @Override
@@ -130,14 +130,6 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   
   @Override
   public ExecutionEntity findSubProcessInstanceBySuperExecutionId(final String superExecutionId) {
-    
-//    return getEntity("selectSubProcessInstanceBySuperExecutionId", superExecutionId, new CachedEntityMatcherAdapter<ExecutionEntity>() {
-//      @Override
-//      public boolean isRetained(ExecutionEntity executionEntity, Object parameter) {
-//        return executionEntity.getSuperExecutionId() != null && superExecutionId.equals(executionEntity.getSuperExecutionId());
-//      }
-//    }, true);
-    
     if (eagerlyFetchExecutionTree) {
       findByIdAndFetchExecutionTree(superExecutionId);
     }
@@ -150,12 +142,6 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   
   @Override
   public List<ExecutionEntity> findChildExecutionsByParentExecutionId(final String parentExecutionId) {
-//    return getList("selectExecutionsByParentExecutionId", parentExecutionId, new CachedEntityMatcherAdapter<ExecutionEntity>() {
-//      @Override
-//      public boolean isRetained(ExecutionEntity entity, Object parameter) {
-//        return entity.getParentId() != null && entity.getParentId().equals(parentExecutionId);
-//      }
-//    }, true);
     if (eagerlyFetchExecutionTree) {
       findByIdAndFetchExecutionTree(parentExecutionId);
       return getListFromCache(executionsByParentIdMatcher, parentExecutionId);
@@ -166,14 +152,6 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   
   @Override
   public List<ExecutionEntity> findChildExecutionsByProcessInstanceId(final String processInstanceId) {
-//    return getList("selectChildExecutionsByProcessInstanceId", processInstanceId, new CachedEntityMatcherAdapter<ExecutionEntity>() {
-//      @Override
-//      public boolean isRetained(ExecutionEntity executionEntity, Object parameter) {
-//        return executionEntity.getProcessInstanceId() != null 
-//            && executionEntity.getProcessInstanceId().equals(processInstanceId) 
-//            && executionEntity.getParentId() != null;
-//      }
-//    }, true);
     if (eagerlyFetchExecutionTree) {
       findByIdAndFetchExecutionTree(processInstanceId);
       return getListFromCache(executionsByProcessInstanceIdMatcher, processInstanceId);

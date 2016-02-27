@@ -30,6 +30,7 @@ import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.ProcessInstanceQueryImpl;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.identity.Authentication;
+import org.activiti.engine.impl.persistence.CountingExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.data.DataManager;
 import org.activiti.engine.impl.persistence.entity.data.ExecutionDataManager;
 import org.activiti.engine.runtime.Execution;
@@ -48,9 +49,12 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
   
   protected ExecutionDataManager executionDataManager;
   
+  protected boolean enableExecutionRelationshipCounts;
+  
   public ExecutionEntityManagerImpl(ProcessEngineConfigurationImpl processEngineConfiguration, ExecutionDataManager executionDataManager) {
     super(processEngineConfiguration);
     this.executionDataManager = executionDataManager;
+    this.enableExecutionRelationshipCounts = processEngineConfiguration.isEnableExecutionRelationshipCounts();
   }
 
   @Override
@@ -499,7 +503,9 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     executionEntity.setEnded(true);
     executionEntity.setActive(false);
     
-    if (executionEntity.getId().equals(executionEntity.getProcessInstanceId())) {
+    if (executionEntity.getId().equals(executionEntity.getProcessInstanceId())
+        && (!enableExecutionRelationshipCounts 
+            || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getIdentityLinkCount() > 0))) {
       IdentityLinkEntityManager identityLinkEntityManager = getIdentityLinkEntityManager();
       Collection<IdentityLinkEntity> identityLinks = identityLinkEntityManager.findIdentityLinksByProcessInstanceId(executionEntity.getProcessInstanceId());
       for (IdentityLinkEntity identityLink : identityLinks) {
@@ -508,38 +514,49 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     }
 
     // Get variables related to execution and delete them
-    VariableInstanceEntityManager variableInstanceEntityManager = getVariableInstanceEntityManager();
-    Collection<VariableInstanceEntity> executionVariables = variableInstanceEntityManager.findVariableInstancesByExecutionId(executionEntity.getId());
-    for (VariableInstanceEntity variableInstanceEntity : executionVariables) {
-      variableInstanceEntityManager.delete(variableInstanceEntity);
-      if (variableInstanceEntity.getByteArrayRef() != null && variableInstanceEntity.getByteArrayRef().getId() != null) {
-        getByteArrayEntityManager().deleteByteArrayById(variableInstanceEntity.getByteArrayRef().getId());
+    if (!enableExecutionRelationshipCounts || 
+        (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getVariableCount() > 0)) {
+      VariableInstanceEntityManager variableInstanceEntityManager = getVariableInstanceEntityManager();
+      Collection<VariableInstanceEntity> executionVariables = variableInstanceEntityManager.findVariableInstancesByExecutionId(executionEntity.getId());
+      for (VariableInstanceEntity variableInstanceEntity : executionVariables) {
+        variableInstanceEntityManager.delete(variableInstanceEntity);
+        if (variableInstanceEntity.getByteArrayRef() != null && variableInstanceEntity.getByteArrayRef().getId() != null) {
+          getByteArrayEntityManager().deleteByteArrayById(variableInstanceEntity.getByteArrayRef().getId());
+        }
       }
     }
 
     // Delete current user tasks
-    TaskEntityManager taskEntityManager = getTaskEntityManager();
-    Collection<TaskEntity> tasksForExecution = taskEntityManager.findTasksByExecutionId(executionEntity.getId());
-    for (TaskEntity taskEntity : tasksForExecution) {
-      taskEntityManager.deleteTask(taskEntity, deleteReason, false, cancel);
-    }
-
-    // Delete jobs
-    JobEntityManager jobEntityManager = getJobEntityManager();
-    Collection<JobEntity> jobsForExecution = jobEntityManager.findJobsByExecutionId(executionEntity.getId());
-    for (JobEntity job : jobsForExecution) {
-      getJobEntityManager().delete(job);
-      if (getEventDispatcher().isEnabled()) {
-        getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.JOB_CANCELED, job));
+    if (!enableExecutionRelationshipCounts || 
+        (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getTaskCount() > 0)) {
+      TaskEntityManager taskEntityManager = getTaskEntityManager();
+      Collection<TaskEntity> tasksForExecution = taskEntityManager.findTasksByExecutionId(executionEntity.getId());
+      for (TaskEntity taskEntity : tasksForExecution) {
+        taskEntityManager.deleteTask(taskEntity, deleteReason, false, cancel);
       }
-//      jobEntityManager.delete(job, false); // false -> jobs fire the events themselves TODO: is this right?
+    }
+    
+    // Delete jobs
+    if (!enableExecutionRelationshipCounts 
+        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getJobCount() > 0)) {
+      JobEntityManager jobEntityManager = getJobEntityManager();
+      Collection<JobEntity> jobsForExecution = jobEntityManager.findJobsByExecutionId(executionEntity.getId());
+      for (JobEntity job : jobsForExecution) {
+        getJobEntityManager().delete(job);
+        if (getEventDispatcher().isEnabled()) {
+          getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createEntityEvent(ActivitiEventType.JOB_CANCELED, job));
+        }
+      }
     }
 
     // Delete event subscriptions
-    EventSubscriptionEntityManager eventSubscriptionEntityManager = getEventSubscriptionEntityManager();
-    List<EventSubscriptionEntity> eventSubscriptions = eventSubscriptionEntityManager.findEventSubscriptionsByExecution(executionEntity.getId());
-    for (EventSubscriptionEntity eventSubscription : eventSubscriptions) {
-      eventSubscriptionEntityManager.delete(eventSubscription);
+    if (!enableExecutionRelationshipCounts 
+        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getEventSubscriptionCount() > 0)) {
+      EventSubscriptionEntityManager eventSubscriptionEntityManager = getEventSubscriptionEntityManager();
+      List<EventSubscriptionEntity> eventSubscriptions = eventSubscriptionEntityManager.findEventSubscriptionsByExecution(executionEntity.getId());
+      for (EventSubscriptionEntity eventSubscription : eventSubscriptions) {
+        eventSubscriptionEntityManager.delete(eventSubscription);
+      }
     }
   }
 

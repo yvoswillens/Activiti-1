@@ -115,6 +115,10 @@ public interface ExecutionEntity extends DelegateExecution, Execution, ProcessIn
   Date getLockTime();
 
   void setLockTime(Date lockTime);
+  
+  int getCachedEntityState();
+  
+  void setCachedEntityState(int cachedEntityState);
 
   boolean isDeleted();
 

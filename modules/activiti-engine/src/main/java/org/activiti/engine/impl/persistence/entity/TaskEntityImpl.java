@@ -202,23 +202,6 @@ public class TaskEntityImpl extends VariableScopeImpl implements TaskEntity, Ser
     return execution;
   }
 
-  public void setExecution(DelegateExecution execution) {
-    if (execution != null) {
-      this.execution = (ExecutionEntity) execution;
-      this.executionId = this.execution.getId();
-      this.processInstanceId = this.execution.getProcessInstanceId();
-      this.processDefinitionId = this.execution.getProcessDefinitionId();
-
-      Context.getCommandContext().getHistoryManager().recordTaskExecutionIdChange(this.id, executionId);
-
-    } else {
-      this.execution = null;
-      this.executionId = null;
-      this.processInstanceId = null;
-      this.processDefinitionId = null;
-    }
-  }
-  
   // task assignment ////////////////////////////////////////////////////////////
 
   @Override

@@ -71,6 +71,11 @@ create table ACT_RU_EXECUTION (
     TENANT_ID_ nvarchar(255) default '',
     NAME_ nvarchar(255),
     LOCK_TIME_ datetime,
+    EVT_SUBSCR_COUNT integer, 
+    TASK_COUNT integer, 
+    JOB_COUNT integer, 
+    VAR_COUNT integer, 
+    ID_LINK_COUNT integer,
     primary key (ID_)
 );
 

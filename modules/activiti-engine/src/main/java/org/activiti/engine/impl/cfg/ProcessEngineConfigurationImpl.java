@@ -794,7 +794,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    */
   protected boolean usingRelationalDatabase = true;
   
-  protected boolean eagerlyFetchExecutionTree;
+  /* Experimental performance optimization settings */
+  
+  protected boolean enableEagerExecutionTreeFetch;
+  protected boolean enableExecutionRelationshipCounts;
 
   // Backwards compatibility //////////////////////////////////////////////////////////////
   
@@ -2922,13 +2925,22 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     this.usingRelationalDatabase = usingRelationalDatabase;
     return this;
   }
-  
-  public boolean isEagerlyFetchExecutionTree() {
-    return eagerlyFetchExecutionTree;
+
+  public boolean isEnableEagerExecutionTreeFetch() {
+    return enableEagerExecutionTreeFetch;
   }
 
-  public ProcessEngineConfigurationImpl setEagerlyFetchExecutionTree(boolean eagerlyFetchExecutionTree) {
-    this.eagerlyFetchExecutionTree = eagerlyFetchExecutionTree;
+  public ProcessEngineConfigurationImpl setEnableEagerExecutionTreeFetch(boolean enableEagerExecutionTreeFetch) {
+    this.enableEagerExecutionTreeFetch = enableEagerExecutionTreeFetch;
+    return this;
+  }
+
+  public boolean isEnableExecutionRelationshipCounts() {
+    return enableExecutionRelationshipCounts;
+  }
+
+  public ProcessEngineConfigurationImpl setEnableExecutionRelationshipCounts(boolean enableExecutionRelationshipCounts) {
+    this.enableExecutionRelationshipCounts = enableExecutionRelationshipCounts;
     return this;
   }
 
