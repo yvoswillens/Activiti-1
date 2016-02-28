@@ -17,17 +17,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.activiti.engine.impl.persistence.CachedEntityMatcher;
 import org.activiti.engine.impl.persistence.entity.IdentityLinkEntity;
 import org.activiti.engine.impl.persistence.entity.IdentityLinkEntityImpl;
 import org.activiti.engine.impl.persistence.entity.data.AbstractDataManager;
 import org.activiti.engine.impl.persistence.entity.data.IdentityLinkDataManager;
+import org.activiti.engine.impl.persistence.entity.data.impl.cache.IdentityLinksByProcInstMatcher;
 
 /**
  * @author Joram Barrez
  */
 public class MybatisIdentityLinkDataManager extends AbstractDataManager<IdentityLinkEntity> implements IdentityLinkDataManager {
   
- 
+  protected CachedEntityMatcher<IdentityLinkEntity> identityLinkByProcessInstanceMatcher 
+      = new IdentityLinksByProcInstMatcher();
+  
   public MybatisIdentityLinkDataManager(ProcessEngineConfigurationImpl processEngineConfiguration) {
     super(processEngineConfiguration);
   }
@@ -49,9 +53,8 @@ public class MybatisIdentityLinkDataManager extends AbstractDataManager<Identity
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public List<IdentityLinkEntity> findIdentityLinksByProcessInstanceId(String processInstanceId) {
-    return getDbSqlSession().selectList("selectIdentityLinksByProcessInstance", processInstanceId);
+    return getList("selectIdentityLinksByProcessInstance", processInstanceId, identityLinkByProcessInstanceMatcher, true);
   }
 
   @Override

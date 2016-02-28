@@ -94,9 +94,7 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   
   @Override
   public ExecutionEntity create() {
-    ExecutionEntityImpl executionEntity = new ExecutionEntityImpl();
-    executionEntity.setExecutions(new ArrayList<ExecutionEntityImpl>(1));
-    return executionEntity;
+    return ExecutionEntityImpl.newInstanceWithNullCollections();
   }
   
   @Override
@@ -270,7 +268,13 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
     params.put("activityId", activityId);
     params.put("processInstanceId", processInstanceId);
     params.put("isActive", false);
-    return getList("selectInactiveExecutionsInActivityAndProcessInstance", params, inactiveExecutionsInActivityAndProcInstMatcher, true);
+    
+    if (eagerlyFetchExecutionTree) {
+      findByIdAndFetchExecutionTree(processInstanceId);
+      return getListFromCache(inactiveExecutionsInActivityAndProcInstMatcher, params);
+    } else {
+      return getList("selectInactiveExecutionsInActivityAndProcessInstance", params, inactiveExecutionsInActivityAndProcInstMatcher, true);
+    }
   }
   
   @Override

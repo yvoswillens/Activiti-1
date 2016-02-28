@@ -516,9 +516,11 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     // Get variables related to execution and delete them
     if (!enableExecutionRelationshipCounts || 
         (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getVariableCount() > 0)) {
-      VariableInstanceEntityManager variableInstanceEntityManager = getVariableInstanceEntityManager();
-      Collection<VariableInstanceEntity> executionVariables = variableInstanceEntityManager.findVariableInstancesByExecutionId(executionEntity.getId());
-      for (VariableInstanceEntity variableInstanceEntity : executionVariables) {
+      Collection<VariableInstance> executionVariables = executionEntity.getVariableInstancesLocal().values();
+      for (VariableInstance variableInstance : executionVariables) {
+        VariableInstanceEntity variableInstanceEntity = (VariableInstanceEntity) variableInstance;
+        
+        VariableInstanceEntityManager variableInstanceEntityManager = getVariableInstanceEntityManager();
         variableInstanceEntityManager.delete(variableInstanceEntity);
         if (variableInstanceEntity.getByteArrayRef() != null && variableInstanceEntity.getByteArrayRef().getId() != null) {
           getByteArrayEntityManager().deleteByteArrayById(variableInstanceEntity.getByteArrayRef().getId());

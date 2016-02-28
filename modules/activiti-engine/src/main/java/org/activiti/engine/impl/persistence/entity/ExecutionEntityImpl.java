@@ -13,6 +13,7 @@
 
 package org.activiti.engine.impl.persistence.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -193,6 +194,16 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
     
   }
   
+  public static ExecutionEntityImpl newInstanceWithNullCollections() {
+    ExecutionEntityImpl executionEntity = new ExecutionEntityImpl();
+    executionEntity.executions = new ArrayList<ExecutionEntityImpl>(1);
+    executionEntity.variableInstances = new HashMap<String, VariableInstanceEntity>(1);
+    executionEntity.jobs = new ArrayList<JobEntity>(1);
+    executionEntity.eventSubscriptions = new ArrayList<EventSubscriptionEntity>();
+    executionEntity.identityLinks = new ArrayList<IdentityLinkEntity>(1);
+    return executionEntity;
+  }
+  
   //persistent state /////////////////////////////////////////////////////////
 
  public Object getPersistentState() {
@@ -245,10 +256,6 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   public List<ExecutionEntityImpl> getExecutions() {
     ensureExecutionsInitialized();
     return executions;
-  }
-  
-  public void setExecutions(List<ExecutionEntityImpl> executions) {
-    this.executions = executions;
   }
   
   @Override

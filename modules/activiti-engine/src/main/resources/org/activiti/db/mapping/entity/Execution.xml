@@ -7,7 +7,7 @@
   <!-- EXECUTION INSERT -->
 
   <insert id="insertExecution" parameterType="org.activiti.engine.impl.persistence.entity.ExecutionEntityImpl">
-    insert into ${prefix}ACT_RU_EXECUTION (ID_, REV_, PROC_INST_ID_, BUSINESS_KEY_, PROC_DEF_ID_, ACT_ID_, IS_ACTIVE_, IS_CONCURRENT_, IS_SCOPE_,IS_EVENT_SCOPE_, IS_MI_ROOT_, PARENT_ID_, SUPER_EXEC_, ROOT_PROC_INST_ID_, SUSPENSION_STATE_, CACHED_ENT_STATE_, TENANT_ID_, NAME_)
+    insert into ${prefix}ACT_RU_EXECUTION (ID_, REV_, PROC_INST_ID_, BUSINESS_KEY_, PROC_DEF_ID_, ACT_ID_, IS_ACTIVE_, IS_CONCURRENT_, IS_SCOPE_,IS_EVENT_SCOPE_, IS_MI_ROOT_, PARENT_ID_, SUPER_EXEC_, ROOT_PROC_INST_ID_, SUSPENSION_STATE_, CACHED_ENT_STATE_, TENANT_ID_, NAME_, EVT_SUBSCR_COUNT, TASK_COUNT, JOB_COUNT, VAR_COUNT, ID_LINK_COUNT)
     values (
       #{id ,jdbcType=VARCHAR},
       1,
@@ -69,7 +69,7 @@
     INSERT ALL 
       <foreach collection="list" item="execution" index="index">
         into ${prefix}ACT_RU_EXECUTION (ID_, REV_, PROC_INST_ID_, BUSINESS_KEY_, PROC_DEF_ID_, ACT_ID_,
-        IS_ACTIVE_, IS_CONCURRENT_, IS_SCOPE_,IS_EVENT_SCOPE_, IS_MI_ROOT_, PARENT_ID_, SUPER_EXEC_, ROOT_PROC_INST_ID_, SUSPENSION_STATE_, CACHED_ENT_STATE_, TENANT_ID_, NAME_) VALUES 
+        IS_ACTIVE_, IS_CONCURRENT_, IS_SCOPE_,IS_EVENT_SCOPE_, IS_MI_ROOT_, PARENT_ID_, SUPER_EXEC_, ROOT_PROC_INST_ID_, SUSPENSION_STATE_, CACHED_ENT_STATE_, TENANT_ID_, NAME_, EVT_SUBSCR_COUNT, TASK_COUNT, JOB_COUNT, VAR_COUNT, ID_LINK_COUNT) VALUES 
             (#{execution.id ,jdbcType=VARCHAR},
              1,
              #{execution.processInstanceId, jdbcType=VARCHAR},
@@ -118,8 +118,8 @@
       NAME_ = #{name, jdbcType=VARCHAR},
       EVT_SUBSCR_COUNT = #{eventSubscriptionCount, jdbcType=INTEGER}, 
       TASK_COUNT = #{taskCount, jdbcType=INTEGER}, 
-      JOB_COUNT = #{jobCount, jdbcType=INTEGER},, 
-      VAR_COUNT = #{variableCount, jdbcType=INTEGER},, 
+      JOB_COUNT = #{jobCount, jdbcType=INTEGER},
+      VAR_COUNT = #{variableCount, jdbcType=INTEGER},
       ID_LINK_COUNT = #{identityLinkCount, jdbcType=INTEGER}
     where ID_ = #{id, jdbcType=VARCHAR}
       and REV_ = #{revision, jdbcType=INTEGER}
