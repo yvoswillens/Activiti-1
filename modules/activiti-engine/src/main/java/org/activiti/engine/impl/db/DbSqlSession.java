@@ -413,15 +413,25 @@ public class DbSqlSession implements Session {
 
   @SuppressWarnings("rawtypes")
   public List selectList(String statement, Object parameter, Page page) {
+    return selectList(statement, parameter, page, true);
+  }
+  
+  @SuppressWarnings("rawtypes")
+  public List selectList(String statement, Object parameter, Page page, boolean useCache) {
     if (page != null) {
-      return selectList(statement, parameter, page.getFirstResult(), page.getMaxResults());
+      return selectList(statement, parameter, page.getFirstResult(), page.getMaxResults(), useCache);
     } else {
-      return selectList(statement, parameter, 0, Integer.MAX_VALUE);
+      return selectList(statement, parameter, 0, Integer.MAX_VALUE, useCache);
     }
   }
 
   @SuppressWarnings("rawtypes")
   public List selectList(String statement, ListQueryParameterObject parameter, Page page) {
+  return selectList(statement, parameter, page, true);
+  }
+  
+  @SuppressWarnings("rawtypes")
+  public List selectList(String statement, ListQueryParameterObject parameter, Page page, boolean useCache) {
     if (page != null) {
       parameter.setFirstResult(page.getFirstResult());
       parameter.setMaxResults(page.getMaxResults());
@@ -431,22 +441,42 @@ public class DbSqlSession implements Session {
 
   @SuppressWarnings("rawtypes")
   public List selectList(String statement, Object parameter, int firstResult, int maxResults) {
-    return selectList(statement, new ListQueryParameterObject(parameter, firstResult, maxResults));
+    return selectList(statement, parameter, firstResult, maxResults, true);
+  }
+  
+  @SuppressWarnings({ "rawtypes" })
+  public List selectList(String statement, Object parameter, int firstResult, int maxResults, boolean useCache) {
+    return selectList(statement, new ListQueryParameterObject(parameter, firstResult, maxResults), useCache);
+  }
+  
+  @SuppressWarnings("rawtypes")
+  public List selectList(String statement, ListQueryParameterObject parameter) {
+    return selectList(statement, parameter, true);
   }
 
   @SuppressWarnings("rawtypes")
-  public List selectList(String statement, ListQueryParameterObject parameter) {
-    return selectListWithRawParameter(statement, parameter, parameter.getFirstResult(), parameter.getMaxResults());
+  public List selectList(String statement, ListQueryParameterObject parameter, boolean useCache) {
+    return selectListWithRawParameter(statement, parameter, parameter.getFirstResult(), parameter.getMaxResults(), useCache);
+  }
+  
+  @SuppressWarnings({ "rawtypes" })
+  public List selectListWithRawParameter(String statement, Object parameter, int firstResult, int maxResults) {
+    return selectListWithRawParameter(statement, parameter, firstResult, maxResults, true);
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public List selectListWithRawParameter(String statement, Object parameter, int firstResult, int maxResults) {
+  public List selectListWithRawParameter(String statement, Object parameter, int firstResult, int maxResults, boolean useCache) {
     statement = dbSqlSessionFactory.mapStatement(statement);
     if (firstResult == -1 || maxResults == -1) {
       return Collections.EMPTY_LIST;
     }
     List loadedObjects = sqlSession.selectList(statement, parameter);
-    return cacheLoadOrStore(loadedObjects);
+    
+    if (useCache) {
+      return cacheLoadOrStore(loadedObjects);
+    } else {
+      return loadedObjects;
+    }
   }
 
   @SuppressWarnings({ "rawtypes" })

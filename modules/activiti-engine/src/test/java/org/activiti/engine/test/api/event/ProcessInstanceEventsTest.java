@@ -125,7 +125,7 @@ public class ProcessInstanceEventsTest extends PluggableActivitiTestCase {
     assertNotEquals(processInstance.getId(), event.getExecutionId());
     assertEquals(processInstance.getProcessDefinitionId(), event.getProcessDefinitionId());
     listener.clearEventsReceived();
-
+    
     // Check update event when process-definition is suspended (should
     // cascade suspend/activate all process instances)
     repositoryService.suspendProcessDefinitionById(processInstance.getProcessDefinitionId(), true, null);
@@ -573,10 +573,7 @@ public class ProcessInstanceEventsTest extends PluggableActivitiTestCase {
       return true;
     }
 
-    public List<ActivitiEvent> filterEvents(ActivitiEventType eventType) {// count
-                                                                          // timer
-                                                                          // cancelled
-                                                                          // events
+    public List<ActivitiEvent> filterEvents(ActivitiEventType eventType) {// count timer cancelled events
       List<ActivitiEvent> filteredEvents = new ArrayList<ActivitiEvent>();
       List<ActivitiEvent> eventsReceived = listener.getEventsReceived();
       for (ActivitiEvent eventReceived : eventsReceived) {

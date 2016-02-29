@@ -197,6 +197,7 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
   public static ExecutionEntityImpl newInstanceWithNullCollections() {
     ExecutionEntityImpl executionEntity = new ExecutionEntityImpl();
     executionEntity.executions = new ArrayList<ExecutionEntityImpl>(1);
+    executionEntity.tasks = new ArrayList<TaskEntity>();
     executionEntity.variableInstances = new HashMap<String, VariableInstanceEntity>(1);
     executionEntity.jobs = new ArrayList<JobEntity>(1);
     executionEntity.eventSubscriptions = new ArrayList<EventSubscriptionEntity>();
@@ -225,9 +226,14 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
    }
    persistentState.put("suspensionState", this.suspensionState);
    persistentState.put("cachedEntityState", this.cachedEntityState);
+   persistentState.put("eventSubscriptionCount", eventSubscriptionCount);
+   persistentState.put("taskCount", taskCount);
+   persistentState.put("jobCount", jobCount);
+   persistentState.put("variableCount", variableCount);
+   persistentState.put("identityLinkCount", identityLinkCount);
    return persistentState;
  }
-  
+ 
   // The current flow element, will be filled during operation execution
 
   public FlowElement getCurrentFlowElement() {

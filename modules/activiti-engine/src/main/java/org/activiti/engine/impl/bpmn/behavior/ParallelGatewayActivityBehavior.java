@@ -83,12 +83,6 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
     int nbrOfExecutionsToJoin = parallelGateway.getIncomingFlows().size();
     int nbrOfExecutionsCurrentlyJoined = joinedExecutions.size();
 
-    // Fork
-
-    // TODO: Verify if this is the correct place! Seems out of place here!
-    // Is needed to set the endTime for all historic activity joins
-    Context.getCommandContext().getHistoryManager().recordActivityEnd((ExecutionEntity) execution);
-
     if (nbrOfExecutionsCurrentlyJoined == nbrOfExecutionsToJoin) {
 
       // Fork
@@ -112,8 +106,12 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
       // TODO: potential optimization here: reuse more then 1 execution, only 1 currently
       Context.getAgenda().planTakeOutgoingSequenceFlowsOperation((ExecutionEntity) execution, false); // false -> ignoring conditions on parallel gw
 
-    } else if (log.isDebugEnabled()) {
-      log.debug("parallel gateway '{}' does not activate: {} of {} joined", execution.getCurrentActivityId(), nbrOfExecutionsCurrentlyJoined, nbrOfExecutionsToJoin);
+    } else {
+      // Is needed to set the endTime for all historic activity joins that don't leave the gateway
+      Context.getCommandContext().getHistoryManager().recordActivityEnd((ExecutionEntity) execution);
+      if (log.isDebugEnabled()) {
+        log.debug("parallel gateway '{}' does not activate: {} of {} joined", execution.getCurrentActivityId(), nbrOfExecutionsCurrentlyJoined, nbrOfExecutionsToJoin);
+      }
     }
 
   }

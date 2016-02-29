@@ -177,7 +177,7 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   @Override
   @SuppressWarnings("unchecked")
   public List<ExecutionEntity> findExecutionsByQueryCriteria(ExecutionQueryImpl executionQuery, Page page) {
-    return getDbSqlSession().selectList("selectExecutionsByQueryCriteria", executionQuery, page);
+    return getDbSqlSession().selectList("selectExecutionsByQueryCriteria", executionQuery, page, !eagerlyFetchExecutionTree); // False -> executions should not be cached if using executionTreeFetching
   }
   
   @Override
@@ -188,7 +188,7 @@ public class MybatisExecutionDataManager extends AbstractDataManager<ExecutionEn
   @Override
   @SuppressWarnings("unchecked")
   public List<ProcessInstance> findProcessInstanceByQueryCriteria(ProcessInstanceQueryImpl executionQuery) {
-    return getDbSqlSession().selectList("selectProcessInstanceByQueryCriteria", executionQuery);
+    return getDbSqlSession().selectList("selectProcessInstanceByQueryCriteria", executionQuery, !eagerlyFetchExecutionTree); // False -> executions should not be cached if using executionTreeFetching
   }
   
   @Override

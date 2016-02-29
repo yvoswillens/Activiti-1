@@ -98,7 +98,7 @@ public class TaskEntityManagerImpl extends AbstractEntityManager<TaskEntity> imp
     
     insert(taskEntity, true);
     
-    if (enableExecutionRelationshipCounts) {
+    if (enableExecutionRelationshipCounts && execution != null) {
       CountingExecutionEntity countingExecutionEntity = (CountingExecutionEntity) execution;
       countingExecutionEntity.setTaskCount(countingExecutionEntity.getTaskCount() + 1);
     }
